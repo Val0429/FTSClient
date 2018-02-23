@@ -1,0 +1,51 @@
+﻿<libwin:EmbedContainerWindow x:Class="Tencent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tencent"
+        xmlns:libwin="clr-namespace:Library.Windows;assembly=Library"
+        xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
+        mc:Ignorable="d"
+        Title="MainWindow" LeftRatio="0" TopRatio="0" WidthRatio="0.5" HeightRatio="0.5">
+        <!--Title="MainWindow" LeftRatio="0" TopRatio="0" WidthRatio="1" HeightRatio="1">-->
+
+    <libwin:EmbedContainerWindow.Resources>
+    </libwin:EmbedContainerWindow.Resources>
+    
+    <Grid>
+        
+        <tlibborder:MainBorder Background="#FF010810" Padding="5" />
+
+        <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0" WidthRatio="0.5" HeightRatio="0.5">
+            <tlibborder:MainBorder Background="#FF010810" Padding="5" />
+        </libwin:EmbedWindow>
+
+        <libwin:EmbedWindow LeftRatio="0" TopRatio="0.5" WidthRatio="0.5" HeightRatio="0.5">
+            <tlibborder:MainBorder Background="#FF010810" Padding="5" />
+        </libwin:EmbedWindow>
+
+        <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0.5" WidthRatio="0.5" HeightRatio="0.5">
+            <tlibborder:MainBorder Background="#FF010810" Padding="5" />
+        </libwin:EmbedWindow>
+    </Grid>
+
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <tlibborder:MainBorder Background="#FF010810" Padding="5" />
+        <tlibborder:MainBorder Background="#FF010810" Padding="5" Grid.Row="0" Grid.Column="1" />
+        <tlibborder:MainBorder Background="#FF010810" Padding="5" Grid.Row="1" Grid.Column="0" />
+        <tlibborder:MainBorder Background="#FF010810" Padding="5" Grid.Row="1" Grid.Column="1" />
+        
+    </Grid>-->
+
+</libwin:EmbedContainerWindow>

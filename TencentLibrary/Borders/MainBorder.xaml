@@ -1,0 +1,282 @@
+﻿<UserControl x:Class="TencentLibrary.Borders.MainBorder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TencentLibrary.Borders"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="350" MinWidth="350" MinHeight="250">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="MainLineBrush" Color="#FF3CD8BB" />
+        <SolidColorBrush x:Key="DecorationLineBrush" Color="#FF31756C" />
+        <SolidColorBrush x:Key="Background" Color="#CC02383D" />
+
+        <Pen x:Key="MainLinePen" Brush="{StaticResource MainLineBrush}" Thickness="3" />
+        <Pen x:Key="DecorationLinePen" Brush="{StaticResource DecorationLineBrush}" Thickness="3" />
+
+        <local:TopBorderWidthConverter x:Key="TopBorderWidthConverter" />
+        <local:LeftBorderHeightConverter x:Key="LeftBorderHeightConverter" />
+    </UserControl.Resources>
+
+    <Canvas>
+
+        <!-- Top Border -->
+        <Border BorderThickness="0,3,0,0" Background="{StaticResource Background}" Canvas.Left="239" Canvas.Top="38.5" Height="81.5"
+                  Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeThickness="3" Stroke="{StaticResource DecorationLineBrush}"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <!-- Top Border -->
+
+        <!-- Bottom Border -->
+        <Border BorderThickness="0,0,0,3" Background="{StaticResource Background}" Canvas.Left="239" Canvas.Bottom="0" Height="80"
+                  Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeThickness="3" Stroke="{StaticResource DecorationLineBrush}"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <!-- Bottom Border -->
+
+        <!-- Left Border -->
+        <Border BorderThickness="3,0,0,0" Background="{StaticResource Background}" Canvas.Left="1.6" Canvas.Top="120" Width="237.4"
+                  Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeThickness="3" Stroke="{StaticResource DecorationLineBrush}"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <!-- Left Border -->
+
+        <!-- Right Border -->
+        <Border BorderThickness="0,0,3,0" Background="{StaticResource Background}" Canvas.Right="0" Canvas.Top="120" Width="82"
+                  Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle StrokeThickness="3" Stroke="{StaticResource DecorationLineBrush}"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+        </Border>
+        <!-- Right Border -->
+
+        <!-- Center Rect -->
+        <Rectangle Canvas.Left="239" Canvas.Top="120"
+                   Fill="{StaticResource Background}"
+            Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}"
+            Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
+                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
+                    }}"/>
+        <!-- Center Rect -->
+
+        <!-- Left Top -->
+        <Rectangle Width="239" Height="120" Canvas.Left="0" Canvas.Top="0">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <!-- Foundation -->
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,0,239,120" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Background -->
+                            <GeometryDrawing Brush="{StaticResource Background}">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="5,40,234,80" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Left Top Banner Background -->
+                            <GeometryDrawing Brush="#FF009296">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 2,2 L 159,2 L 197,39 L 214,39 L 214,49 L 179,49 L 170,40 L 2,40 Z" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Left Top Banner Background -->
+
+                            <!-- Left Top Border -->
+                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 3,45 L 3,3 L 160,3 L 198,40 L 239,40" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Left Top Border -->
+
+                            <!-- LT Border Decoration -->
+                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <PathGeometry Figures="M 24,3 L 118,3" />
+                                        <PathGeometry Figures="M 171,13.8 L 187,29.2" />
+                                        <PathGeometry Figures="M 3,45 L 3,120" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- LT Border Decoration -->
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <!-- Left Top -->
+
+        <!-- Right Top -->
+        <Rectangle Width="82" Height="120" Canvas.Right="0" Canvas.Top="0">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <!-- Foundation -->
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="818,0 82,120" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Background -->
+                            <GeometryDrawing Brush="{StaticResource Background}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 818,39 L 859,39 L 899,80 L 899,120 L 818,120 Z" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Right Top Border -->
+                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 818,40 L 858,40 L 899,80 L 899,120" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Right Top Border -->
+
+                            <!-- Right Top Border Decoration -->
+                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 869,51 L 888,70" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Right Top Border Decoration -->
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <!-- Right Top -->
+
+        <!-- Left Bottom -->
+        <Rectangle Width="239" Height="80" Canvas.Left="0" Canvas.Bottom="0">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <!-- Foundation -->
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,415 239,80" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Background -->
+                            <GeometryDrawing Brush="{StaticResource Background}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 3,415 L 3,454 L 44,492.3 L 242,492.3 L 242,415 Z" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Left Bottom Border -->
+                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 3,415 L 3,454 L 44,494 L 85,494" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Left Bottom Border -->
+
+                            <!-- Left Bottom Border Decoration -->
+                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <PathGeometry Figures="M 13,464.5 L 32,482.8" />
+                                        <PathGeometry Figures="M 85,494 L 242,494" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Left Bottom Border Decoration -->
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <!-- Left Bottom -->
+
+        <!-- Right Bottom -->
+        <Rectangle Width="82" Height="80" Canvas.Right="0" Canvas.Bottom="0">
+            <Rectangle.Fill>
+                <DrawingBrush>
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <!-- Foundation -->
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="818,414 82,80" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Background -->
+                            <GeometryDrawing Brush="{StaticResource Background}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 818,414 L 898,414 L 898,492 L 818,492 Z" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <!-- Right Bottom Border -->
+                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <PathGeometry Figures="M 899,454 L 899,494 L 881,494" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Right Bottom Border -->
+
+                            <!-- Right Bottom Border Decoration -->
+                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <PathGeometry Figures="M 818,494 L 881,494" />
+                                        <PathGeometry Figures="M 899,414 L 899,454" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <!-- Right Bottom Border Decoration -->
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <!-- Right Bottom -->
+
+    </Canvas>
+</UserControl>
