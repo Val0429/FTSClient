@@ -10,22 +10,28 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="MainLineBrush" Color="#FF3CD8BB" />
         <SolidColorBrush x:Key="DecorationLineBrush" Color="#FF31756C" />
-        <SolidColorBrush x:Key="Background" Color="#CC02383D" />
+        <SolidColorBrush x:Key="Background" Color="#3391FFFF" />
 
         <Pen x:Key="MainLinePen" Brush="{StaticResource MainLineBrush}" Thickness="3" />
         <Pen x:Key="DecorationLinePen" Brush="{StaticResource DecorationLineBrush}" Thickness="3" />
-
-        <local:TopBorderWidthConverter x:Key="TopBorderWidthConverter" />
-        <local:LeftBorderHeightConverter x:Key="LeftBorderHeightConverter" />
     </UserControl.Resources>
 
-    <Canvas>
+    <Grid SnapsToDevicePixels="True" ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="239" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="82" />
+        </Grid.ColumnDefinitions>
 
         <!-- Top Border -->
-        <Border BorderThickness="0,3,0,0" Background="{StaticResource Background}" Canvas.Left="239" Canvas.Top="38.5" Height="81.5"
-                  Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}">
+        <Border Grid.Row="0" Grid.Column="1" Margin="0,38.5,0,0"
+                  BorderThickness="0,3,0,0" Background="{StaticResource Background}">
             <Border.BorderBrush>
                 <VisualBrush>
                     <VisualBrush.Visual>
@@ -37,10 +43,8 @@
         <!-- Top Border -->
 
         <!-- Bottom Border -->
-        <Border BorderThickness="0,0,0,3" Background="{StaticResource Background}" Canvas.Left="239" Canvas.Bottom="0" Height="80"
-                  Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}">
+        <Border Grid.Row="2" Grid.Column="1"
+                  BorderThickness="0,0,0,3" Background="{StaticResource Background}">
             <Border.BorderBrush>
                 <VisualBrush>
                     <VisualBrush.Visual>
@@ -52,10 +56,8 @@
         <!-- Bottom Border -->
 
         <!-- Left Border -->
-        <Border BorderThickness="3,0,0,0" Background="{StaticResource Background}" Canvas.Left="1.6" Canvas.Top="120" Width="237.4"
-                  Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}">
+        <Border Grid.Row="1" Grid.Column="0" Margin="1.5,0,0,0"
+                  BorderThickness="3,0,0,0" Background="{StaticResource Background}">
             <Border.BorderBrush>
                 <VisualBrush>
                     <VisualBrush.Visual>
@@ -67,10 +69,8 @@
         <!-- Left Border -->
 
         <!-- Right Border -->
-        <Border BorderThickness="0,0,3,0" Background="{StaticResource Background}" Canvas.Right="0" Canvas.Top="120" Width="82"
-                  Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}">
+        <Border Grid.Row="1" Grid.Column="2"
+                BorderThickness="0,0,3,0" Background="{StaticResource Background}">
             <Border.BorderBrush>
                 <VisualBrush>
                     <VisualBrush.Visual>
@@ -82,18 +82,12 @@
         <!-- Right Border -->
 
         <!-- Center Rect -->
-        <Rectangle Canvas.Left="239" Canvas.Top="120"
-                   Fill="{StaticResource Background}"
-            Width="{Binding Path=ActualWidth, Converter={StaticResource TopBorderWidthConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}"
-            Height="{Binding Path=ActualHeight, Converter={StaticResource LeftBorderHeightConverter}, RelativeSource={
-                    RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}
-                    }}"/>
+        <Rectangle Grid.Row="1" Grid.Column="1"
+                   Fill="{StaticResource Background}" />
         <!-- Center Rect -->
 
         <!-- Left Top -->
-        <Rectangle Width="239" Height="120" Canvas.Left="0" Canvas.Top="0">
+        <Rectangle Grid.Row="0" Grid.Column="0">
             <Rectangle.Fill>
                 <DrawingBrush>
                     <DrawingBrush.Drawing>
@@ -108,12 +102,12 @@
                             <!-- Background -->
                             <GeometryDrawing Brush="{StaticResource Background}">
                                 <GeometryDrawing.Geometry>
-                                    <RectangleGeometry Rect="5,40,234,80" />
+                                    <PathGeometry Figures="M 4,40 L 170,40 L 179,49 L 214,49 L 214,40 L 239,40 L 239,120 L 4,120 Z" />
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
 
                             <!-- Left Top Banner Background -->
-                            <GeometryDrawing Brush="#FF009296">
+                            <GeometryDrawing Brush="#7790FFFF">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 2,2 L 159,2 L 197,39 L 214,39 L 214,49 L 179,49 L 170,40 L 2,40 Z" />
                                 </GeometryDrawing.Geometry>
@@ -147,7 +141,7 @@
         <!-- Left Top -->
 
         <!-- Right Top -->
-        <Rectangle Width="82" Height="120" Canvas.Right="0" Canvas.Top="0">
+        <Rectangle Grid.Row="0" Grid.Column="2">
             <Rectangle.Fill>
                 <DrawingBrush>
                     <DrawingBrush.Drawing>
@@ -189,7 +183,7 @@
         <!-- Right Top -->
 
         <!-- Left Bottom -->
-        <Rectangle Width="239" Height="80" Canvas.Left="0" Canvas.Bottom="0">
+        <Rectangle Grid.Row="2" Grid.Column="0">
             <Rectangle.Fill>
                 <DrawingBrush>
                     <DrawingBrush.Drawing>
@@ -234,7 +228,7 @@
         <!-- Left Bottom -->
 
         <!-- Right Bottom -->
-        <Rectangle Width="82" Height="80" Canvas.Right="0" Canvas.Bottom="0">
+        <Rectangle Grid.Row="2" Grid.Column="2">
             <Rectangle.Fill>
                 <DrawingBrush>
                     <DrawingBrush.Drawing>
@@ -249,7 +243,7 @@
                             <!-- Background -->
                             <GeometryDrawing Brush="{StaticResource Background}">
                                 <GeometryDrawing.Geometry>
-                                    <PathGeometry Figures="M 818,414 L 898,414 L 898,492 L 818,492 Z" />
+                                    <PathGeometry Figures="M 818,414 L 898,414 L 898,493 L 818,493 Z" />
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
 
@@ -278,5 +272,6 @@
         </Rectangle>
         <!-- Right Bottom -->
 
-    </Canvas>
+    </Grid>
+
 </UserControl>

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -48,6 +49,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\DrawingBitmapToWpfConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenHeightConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenWidthConverter.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />
