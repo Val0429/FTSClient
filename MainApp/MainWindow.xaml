@@ -25,6 +25,9 @@
                             Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
             </DockPanel.Background>
             <Viewbox>
+                <Viewbox.CacheMode>
+                    <BitmapCache RenderAtScale="3" />
+                </Viewbox.CacheMode>
                 <tlibborder:MainBorder Padding="15" Width="932" Height="475">
                 </tlibborder:MainBorder>
             </Viewbox>
