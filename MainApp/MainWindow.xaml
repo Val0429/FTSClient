@@ -29,7 +29,28 @@
                     <BitmapCache RenderAtScale="3" />
                 </Viewbox.CacheMode>
                 <tlibborder:MainBorder Padding="15" Width="932" Height="475" Title="人脸追踪记录">
-                    <Label Foreground="White">123</Label>
+                    <StackPanel>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                    </StackPanel>
                 </tlibborder:MainBorder>
             </Viewbox>
         </DockPanel>
