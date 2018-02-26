@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TencentLibrary.Borders"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="250" d:DesignWidth="350" MinWidth="350" MinHeight="250">
 
     <UserControl.Resources>
@@ -312,6 +313,7 @@
                 </DrawingBrush>
             </Rectangle.Fill>
         </Rectangle>
+        <Label Content="{Binding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Meiryo UI" FontSize="16" Foreground="#FF00FFF9"/>
         <!-- Right Bottom -->
 
     </Grid>

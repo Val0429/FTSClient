@@ -28,14 +28,14 @@
                 <Viewbox.CacheMode>
                     <BitmapCache RenderAtScale="3" />
                 </Viewbox.CacheMode>
-                <tlibborder:MainBorder Padding="15" Width="932" Height="475">
+                <tlibborder:MainBorder Padding="15" Width="932" Height="475" Title="人脸追踪记录">
                 </tlibborder:MainBorder>
             </Viewbox>
         </DockPanel>
 
 
         <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0" WidthRatio="0.5" HeightRatio="0.5">
-            <tlibborder:MainBorder Padding="15">
+            <tlibborder:MainBorder Padding="15" Title="人脸追踪详情">
                 <tlibborder:MainBorder.Background>
                     <ImageBrush Viewbox="0.5,0 0.5,0.5"
                     Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
