@@ -29,6 +29,7 @@
                     <BitmapCache RenderAtScale="3" />
                 </Viewbox.CacheMode>
                 <tlibborder:MainBorder Padding="15" Width="932" Height="475" Title="人脸追踪记录">
+                    <Label Foreground="White">123</Label>
                 </tlibborder:MainBorder>
             </Viewbox>
         </DockPanel>

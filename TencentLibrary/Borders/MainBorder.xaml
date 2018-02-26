@@ -18,6 +18,151 @@
 
         <Pen x:Key="MainLinePen" Brush="{StaticResource MainLineBrush}" Thickness="3" />
         <Pen x:Key="DecorationLinePen" Brush="{StaticResource DecorationLineBrush}" Thickness="3" />
+
+        <ControlTemplate x:Key="CustomScrollBar" TargetType="ScrollBar" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+            <Grid Background="Transparent" Name="Bg" SnapsToDevicePixels="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="1E-05*" />
+                    <RowDefinition Height="10" />
+                </Grid.RowDefinitions>
+                <Track IsDirectionReversed="True" Name="PART_Track" IsEnabled="{TemplateBinding UIElement.IsMouseOver}" Grid.Row="1">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Command="ScrollBar.PageUpCommand">
+                            <RepeatButton.Style>
+                                <Style TargetType="RepeatButton">
+                                    <Style.Resources>
+                                        <ResourceDictionary />
+                                    </Style.Resources>
+                                    <Setter Property="FrameworkElement.OverridesDefaultStyle">
+                                        <Setter.Value>
+                                            <s:Boolean>True</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Panel.Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush>#00FFFFFF</SolidColorBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="UIElement.Focusable">
+                                        <Setter.Value>
+                                            <s:Boolean>False</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="KeyboardNavigation.IsTabStop">
+                                        <Setter.Value>
+                                            <s:Boolean>False</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Rectangle Fill="{TemplateBinding Panel.Background}" Width="{TemplateBinding FrameworkElement.Width}" Height="{TemplateBinding FrameworkElement.Height}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RepeatButton.Style>
+                        </RepeatButton>
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb mwt:ScrollChrome.ScrollGlyph="VerticalGripper">
+                            <Thumb.Style>
+                                <Style TargetType="Thumb">
+                                    <Style.Resources>
+                                        <ResourceDictionary />
+                                    </Style.Resources>
+                                    <Setter Property="FrameworkElement.OverridesDefaultStyle">
+                                        <Setter.Value>
+                                            <s:Boolean>True</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="KeyboardNavigation.IsTabStop">
+                                        <Setter.Value>
+                                            <s:Boolean>False</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <mwt:ScrollChrome RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" RenderPressed="{TemplateBinding Thumb.IsDragging}" Name="Chrome" SnapsToDevicePixels="True" mwt:ScrollChrome.ScrollGlyph="{TemplateBinding mwt:ScrollChrome.ScrollGlyph}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Thumb.Style>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Command="ScrollBar.PageDownCommand">
+                            <RepeatButton.Style>
+                                <Style TargetType="RepeatButton">
+                                    <Style.Resources>
+                                        <ResourceDictionary />
+                                    </Style.Resources>
+                                    <Setter Property="FrameworkElement.OverridesDefaultStyle">
+                                        <Setter.Value>
+                                            <s:Boolean>True</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Panel.Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush>#00FFFFFF</SolidColorBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="UIElement.Focusable">
+                                        <Setter.Value>
+                                            <s:Boolean>False</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="KeyboardNavigation.IsTabStop">
+                                        <Setter.Value>
+                                            <s:Boolean>False</s:Boolean>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Rectangle Fill="{TemplateBinding Panel.Background}" Width="{TemplateBinding FrameworkElement.Width}" Height="{TemplateBinding FrameworkElement.Height}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RepeatButton.Style>
+                        </RepeatButton>
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsEnabled">
+                    <Setter Property="Panel.Background" TargetName="Bg">
+                        <Setter.Value>
+                            <SolidColorBrush>Purple</SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Trigger.Value>
+                        <s:Boolean>False</s:Boolean>
+                    </Trigger.Value>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="CustomScrollViewer" TargetType="ScrollViewer" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+            <Grid Background="{TemplateBinding Panel.Background}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Column="1" Grid.Row="1" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                <ScrollContentPresenter Grid.Column="0" Grid.Row="0" Margin="{TemplateBinding Control.Padding}" Content="{TemplateBinding ContentControl.Content}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}" />
+                <ScrollBar Margin="0,30,0,0" Grid.Column="1" Grid.Row="0" Template="{StaticResource CustomScrollBar}" Minimum="0" Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}" ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}" Value="{Binding Path=VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}" Cursor="Arrow" AutomationProperties.AutomationId="VerticalScrollBar" />
+            </Grid>
+        </ControlTemplate>
+
     </UserControl.Resources>
 
     <Grid SnapsToDevicePixels="True" ShowGridLines="False">
@@ -239,7 +384,9 @@
                     </DrawingBrush>
                 </Rectangle.Fill>
             </Rectangle>
+            <!-- Left Bottom -->
 
+            <!-- Left Bottom Icon -->
             <Rectangle Width="22" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="60,0,0,6">
                 <Rectangle.Effect>
                     <DropShadowEffect Color="LemonChiffon" Opacity="0.8" ShadowDepth="0" BlurRadius="10" />
@@ -268,7 +415,7 @@
                 </Rectangle.Fill>
             </Rectangle>
         </Grid>
-        <!-- Left Bottom -->
+        <!-- Left Bottom Icon -->
 
         <!-- Right Bottom -->
         <Rectangle Grid.Row="2" Grid.Column="2">
@@ -313,8 +460,10 @@
                 </DrawingBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Label Content="{Binding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Meiryo UI" FontSize="16" Foreground="#FF00FFF9"/>
         <!-- Right Bottom -->
+
+        <Label Content="{Binding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
+        <ScrollViewer Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="10,60,10,20" Template="{StaticResource CustomScrollViewer}" />
 
     </Grid>
 
