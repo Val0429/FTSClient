@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:TencentLibrary.Borders"
+             xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="250" d:DesignWidth="350" MinWidth="350" MinHeight="250">
@@ -331,7 +332,7 @@
                                     <!-- Right Bottom -->
 
                                     <Label Content="{Binding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
-                                    <ScrollViewer Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="10,60,12,20" Style="{StaticResource CustomScrollViewer}" Content="{TemplateBinding Content}" FocusVisualStyle="{x:Null}" />
+                                    <scv:CustomScrollViewer Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="10,60,12,20" Content="{TemplateBinding Content}" FocusVisualStyle="{x:Null}" />
 
                                 </Grid>
                             </Grid>

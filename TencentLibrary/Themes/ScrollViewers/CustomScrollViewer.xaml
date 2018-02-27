@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="clr-namespace:System;assembly=mscorlib"
-                    xmlns:local="clr-namespace:TencentLibrary.Themes.ScrollViewers">
+                    xmlns:local="clr-namespace:TencentLibrary.ScrollViewers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Scrollbars/CustomScrollbar.xaml" />
@@ -40,5 +40,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+
+    <Style BasedOn="{StaticResource CustomScrollViewer}" TargetType="{x:Type local:CustomScrollViewer}" />
+
 </ResourceDictionary>
