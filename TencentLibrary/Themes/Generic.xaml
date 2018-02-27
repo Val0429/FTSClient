@@ -4,20 +4,8 @@
     xmlns:local="clr-namespace:TencentLibrary.ScrollViewers">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/MainBorder.xaml" />
         <ResourceDictionary Source="/TencentLibrary;component/Themes/ScrollViewers/CustomScrollViewer.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
-
-    <Style TargetType="{x:Type local:CustomScrollViewer}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:CustomScrollViewer}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

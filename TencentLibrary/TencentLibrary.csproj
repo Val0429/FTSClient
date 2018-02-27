@@ -49,7 +49,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Borders\MainBorder.xaml">
+    <Page Include="Themes\Borders\MainBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -67,9 +67,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Borders\MainBorder.xaml.cs">
-      <DependentUpon>MainBorder.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Borders\MainBorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
