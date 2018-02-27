@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Tencent"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <BitmapImage x:Key="BackgroundImage" UriSource="Resources/background.png" />
     </Application.Resources>
 </Application>

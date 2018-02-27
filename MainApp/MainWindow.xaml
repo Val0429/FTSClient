@@ -14,8 +14,6 @@
         <!--Title="MainWindow" LeftRatio="0" TopRatio="0" WidthRatio="1" HeightRatio="1">-->
 
     <libwin:EmbedContainerWindow.Resources>
-        <libconverter:DrawingBitmapToWpfConverter x:Key="DrawingBitmapToWpfConverter" />
-        <BitmapImage x:Key="BackgroundImage" UriSource="Resources/background.png" />
     </libwin:EmbedContainerWindow.Resources>
 
     <Grid>
