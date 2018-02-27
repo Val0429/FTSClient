@@ -29,7 +29,7 @@
                 <scv:CustomScrollViewer Grid.Column="0"
                         Margin="0,0,10,0"
                         ScrollContentMargin="0,0,0,10"
-                        ScrollBarMargin="0,30,0,0">
+                        ScrollBarMargin="0,30,0,5">
                         <StackPanel>
                             <Label Foreground="White">123</Label>
                             <Label Foreground="White">123</Label>
@@ -67,7 +67,7 @@
                 <scv:CustomScrollViewer Grid.Column="1"
                     Margin="10,0,0,0"
                     ScrollContentMargin="0,0,0,10"
-                    ScrollBarMargin="0,30,0,0">
+                    ScrollBarMargin="0,30,0,5">
                         <StackPanel>
                             <Label Foreground="White">123</Label>
                             <Label Foreground="White">123</Label>

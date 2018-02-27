@@ -20,12 +20,17 @@
 
 
     <Style TargetType="{x:Type local:MainBorder}">
+        <Setter Property="MinWidth" Value="350" />
+        <Setter Property="MinHeight" Value="250" />
         <Setter Property="Template">
             <Setter.Value>
 
                 <ControlTemplate TargetType="{x:Type local:MainBorder}">
 
                     <Grid Background="{TemplateBinding Background}">
+                        <Grid.CacheMode>
+                            <BitmapCache RenderAtScale="3" />
+                        </Grid.CacheMode>
 
                         <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" ShowGridLines="False">
                             <Grid.RowDefinitions>
@@ -286,7 +291,7 @@
 
                             <Label Content="{TemplateBinding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
 
-                            <ContentPresenter Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Content}" Margin="23,60,12,20" />
+                            <ContentPresenter Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Content}" Margin="23,60,12,15" />
 
                             <!-- Left Bottom Icon -->
                             <Rectangle Grid.Row="2" Grid.Column="0">
@@ -331,6 +336,7 @@
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
+                            <!-- Left Bottom Icon -->
 
                         </Grid>
                     </Grid>
