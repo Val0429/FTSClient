@@ -116,7 +116,7 @@
       <Name>Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\TencentLibrary\TencentLibrary.csproj">
-      <Project>{6dc6f5bd-f283-4f50-b09e-988fd13db7a1}</Project>
+      <Project>{35ae723f-416a-4076-870b-ee8022010ecc}</Project>
       <Name>TencentLibrary</Name>
     </ProjectReference>
   </ItemGroup>

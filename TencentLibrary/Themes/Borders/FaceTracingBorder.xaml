@@ -5,7 +5,7 @@
     <SolidColorBrush x:Key="MainLineBrush" Color="#FF7CCCB2" />
     <SolidColorBrush x:Key="DecorationLineBrush" Color="#F04D746C" />
     <SolidColorBrush x:Key="Background" Color="#2E90FFFF" />
-    <BitmapImage x:Key="BackgroundImage" UriSource="/TencentLibrary;Resources/facetracing_bk.png" />
+    <BitmapImage x:Key="BackgroundImage" UriSource="/TencentLibrary;component/Resources/facetracing_bk.png" />
 
     <Pen x:Key="MainLinePen" Brush="{StaticResource MainLineBrush}" Thickness="1" />
     <Pen x:Key="DecorationLinePen" Brush="{StaticResource DecorationLineBrush}" Thickness="1" />
@@ -14,6 +14,8 @@
     <Style TargetType="{x:Type local:FaceTracingBorder}">
         <Setter Property="MinWidth" Value="158" />
         <Setter Property="MinHeight" Value="172" />
+        <Setter Property="Width" Value="158" />
+        <Setter Property="Height" Value="172" />
         <Setter Property="Template">
             <Setter.Value>
 
@@ -255,17 +257,26 @@
                         <!-- Left Bottom -->
                         
                         <!-- Picture -->
-                        <Border Grid.ColumnSpan="3" Grid.RowSpan="3" Width="140" Height="140" VerticalAlignment="Top" Margin="0,8,0,0">
+                        <Border Grid.ColumnSpan="3" Grid.RowSpan="3" Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="White">
                             <!--<Border.Background>
                                 <ImageBrush ImageSource="{StaticResource BackgroundImage}" />
                             </Border.Background>-->
-                            <Image Width="140" Height="140" Source="{StaticResource BackgroundImage}" />
+                            <Border.OpacityMask>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <GeometryDrawing Brush="Black">
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 0,0 L 130,0 L 140,10 L 140,142 L 10,142 L 0,132 Z" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Border.OpacityMask>
+                            <Image Width="140" Height="142" Source="{TemplateBinding Image}" />
                         </Border>
                         <!-- Picture -->
 
-                        <!--<Label Content="{TemplateBinding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
-
-                        <ContentPresenter Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Content}" Margin="23,60,12,20" />-->
+                        <Label Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Title}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="86" Height="19" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontFamily="Microsoft YaHei" FontWeight="SemiBold" FontSize="15" Foreground="#FF00FFF9" />
 
                     </Grid>
 
