@@ -50,6 +50,16 @@
                         <Label Foreground="White">123</Label>
                         <Label Foreground="White">123</Label>
                         <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
+                        <Label Foreground="White">123</Label>
                     </StackPanel>
                 </tlibborder:MainBorder>
             </Viewbox>
