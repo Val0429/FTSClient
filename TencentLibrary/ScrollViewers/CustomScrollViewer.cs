@@ -18,5 +18,27 @@ namespace TencentLibrary.ScrollViewers {
         static CustomScrollViewer() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomScrollViewer), new FrameworkPropertyMetadata(typeof(CustomScrollViewer)));
         }
+
+        #region "Dependency Properties"
+        public Thickness ScrollBarMargin {
+            get { return (Thickness)GetValue(ScrollBarMarginProperty); }
+            set { SetValue(ScrollBarMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScrollBarMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScrollBarMarginProperty =
+            DependencyProperty.Register("ScrollBarMargin", typeof(Thickness), typeof(CustomScrollViewer), new PropertyMetadata( new Thickness(0) ));
+
+
+        public Thickness ScrollContentMargin {
+            get { return (Thickness)GetValue(ScrollContentMarginProperty); }
+            set { SetValue(ScrollContentMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScrollContentMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScrollContentMarginProperty =
+            DependencyProperty.Register("ScrollContentMargin", typeof(Thickness), typeof(CustomScrollViewer), new PropertyMetadata(new Thickness(0) ));
+        #endregion "Dependency Properties"
+
     }
 }

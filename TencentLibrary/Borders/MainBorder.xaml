@@ -332,7 +332,13 @@
                                     <!-- Right Bottom -->
 
                                     <Label Content="{Binding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
-                                    <scv:CustomScrollViewer Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="10,60,12,20" Content="{TemplateBinding Content}" FocusVisualStyle="{x:Null}" />
+                                    <scv:CustomScrollViewer
+                                        Grid.RowSpan="3" Grid.ColumnSpan="3"
+                                        Content="{TemplateBinding Content}" FocusVisualStyle="{x:Null}"
+                                        Margin="10,60,12,20"
+                                        ScrollContentMargin="0,0,0,10"
+                                        ScrollBarMargin="0,30,0,0"
+                                        />
 
                                 </Grid>
                             </Grid>
