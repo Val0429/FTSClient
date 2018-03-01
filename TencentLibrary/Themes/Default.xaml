@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TencentLibrary">
+
+    <Style x:Key="DefaultFont" TargetType="Label">
+        <Setter Property="FontFamily" Value="Microsoft YaHei" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="#FF00FFF9" />
+    </Style>
+
+</ResourceDictionary>

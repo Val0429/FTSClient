@@ -2,14 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:TencentLibrary.Borders">
 
-    <SolidColorBrush x:Key="MainLineBrush" Color="#FF7CCCB2" />
-    <SolidColorBrush x:Key="DecorationLineBrush" Color="#F04D746C" />
-    <SolidColorBrush x:Key="Background" Color="#2E90FFFF" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <BitmapImage x:Key="BackgroundImage" UriSource="/TencentLibrary;component/Resources/facetracing_bk.png" />
-
-    <Pen x:Key="MainLinePen" Brush="{StaticResource MainLineBrush}" Thickness="1" />
-    <Pen x:Key="DecorationLinePen" Brush="{StaticResource DecorationLineBrush}" Thickness="1" />
-
 
     <Style TargetType="{x:Type local:FaceTracingBorder}">
         <Setter Property="MinWidth" Value="158" />
@@ -21,264 +18,33 @@
 
                 <ControlTemplate TargetType="{x:Type local:FaceTracingBorder}">
 
-                    <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" ShowGridLines="False">
-                        <Grid.CacheMode>
-                            <BitmapCache RenderAtScale="3" />
-                        </Grid.CacheMode>
-                        
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="23" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="44" />
-                        </Grid.RowDefinitions>
+                    <local:SubBorder>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="30" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Top Border -->
-                        <Border Grid.Row="0" Grid.Column="1"
-                BorderThickness="0,1,0,0" Background="{StaticResource Background}">
-                            <Border.BorderBrush>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Rectangle StrokeThickness="1" Stroke="{StaticResource DecorationLineBrush}"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.BorderBrush>
-                        </Border>
-                        <!-- Top Border -->
-
-                        <!-- Bottom Border -->
-                        <Border Grid.Row="2" Grid.Column="1"
-                BorderThickness="0,0,0,1" Background="{StaticResource Background}">
-                            <Border.BorderBrush>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Rectangle StrokeThickness="1" Stroke="{StaticResource DecorationLineBrush}"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.BorderBrush>
-                        </Border>
-                        <!-- Bottom Border -->
-
-                        <!-- Left Border -->
-                        <Border Grid.Row="1" Grid.Column="0"
-                BorderThickness="1,0,0,0" Background="{StaticResource Background}">
-                            <Border.BorderBrush>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Rectangle StrokeThickness="1" Stroke="{StaticResource DecorationLineBrush}"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.BorderBrush>
-                        </Border>
-                        <!-- Left Border -->
-
-                        <!-- Right Border -->
-                        <Border Grid.Row="1" Grid.Column="2"
-            BorderThickness="0,0,1,0" Background="{StaticResource Background}">
-                            <Border.BorderBrush>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Rectangle StrokeThickness="1" Stroke="{StaticResource DecorationLineBrush}"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.BorderBrush>
-                        </Border>
-                        <!-- Right Border -->
-
-                        <!-- Center Rect -->
-                        <Rectangle Grid.Row="1" Grid.Column="1"
-                Fill="{StaticResource Background}" />
-                        <!-- Center Rect -->
-
-                        <!-- Left Top -->
-                        <Rectangle Grid.Row="0" Grid.Column="0">
-                            <Rectangle.Fill>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <!-- Foundation -->
-                                            <GeometryDrawing Brush="{StaticResource Background}">
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect="0,0,75,23" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <!-- LT Border Decoration -->
-                                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <GeometryGroup>
-                                                        <PathGeometry Figures="M 0,23 L 0,0 L 75,0" />
-                                                    </GeometryGroup>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- LT Border Decoration -->
-
-                                            <!-- Left Top Border -->
-                                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 0,15 L 0,0 L 7,0" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Left Top Border -->
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <!-- Left Top -->
-
-                        <!-- Right Top -->
-                        <Rectangle Grid.Row="0" Grid.Column="2">
-                            <Rectangle.Fill>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <!-- Foundation -->
-                                            <GeometryDrawing Brush="Transparent">
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect="128,0 30,23" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <!-- Background -->
-                                            <GeometryDrawing Brush="{StaticResource Background}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 128,0 L 142,0 L 158,15 L 158,23 L 128,23 Z" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <!-- Right Top Border -->
-                                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 128,0 L 142,0 L 158,15 L 158,23" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Right Top Border -->
-
-                                            <!-- Right Top Border Decoration -->
-                                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 146,4 L 153,10.5" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Right Top Border Decoration -->
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <!-- Right Top -->
-
-                        <!-- Right Bottom -->
-                        <Rectangle Grid.Row="2" Grid.Column="2">
-                            <Rectangle.Fill>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <!-- Foundation -->
-                                            <GeometryDrawing Brush="{StaticResource Background}">
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect="128,128 30,44" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            
-                                            <!-- Right Bottom Border Decoration -->
-                                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 158,128 L 158,172 L 128,172" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Right Bottom Border Decoration -->
-
-                                            <!-- Right Bottom Border -->
-                                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 158,156 L 158,172 L 150,172" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Right Bottom Border -->
-
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <!-- Right Bottom -->
-
-                        <!-- Left Bottom -->
-                        <Rectangle Grid.Row="2" Grid.Column="0">
-                            <Rectangle.Fill>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <!-- Foundation -->
-                                            <GeometryDrawing Brush="Transparent">
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect="0,128 75,44" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <!-- Background -->
-                                            <GeometryDrawing Brush="{StaticResource Background}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 0,128 L 0,143 L 14,157 L 46,157 L 60,172 L 75,172 L 75,128 Z" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <!-- Left Bottom Border -->
-                                            <GeometryDrawing Pen="{StaticResource MainLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <PathGeometry Figures="M 0,128 L 0,143 L 14,157 L 46,157 L 60,172 L 75,172" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Left Bottom Border -->
-
-                                            <!-- Left Bottom Border Decoration -->
-                                            <GeometryDrawing Pen="{StaticResource DecorationLinePen}">
-                                                <GeometryDrawing.Geometry>
-                                                    <GeometryGroup>
-                                                        <PathGeometry Figures="M 4,147 L 11,154" />
-                                                        <PathGeometry Figures="M 51,162 L 56,168" />
-                                                    </GeometryGroup>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <!-- Left Bottom Border Decoration -->
-
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <!-- Left Bottom -->
-                        
-                        <!-- Picture -->
-                        <Border Grid.ColumnSpan="3" Grid.RowSpan="3" Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="White">
-                            <!--<Border.Background>
+                        <Grid>
+                            <!-- Picture -->
+                            <Border Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="White">
+                                <!--<Border.Background>
                                 <ImageBrush ImageSource="{StaticResource BackgroundImage}" />
                             </Border.Background>-->
-                            <Border.OpacityMask>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <GeometryDrawing Brush="Black">
-                                            <GeometryDrawing.Geometry>
-                                                <PathGeometry Figures="M 0,0 L 130,0 L 140,10 L 140,142 L 10,142 L 0,132 Z" />
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Border.OpacityMask>
-                            <Image Width="140" Height="142" Source="{TemplateBinding Image}" />
-                        </Border>
-                        <!-- Picture -->
+                                <Border.OpacityMask>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing Brush="Black">
+                                                <GeometryDrawing.Geometry>
+                                                    <PathGeometry Figures="M 0,0 L 130,0 L 140,10 L 140,142 L 10,142 L 0,132 Z" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Border.OpacityMask>
+                                <Image Width="140" Height="142" Source="{TemplateBinding Image}" />
+                            </Border>
+                            <!-- Picture -->
 
-                        <Label Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Title}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="86" Height="19" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontFamily="Microsoft YaHei" FontWeight="SemiBold" FontSize="15" Foreground="#FF00FFF9" />
+                            <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" HorizontalContentAlignment="{TemplateBinding TitleAlignment}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="78" Height="20" VerticalContentAlignment="Center" FontSize="15" />
+                        </Grid>
 
-                    </Grid>
+                    </local:SubBorder>
 
                 </ControlTemplate>
 

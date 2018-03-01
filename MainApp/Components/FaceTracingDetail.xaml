@@ -9,6 +9,14 @@
              mc:Ignorable="d"
              d:DesignHeight="480" d:DesignWidth="640">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <DockPanel>
         <DockPanel.Background>
             <ImageBrush Viewbox="0,0 0.5,0.5"
@@ -22,52 +30,72 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="190" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                
-                <scv:CustomScrollViewer Grid.Column="0"
-                        Margin="0,0,10,0"
+
+                    <!-- 1st column -->
+                    <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="目标人物" TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <!-- 1st column -->
+
+                    <!-- 2nd column -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="67" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <tlibborder:SubBorder Width="135" Height="67" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid>
+                                <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" Margin="0,2,6,0" />
+                            </Grid>
+                        </tlibborder:SubBorder>
+
+                        <scv:CustomScrollViewer Grid.Row="1"
+                            Margin="0,0,10,0"
+                            ScrollContentMargin="0,0,0,10"
+                            ScrollBarMargin="0,30,0,5">
+                            <StackPanel>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                                <Label Foreground="White">123</Label>
+                            </StackPanel>
+                        </scv:CustomScrollViewer>
+                    </Grid>
+                    <!-- 2nd column -->
+
+                    <scv:CustomScrollViewer Grid.Column="2"
+                        Margin="10,0,0,0"
                         ScrollContentMargin="0,0,0,10"
                         ScrollBarMargin="0,30,0,5">
-                        <StackPanel>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                            <Label Foreground="White">123</Label>
-                        </StackPanel>
-                    </scv:CustomScrollViewer>
-
-                <scv:CustomScrollViewer Grid.Column="1"
-                    Margin="10,0,0,0"
-                    ScrollContentMargin="0,0,0,10"
-                    ScrollBarMargin="0,30,0,5">
                         <StackPanel>
                             <Label Foreground="White">123</Label>
                             <Label Foreground="White">123</Label>

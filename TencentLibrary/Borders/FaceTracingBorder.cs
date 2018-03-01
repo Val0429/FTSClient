@@ -39,6 +39,14 @@ namespace TencentLibrary.Borders {
             DependencyProperty.Register("Title", typeof(string), typeof(FaceTracingBorder), new PropertyMetadata(null));
 
 
+        public HorizontalAlignment TitleAlignment {
+            get { return (HorizontalAlignment)GetValue(TitleAlignmentProperty); }
+            set { SetValue(TitleAlignmentProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for TitleAlignment.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleAlignmentProperty =
+            DependencyProperty.Register("TitleAlignment", typeof(HorizontalAlignment), typeof(FaceTracingBorder), new PropertyMetadata(HorizontalAlignment.Right));
+
         #endregion "Dependency Properties"
 
     }
