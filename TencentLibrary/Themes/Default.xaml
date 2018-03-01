@@ -4,8 +4,13 @@
 
     <Style x:Key="DefaultFont" TargetType="Label">
         <Setter Property="FontFamily" Value="Microsoft YaHei" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="Foreground" Value="#FF00FFF9" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="1" Color="#FF00FFF9" ShadowDepth="0" />
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

@@ -48,7 +48,7 @@
 
                         <tlibborder:SubBorder Width="135" Height="67" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Grid>
-                                <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" Margin="0,2,6,0" />
+                                <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" Margin="2,2,6,0" />
                             </Grid>
                         </tlibborder:SubBorder>
 

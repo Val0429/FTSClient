@@ -6,6 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/TencentLibrary;component/Themes/ScrollViewers/CustomScrollViewer.xaml" />
+        <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <SolidColorBrush x:Key="MainLineBrush" Color="#FF3CD8BB" />
@@ -289,7 +290,7 @@
                             </Rectangle>
                             <!-- Left Bottom -->
 
-                            <Label Content="{TemplateBinding Title}" HorizontalAlignment="Left" Margin="13,7.164,0,0" VerticalAlignment="Top" Width="142" Height="30.166" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="ExtraBlack" FontSize="16" Foreground="#FF00FFF9"/>
+                            <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="13,7.164,0,0" Width="145" Height="30.166" FontSize="18" FontWeight="Bold" />
 
                             <ContentPresenter Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{TemplateBinding Content}" Margin="23,60,12,15" />
 
