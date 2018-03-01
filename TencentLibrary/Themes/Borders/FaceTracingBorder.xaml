@@ -23,9 +23,6 @@
                         <Grid>
                             <!-- Picture -->
                             <Border Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="White">
-                                <!--<Border.Background>
-                                <ImageBrush ImageSource="{StaticResource BackgroundImage}" />
-                            </Border.Background>-->
                                 <Border.OpacityMask>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
@@ -37,7 +34,12 @@
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Border.OpacityMask>
-                                <Image Width="140" Height="142" Source="{TemplateBinding Image}" />
+                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" Source="{TemplateBinding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+                                <Rectangle Width="140" Height="142">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Image}" Stretch="UniformToFill" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
                             </Border>
                             <!-- Picture -->
 
