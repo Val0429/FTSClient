@@ -71,15 +71,15 @@
                             ScrollBarMargin="0,-20,0,5">
                             <StackPanel Margin="0,0,0,35">
 
-                                <unit:EntryUnit>
+                                <unit:EntryUnit Title="1号摄像头大堂">
                                     <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                                     <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
                                     <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
                                 </unit:EntryUnit>
-                                <unit:EntryUnit>
+                                <unit:EntryUnit Title="2号摄像头走廊" Icon="{StaticResource NormalCameraTemplate}">
                                     <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                                 </unit:EntryUnit>
-                                <unit:EntryUnit>
+                                <unit:EntryUnit Title="3号摄像头3705会议室">
                                     <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                                     <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
                                 </unit:EntryUnit>

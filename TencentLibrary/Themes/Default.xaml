@@ -134,6 +134,9 @@
     </Rectangle>
 
     <Grid x:Key="FRCameraTemplate" Width="500" Height="500">
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleX="0.2" ScaleY="0.2" />
+        </Grid.LayoutTransform>
         <Ellipse Width="500" Height="500" Fill="#FFFFAE00">
             <Ellipse.Effect>
                 <DropShadowEffect BlurRadius="500" ShadowDepth="0" Color="#80FFD800" />
@@ -150,6 +153,9 @@
     </Grid>
 
     <Grid x:Key="NormalCameraTemplate" Width="500" Height="500">
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleX="0.2" ScaleY="0.2" />
+        </Grid.LayoutTransform>
         <Ellipse Width="500" Height="500" Fill="#FF00FFFF">
             <Ellipse.Effect>
                 <DropShadowEffect BlurRadius="300" ShadowDepth="0" Color="#FF00FFFF" />

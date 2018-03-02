@@ -24,7 +24,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Style="{StaticResource DefaultFont}" FontSize="13" Padding="15,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="75">
-            <TextBlock TextWrapping="WrapWithOverflow" Text="1号摄像头大堂" />
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding Title}" />
         </Label>
 
         <Rectangle Grid.Column="1" Width="2" RenderTransformOrigin="0,0.5">
@@ -41,23 +41,12 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-
-        <ContentPresenter Grid.Column="1" Content="{StaticResource FRCameraTemplate}" Margin="0,22,0,13" VerticalAlignment="Top">
+        <!-- FRCameraTemplate -->
+        <ContentPresenter Grid.Column="1" Content="{Binding Icon}" Margin="0,22,0,13" VerticalAlignment="Top">
             <ContentPresenter.LayoutTransform>
-                <ScaleTransform ScaleX="0.06" ScaleY="0.06" />
+                <ScaleTransform ScaleX="0.3" ScaleY="0.3" />
             </ContentPresenter.LayoutTransform>
         </ContentPresenter>
-
-        <!--<WrapPanel Grid.Column="2" Margin="12,10,12,13">
-            <WrapPanel.Resources>
-                <Style TargetType="{x:Type Control}">
-                    <Setter Property="Margin" Value="3,1,3,3" />
-                </Style>
-                <Style TargetType="{x:Type local:EntryUnitBorder}" BasedOn="{StaticResource {x:Type Control}}" />
-            </WrapPanel.Resources>
-
-            <ItemsPresenter />
-        </WrapPanel>-->
 
         <ItemsControl ItemsSource="{Binding CustomContent}" Grid.Column="2" Margin="12,10,12,13">
             <ItemsControl.ItemsPanel>
@@ -72,11 +61,6 @@
                     </WrapPanel>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <!--<ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="123" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>-->
         </ItemsControl>
 
     </Grid>
