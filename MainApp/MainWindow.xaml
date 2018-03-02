@@ -17,7 +17,7 @@
     <libwin:EmbedContainerWindow.Resources>
     </libwin:EmbedContainerWindow.Resources>
 
-    <Grid>
+    <!--<Grid>
 
         <comps:FaceTracingHistory />
 
@@ -42,9 +42,9 @@
                 </tlibborder:MainBorder.Background>
             </tlibborder:MainBorder>
         </libwin:EmbedWindow>
-    </Grid>
+    </Grid>-->
 
-    <!--<Grid>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -74,6 +74,6 @@
             </tlibborder:MainBorder.Background>
         </tlibborder:MainBorder>
 
-    </Grid>-->
+    </Grid>
 
 </libwin:EmbedContainerWindow>

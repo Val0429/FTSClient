@@ -13,4 +13,156 @@
         </Setter>
     </Style>
 
+    <Rectangle x:Key="CameraIcon" Width="500" Height="500" x:Shared="False">
+        <Rectangle.Fill>
+            <DrawingBrush>
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <!-- Basement -->
+                        <GeometryDrawing Brush="Transparent">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="30,0 470,470" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <!-- Basement -->
+
+                        <!-- Body -->
+                        <DrawingGroup>
+                            <DrawingGroup.OpacityMask>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Brush>
+                                                <SolidColorBrush Color="White" />
+                                            </GeometryDrawing.Brush>
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 0,0 L 534,0 L 534,32 L 415,129 L 0,129 Z" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </DrawingGroup.OpacityMask>
+                            <DrawingGroup.Transform>
+                                <RotateTransform CenterX="148" CenterY="16" Angle="27" />
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="White">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry RadiusX="15" RadiusY="15" Rect="148,16 386,113" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                        <!-- Body -->
+
+                        <!-- Base Body -->
+                        <DrawingGroup>
+                            <DrawingGroup.OpacityMask>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <!-- basement -->
+                                            <GeometryDrawing Brush="Transparent">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="148,80 356,90" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <!-- basement -->
+
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Brush>
+                                                    <SolidColorBrush Color="White" />
+                                                </GeometryDrawing.Brush>
+                                                <GeometryDrawing.Geometry>
+                                                    <PathGeometry Figures="M 0,145 L 465,145 L 534,98 L 534,170 L 0,170 Z" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </DrawingGroup.OpacityMask>
+                            <DrawingGroup.Transform>
+                                <RotateTransform CenterX="148" CenterY="16" Angle="27" />
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="White">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry RadiusX="15" RadiusY="15" Rect="148,80 356,90" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                        <!-- Base Body -->
+
+                        <!-- Camera Eye -->
+                        <DrawingGroup>
+                            <DrawingGroup.Transform>
+                                <RotateTransform CenterX="148" CenterY="16" Angle="27" />
+                            </DrawingGroup.Transform>
+                            <GeometryDrawing Brush="White">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry RadiusX="10" RadiusY="10" Rect="518,75 45,65" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                        <!-- Camera Eye -->
+
+                        <!-- Camera Support -->
+                        <GeometryDrawing Brush="White">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry Figures="M 231,221 L 264,237 L 191,342 L 160,323 Z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="White">
+                            <GeometryDrawing.Geometry>
+                                <EllipseGeometry Center="154,360" RadiusX="45" RadiusY="45" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="White">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="58,353 70,25" />
+                                <!--<PathGeometry Figures="M 116,353 L 58,363 L 58,402 L 128,389 Z" />-->
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <!--<GeometryDrawing Brush="#FF343434">
+                                                        <GeometryDrawing.Geometry>
+                                                            <RectangleGeometry Rect="4,291 55,180" RadiusX="25" RadiusY="25" />
+                                                        </GeometryDrawing.Geometry>
+                                                    </GeometryDrawing>-->
+                        <!-- Camera Support -->
+
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Rectangle.Fill>
+    </Rectangle>
+
+    <Grid x:Key="FRCameraTemplate" Width="500" Height="500">
+        <Ellipse Width="500" Height="500" Fill="#FFFFAE00">
+            <Ellipse.Effect>
+                <DropShadowEffect BlurRadius="500" ShadowDepth="0" Color="#80FFD800" />
+            </Ellipse.Effect>
+        </Ellipse>
+        <ContentPresenter Content="{StaticResource CameraIcon}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ContentPresenter.Effect>
+                <DropShadowEffect BlurRadius="100" ShadowDepth="0" Color="LemonChiffon" />
+            </ContentPresenter.Effect>
+            <ContentPresenter.LayoutTransform>
+                <ScaleTransform ScaleX="0.7" ScaleY="0.7" />
+            </ContentPresenter.LayoutTransform>
+        </ContentPresenter>
+    </Grid>
+
+    <Grid x:Key="NormalCameraTemplate" Width="500" Height="500">
+        <Ellipse Width="500" Height="500" Fill="#FF00FFFF">
+            <Ellipse.Effect>
+                <DropShadowEffect BlurRadius="300" ShadowDepth="0" Color="#FF00FFFF" />
+            </Ellipse.Effect>
+        </Ellipse>
+        <ContentPresenter Content="{StaticResource CameraIcon}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ContentPresenter.Effect>
+                <DropShadowEffect BlurRadius="100" ShadowDepth="0" Color="SkyBlue" />
+            </ContentPresenter.Effect>
+            <ContentPresenter.LayoutTransform>
+                <ScaleTransform ScaleX="0.7" ScaleY="0.7" />
+            </ContentPresenter.LayoutTransform>
+        </ContentPresenter>
+    </Grid>
+
 </ResourceDictionary>

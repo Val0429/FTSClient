@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingDetails.EntryUnit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components.FaceTracingDetails"
+             xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
+             mc:Ignorable="d" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="93" />
+            <ColumnDefinition Width="36" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Style="{StaticResource DefaultFont}" FontSize="13" Padding="14,18,14,24" VerticalContentAlignment="Top" HorizontalContentAlignment="Center">
+            <TextBlock TextWrapping="WrapWithOverflow" Text="1号摄像头大堂" />
+        </Label>
+
+        <Rectangle Grid.Column="1" Width="2" RenderTransformOrigin="0,0.5">
+            <Rectangle.RenderTransform>
+                <ScaleTransform ScaleY="2" />
+            </Rectangle.RenderTransform>
+            <Rectangle.Fill>
+                <LinearGradientBrush>
+                    <GradientStop Color="#0000CCCC" Offset="0" />
+                    <GradientStop Color="#FF00CCCC" Offset="0.3" />
+                    <GradientStop Color="#FF00CCCC" Offset="0.5" />
+                    <GradientStop Color="#FF00CCCC" Offset="0.7" />
+                    <GradientStop Color="#0000CCCC" Offset="1" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <ContentPresenter Grid.Column="1" Content="{StaticResource FRCameraTemplate}" Margin="0,20,0,18" VerticalAlignment="Top">
+            <ContentPresenter.LayoutTransform>
+                <ScaleTransform ScaleX="0.06" ScaleY="0.06" />
+            </ContentPresenter.LayoutTransform>
+        </ContentPresenter>
+
+        <WrapPanel Grid.Column="2" Margin="12,10,12,18">
+            <WrapPanel.Resources>
+                <Style TargetType="{x:Type Control}">
+                    <Setter Property="Margin" Value="3,1,3,1" />
+                </Style>
+                <Style TargetType="{x:Type local:EntryUnitBorder}" BasedOn="{StaticResource {x:Type Control}}" />
+            </WrapPanel.Resources>
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
+
+        </WrapPanel>
+
+    </Grid>
+</UserControl>

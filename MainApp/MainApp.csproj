@@ -60,6 +60,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\FaceTracingDetails\EntryUnit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\FaceTracingDetails\EntryUnitBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\FaceTracingDetails\EntryUnitFace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\FaceTracingHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,6 +86,15 @@
     </Compile>
     <Compile Include="Components\FaceTracingDetail.xaml.cs">
       <DependentUpon>FaceTracingDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingDetails\EntryUnit.xaml.cs">
+      <DependentUpon>EntryUnit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingDetails\EntryUnitBorder.xaml.cs">
+      <DependentUpon>EntryUnitBorder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingDetails\EntryUnitFace.xaml.cs">
+      <DependentUpon>EntryUnitFace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\FaceTracingHistory.xaml.cs">
       <DependentUpon>FaceTracingHistory.xaml</DependentUpon>

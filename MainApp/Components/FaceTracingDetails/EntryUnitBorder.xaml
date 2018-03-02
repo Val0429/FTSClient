@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingDetails.EntryUnitBorder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components.FaceTracingDetails"
+             xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="15" />
+        </Grid.RowDefinitions>
+
+        <!--<local:EntryUnitFace Image="{Binding Image}" />-->
+
+        <tlibborder:FaceTracingBorder Image="{Binding Image}">
+            <tlibborder:FaceTracingBorder.LayoutTransform>
+                <ScaleTransform ScaleX="0.32" ScaleY="0.32" />
+            </tlibborder:FaceTracingBorder.LayoutTransform>
+            <tlibborder:FaceTracingBorder.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="35" Color="SkyBlue" />
+            </tlibborder:FaceTracingBorder.Effect>
+        </tlibborder:FaceTracingBorder>
+
+        <Label Style="{StaticResource DefaultFont}" Grid.Row="1" Padding="0" HorizontalContentAlignment="Center" Content="{Binding Title}" FontSize="10" Margin="0,2,0,0" />
+    </Grid>
+</UserControl>
