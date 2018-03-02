@@ -71,9 +71,18 @@
                             ScrollBarMargin="0,-20,0,5">
                             <StackPanel Margin="0,0,0,35">
 
-                                <unit:EntryUnit />
-                                <unit:EntryUnit />
-                                <unit:EntryUnit />
+                                <unit:EntryUnit>
+                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
+                                    <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
+                                </unit:EntryUnit>
+                                <unit:EntryUnit>
+                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                                </unit:EntryUnit>
+                                <unit:EntryUnit>
+                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
+                                </unit:EntryUnit>
 
                             </StackPanel>
                         </scv:CustomScrollViewer>
@@ -103,17 +112,17 @@
                                     <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
                                 </WrapPanel.Resources>
                                 <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl2.png" />
+                                <ftd:EntryUnitFace Image="D:\girl3.png" />
+                                <ftd:EntryUnitFace Image="D:\girl4.png" />
+                                <ftd:EntryUnitFace Image="D:\girl5.png" />
+                                <ftd:EntryUnitFace Image="D:\girl6.png" />
+                                <ftd:EntryUnitFace Image="D:\girl7.png" />
                                 <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl2.png" />
+                                <ftd:EntryUnitFace Image="D:\girl3.png" />
+                                <ftd:EntryUnitFace Image="D:\girl4.png" />
+                                <ftd:EntryUnitFace Image="D:\girl5.png" />
                             </WrapPanel>
                         </scv:CustomScrollViewer>
                     </Grid>
