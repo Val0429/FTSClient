@@ -7,6 +7,7 @@
              xmlns:unit="clr-namespace:Tencent.Components.FaceTracingDetails"
              xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
+             xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
              mc:Ignorable="d"
              d:DesignHeight="480" d:DesignWidth="640">
 
@@ -67,8 +68,9 @@
                             Margin="0,0,5,0"
                             ScrollContentMargin="0,0,0,10"
                             ScrollBarMargin="0,-20,0,5">
-                            <StackPanel>
+                            <StackPanel Margin="0,0,0,35">
 
+                                <unit:EntryUnit />
                                 <unit:EntryUnit />
                                 <unit:EntryUnit />
 
@@ -98,38 +100,26 @@
                         Margin="10,0,0,0"
                         ScrollContentMargin="0,0,0,10"
                         ScrollBarMargin="0,-20,0,5">
-                            <StackPanel>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                                <Label Foreground="White">123</Label>
-                            </StackPanel>
+                            <WrapPanel Margin="0,16,0,0">
+                                <WrapPanel.Resources>
+                                    <Style TargetType="{x:Type Control}">
+                                        <Setter Property="Margin" Value="4,8" />
+                                    </Style>
+                                    <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
+                                </WrapPanel.Resources>
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                                <ftd:EntryUnitFace Image="D:\girl.png" />
+                            </WrapPanel>
                         </scv:CustomScrollViewer>
                     </Grid>
                     <!-- 3rd column -->

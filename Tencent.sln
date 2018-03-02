@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TencentLibrary", "TencentLibrary\TencentLibrary.csproj", "{35AE723F-416A-4076-870B-EE8022010ECC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloorPlanMap", "..\CSharp\FloorPlanProjectV2\FloorPlanMap\FloorPlanMap.csproj", "{9207325A-AAF6-48AB-8F5F-80721A6C6D19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{35AE723F-416A-4076-870B-EE8022010ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35AE723F-416A-4076-870B-EE8022010ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35AE723F-416A-4076-870B-EE8022010ECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9207325A-AAF6-48AB-8F5F-80721A6C6D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9207325A-AAF6-48AB-8F5F-80721A6C6D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9207325A-AAF6-48AB-8F5F-80721A6C6D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9207325A-AAF6-48AB-8F5F-80721A6C6D19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,5 +42,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{868F774C-8887-4C62-8E29-AC3B3A73D6C9} = {2CD2C9E5-DD76-4525-91CC-5B8E5F4454A1}
 		{35AE723F-416A-4076-870B-EE8022010ECC} = {2CD2C9E5-DD76-4525-91CC-5B8E5F4454A1}
+		{9207325A-AAF6-48AB-8F5F-80721A6C6D19} = {2CD2C9E5-DD76-4525-91CC-5B8E5F4454A1}
 	EndGlobalSection
 EndGlobal

@@ -22,13 +22,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Style="{StaticResource DefaultFont}" FontSize="13" Padding="14,18,14,24" VerticalContentAlignment="Top" HorizontalContentAlignment="Center">
+        <Label Style="{StaticResource DefaultFont}" FontSize="13" Padding="15,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="75">
             <TextBlock TextWrapping="WrapWithOverflow" Text="1号摄像头大堂" />
         </Label>
 
         <Rectangle Grid.Column="1" Width="2" RenderTransformOrigin="0,0.5">
             <Rectangle.RenderTransform>
-                <ScaleTransform ScaleY="2" />
+                <ScaleTransform ScaleY="1.5" />
             </Rectangle.RenderTransform>
             <Rectangle.Fill>
                 <LinearGradientBrush>
@@ -41,22 +41,19 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <ContentPresenter Grid.Column="1" Content="{StaticResource FRCameraTemplate}" Margin="0,20,0,18" VerticalAlignment="Top">
+        <ContentPresenter Grid.Column="1" Content="{StaticResource FRCameraTemplate}" Margin="0,22,0,13" VerticalAlignment="Top">
             <ContentPresenter.LayoutTransform>
                 <ScaleTransform ScaleX="0.06" ScaleY="0.06" />
             </ContentPresenter.LayoutTransform>
         </ContentPresenter>
 
-        <WrapPanel Grid.Column="2" Margin="12,10,12,18">
+        <WrapPanel Grid.Column="2" Margin="12,10,12,13">
             <WrapPanel.Resources>
                 <Style TargetType="{x:Type Control}">
-                    <Setter Property="Margin" Value="3,1,3,1" />
+                    <Setter Property="Margin" Value="3,1,3,3" />
                 </Style>
                 <Style TargetType="{x:Type local:EntryUnitBorder}" BasedOn="{StaticResource {x:Type Control}}" />
             </WrapPanel.Resources>
-            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
-            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
-            <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
             <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
             <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />
             <local:EntryUnitBorder Image="D:\girl.png" Title="10:10:10" />

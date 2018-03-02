@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components"
+             xmlns:map="clr-namespace:FloorPlanMap;assembly=FloorPlanMap"
+             xmlns:device="clr-namespace:FloorPlanMap.Components.Objects.Devices;assembly=FloorPlanMap"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid Background="Transparent">
+        <map:FloorPlanMapUnit MapSource="Resources/map.png">
+            <map:FloorPlanMapUnit.Objects>
+                <device:CameraDevice X="200" Y="267" Angle="-75" Size="0.7" />
+                <device:CameraDevice X="785" Y="367" Angle="150" Size="0.7" />
+                <device:CameraDevice X="507" Y="114" Angle="40" Size="0.7" />
+            </map:FloorPlanMapUnit.Objects>
+        </map:FloorPlanMapUnit>
+    </Grid>
+</UserControl>

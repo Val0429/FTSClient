@@ -22,16 +22,7 @@
             <RowDefinition Height="15" />
         </Grid.RowDefinitions>
 
-        <!--<local:EntryUnitFace Image="{Binding Image}" />-->
-
-        <tlibborder:FaceTracingBorder Image="{Binding Image}">
-            <tlibborder:FaceTracingBorder.LayoutTransform>
-                <ScaleTransform ScaleX="0.32" ScaleY="0.32" />
-            </tlibborder:FaceTracingBorder.LayoutTransform>
-            <tlibborder:FaceTracingBorder.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="35" Color="SkyBlue" />
-            </tlibborder:FaceTracingBorder.Effect>
-        </tlibborder:FaceTracingBorder>
+        <local:EntryUnitFace Image="{Binding Path=Image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntryUnitBorder}}}" />
 
         <Label Style="{StaticResource DefaultFont}" Grid.Row="1" Padding="0" HorizontalContentAlignment="Center" Content="{Binding Title}" FontSize="10" Margin="0,2,0,0" />
     </Grid>
