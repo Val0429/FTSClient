@@ -69,22 +69,14 @@
                             Margin="0,0,5,0"
                             ScrollContentMargin="0,0,0,10"
                             ScrollBarMargin="0,-20,0,5">
-                            <StackPanel Margin="0,0,0,35">
 
-                                <unit:EntryUnit Title="1号摄像头大堂">
-                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
-                                    <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
-                                </unit:EntryUnit>
-                                <unit:EntryUnit Title="2号摄像头走廊" Icon="{StaticResource NormalCameraTemplate}">
-                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                                </unit:EntryUnit>
-                                <unit:EntryUnit Title="3号摄像头3705会议室">
-                                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
-                                </unit:EntryUnit>
-
-                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding LeftPanel}" Margin="0,0,0,35">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
                         </scv:CustomScrollViewer>
                     </Grid>
                     <!-- 2nd column -->
@@ -104,26 +96,22 @@
                         Margin="10,0,0,0"
                         ScrollContentMargin="0,0,0,10"
                         ScrollBarMargin="0,-20,0,5">
-                            <WrapPanel Margin="0,16,0,0">
-                                <WrapPanel.Resources>
-                                    <Style TargetType="{x:Type Control}">
-                                        <Setter Property="Margin" Value="4,8" />
-                                    </Style>
-                                    <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
-                                </WrapPanel.Resources>
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl2.png" />
-                                <ftd:EntryUnitFace Image="D:\girl3.png" />
-                                <ftd:EntryUnitFace Image="D:\girl4.png" />
-                                <ftd:EntryUnitFace Image="D:\girl5.png" />
-                                <ftd:EntryUnitFace Image="D:\girl6.png" />
-                                <ftd:EntryUnitFace Image="D:\girl7.png" />
-                                <ftd:EntryUnitFace Image="D:\girl.png" />
-                                <ftd:EntryUnitFace Image="D:\girl2.png" />
-                                <ftd:EntryUnitFace Image="D:\girl3.png" />
-                                <ftd:EntryUnitFace Image="D:\girl4.png" />
-                                <ftd:EntryUnitFace Image="D:\girl5.png" />
-                            </WrapPanel>
+
+                            <ItemsControl ItemsSource="{Binding RightPanel}" Margin="0,16,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel>
+                                            <WrapPanel.Resources>
+                                                <Style TargetType="{x:Type Control}">
+                                                    <Setter Property="Margin" Value="4,8" />
+                                                </Style>
+                                                <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
+                                            </WrapPanel.Resources>
+                                        </WrapPanel>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+
                         </scv:CustomScrollViewer>
                     </Grid>
                     <!-- 3rd column -->

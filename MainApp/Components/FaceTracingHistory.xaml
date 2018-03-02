@@ -7,6 +7,7 @@
              xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
              mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
 
     <DockPanel>
@@ -23,7 +24,23 @@
                                         IsTabStop="False"
                                         ScrollContentMargin="0,0,0,5"
                                         ScrollBarMargin="0,30,0,5">
-                    <WrapPanel Margin="0,5,5,5">
+
+                    <ItemsControl ItemsSource="{Binding Panel}" Margin="0,5,5,5">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel>
+                                    <WrapPanel.Resources>
+                                        <Style TargetType="{x:Type Control}">
+                                            <Setter Property="Margin" Value="5" />
+                                        </Style>
+                                        <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
+                                    </WrapPanel.Resources>
+                                </WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                    
+                    <!--<WrapPanel Margin="0,5,5,5">
                         <WrapPanel.Resources>
                             <Style TargetType="{x:Type Control}">
                                 <Setter Property="Margin" Value="5" />
@@ -51,7 +68,7 @@
                         <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
                         <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
                         <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
-                    </WrapPanel>
+                    </WrapPanel>-->
 
                 </scv:CustomScrollViewer>
             </tlibborder:MainBorder>
