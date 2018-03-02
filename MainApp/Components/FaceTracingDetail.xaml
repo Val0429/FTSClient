@@ -9,6 +9,7 @@
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
              xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
              mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
 
     <UserControl.Resources>
@@ -56,7 +57,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
-                                <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="12:55:12" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">
+                                <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="{Binding EntryTime}" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">
                                     <Label.Effect>
                                         <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="#FF00FFF9" />
                                     </Label.Effect>
@@ -73,12 +74,6 @@
                                 <unit:EntryUnit />
                                 <unit:EntryUnit />
                                 <unit:EntryUnit />
-
-                                <!--<ContentPresenter Content="{StaticResource NormalCameraTemplate}">
-                                    <ContentPresenter.LayoutTransform>
-                                        <ScaleTransform ScaleX="0.2" ScaleY="0.2" />
-                                    </ContentPresenter.LayoutTransform>
-                                </ContentPresenter>-->
 
                             </StackPanel>
                         </scv:CustomScrollViewer>

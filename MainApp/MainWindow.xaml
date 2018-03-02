@@ -58,7 +58,9 @@
 
         <comps:FaceTracingHistory />
 
-        <comps:FaceTracingDetail Grid.Row="0" Grid.Column="1" />
+        <comps:FaceTracingDetail Grid.Row="0" Grid.Column="1"
+                                 EntryTime="12:55:12"
+                                 />
 
         <comps:FaceTracingMap Grid.Row="1" Grid.Column="0">
             <comps:FaceTracingMap.Background>

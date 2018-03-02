@@ -21,5 +21,18 @@ namespace Tencent.Components {
         public FaceTracingDetail() {
             InitializeComponent();
         }
+
+        #region "Dependency Properties"
+
+        public string EntryTime {
+            get { return (string)GetValue(EntryTimeProperty); }
+            set { SetValue(EntryTimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EntryTime.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EntryTimeProperty =
+            DependencyProperty.Register("EntryTime", typeof(string), typeof(FaceTracingDetail), new PropertyMetadata(null));
+
+        #endregion "Dependency Properties"
     }
 }
