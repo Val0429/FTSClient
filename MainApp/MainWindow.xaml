@@ -20,33 +20,95 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <comps:FaceTracingHistory x:Key="Panel1">
+                <comps:FaceTracingHistory.Panel>
+                    <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="10:05:32" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="11:21:02" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="12:45:37" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="12:55:12" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="12:55:30" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:04:05" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
+                    <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
+                </comps:FaceTracingHistory.Panel>
+            </comps:FaceTracingHistory>
+
+            <comps:FaceTracingDetail x:Key="Panel2"
+                                 EntryTime="12:55:12"
+                                 >
+                <comps:FaceTracingDetail.LeftPanel>
+                    <ftd:EntryUnit Title="1号摄像头大堂">
+                        <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                        <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
+                        <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
+                    </ftd:EntryUnit>
+                    <ftd:EntryUnit Title="2号摄像头走廊" Icon="{StaticResource NormalCameraTemplate}">
+                        <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                    </ftd:EntryUnit>
+                    <ftd:EntryUnit Title="3号摄像头3705会议室">
+                        <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                        <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
+                    </ftd:EntryUnit>
+                </comps:FaceTracingDetail.LeftPanel>
+                <comps:FaceTracingDetail.RightPanel>
+                    <ftd:EntryUnitFace Image="D:\girl2.png" />
+                    <ftd:EntryUnitFace Image="D:\girl3.png" />
+                    <ftd:EntryUnitFace Image="D:\girl4.png" />
+                    <ftd:EntryUnitFace Image="D:\girl5.png" />
+                    <ftd:EntryUnitFace Image="D:\girl6.png" />
+                    <ftd:EntryUnitFace Image="D:\girl7.png" />
+                    <ftd:EntryUnitFace Image="D:\girl.png" />
+                    <ftd:EntryUnitFace Image="D:\girl2.png" />
+                    <ftd:EntryUnitFace Image="D:\girl3.png" />
+                    <ftd:EntryUnitFace Image="D:\girl4.png" />
+                    <ftd:EntryUnitFace Image="D:\girl5.png" />
+                </comps:FaceTracingDetail.RightPanel>
+            </comps:FaceTracingDetail>
+
+            <comps:FaceTracingMap x:Key="Panel3">
+                <comps:FaceTracingMap.Background>
+                    <ImageBrush Viewbox="0,0.5 0.5,0.5"
+                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
+                </comps:FaceTracingMap.Background>
+            </comps:FaceTracingMap>
+
+            <Grid x:Key="Panel4">
+                <Grid.Background>
+                    <ImageBrush Viewbox="0.5,0.5 0.5,0.5"
+                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
+                </Grid.Background>
+            </Grid>
+
         </ResourceDictionary>
     </libwin:EmbedContainerWindow.Resources>
 
     <!--<Grid>
 
-        <comps:FaceTracingHistory />
+        <ContentPresenter Content="{StaticResource Panel1}" />
 
         <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0" WidthRatio="0.5" HeightRatio="0.5">
-            <comps:FaceTracingDetail />
+            <ContentPresenter Content="{StaticResource Panel2}" Grid.Row="0" Grid.Column="1" />
         </libwin:EmbedWindow>
 
         <libwin:EmbedWindow LeftRatio="0" TopRatio="0.5" WidthRatio="0.5" HeightRatio="0.5">
-            <tlibborder:MainBorder Padding="15">
-                <tlibborder:MainBorder.Background>
-                    <ImageBrush Viewbox="0,0.5 0.5,0.5"
-                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
-                </tlibborder:MainBorder.Background>
-            </tlibborder:MainBorder>
+            <ContentPresenter Content="{StaticResource Panel3}" Grid.Row="1" Grid.Column="0" />
         </libwin:EmbedWindow>
 
         <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0.5" WidthRatio="0.5" HeightRatio="0.5">
-            <tlibborder:MainBorder Padding="15">
-                <tlibborder:MainBorder.Background>
-                    <ImageBrush Viewbox="0.5,0.5 0.5,0.5"
-                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
-                </tlibborder:MainBorder.Background>
-            </tlibborder:MainBorder>
+            <ContentPresenter Content="{StaticResource Panel4}" Grid.Row="1" Grid.Column="1" />
         </libwin:EmbedWindow>
     </Grid>-->
 
@@ -62,83 +124,13 @@
         </Grid.ColumnDefinitions>
 
 
-        <comps:FaceTracingHistory>
-            <comps:FaceTracingHistory.Panel>
-                <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="10:05:32" />
-                <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="11:21:02" />
-                <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="12:45:37" />
-                <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="12:55:12" />
-                <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="12:55:30" />
-                <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:04:05" />
-                <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
-                <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
-            </comps:FaceTracingHistory.Panel>
-        </comps:FaceTracingHistory>
+        <ContentPresenter Content="{StaticResource Panel1}" />
 
-        <comps:FaceTracingDetail Grid.Row="0" Grid.Column="1"
-                                 EntryTime="12:55:12"
-                                 >
-            <comps:FaceTracingDetail.LeftPanel>
-                <ftd:EntryUnit Title="1号摄像头大堂">
-                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
-                    <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
-                </ftd:EntryUnit>
-                <ftd:EntryUnit Title="2号摄像头走廊" Icon="{StaticResource NormalCameraTemplate}">
-                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                </ftd:EntryUnit>
-                <ftd:EntryUnit Title="3号摄像头3705会议室">
-                    <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                    <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
-                </ftd:EntryUnit>
-            </comps:FaceTracingDetail.LeftPanel>
-            <comps:FaceTracingDetail.RightPanel>
-                <ftd:EntryUnitFace Image="D:\girl2.png" />
-                <ftd:EntryUnitFace Image="D:\girl3.png" />
-                <ftd:EntryUnitFace Image="D:\girl4.png" />
-                <ftd:EntryUnitFace Image="D:\girl5.png" />
-                <ftd:EntryUnitFace Image="D:\girl6.png" />
-                <ftd:EntryUnitFace Image="D:\girl7.png" />
-                <ftd:EntryUnitFace Image="D:\girl.png" />
-                <ftd:EntryUnitFace Image="D:\girl2.png" />
-                <ftd:EntryUnitFace Image="D:\girl3.png" />
-                <ftd:EntryUnitFace Image="D:\girl4.png" />
-                <ftd:EntryUnitFace Image="D:\girl5.png" />
-            </comps:FaceTracingDetail.RightPanel>
-        </comps:FaceTracingDetail>
+        <ContentPresenter Content="{StaticResource Panel2}" Grid.Row="0" Grid.Column="1" />
 
-        <comps:FaceTracingMap Grid.Row="1" Grid.Column="0">
-            <comps:FaceTracingMap.Background>
-                <ImageBrush Viewbox="0,0.5 0.5,0.5"
-                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
-            </comps:FaceTracingMap.Background>
-        </comps:FaceTracingMap>
+        <ContentPresenter Content="{StaticResource Panel3}" Grid.Row="1" Grid.Column="0" />
 
-        <!--<tlibborder:MainBorder Padding="15" Grid.Row="1" Grid.Column="1">
-            <tlibborder:MainBorder.Background>
-                <ImageBrush Viewbox="0.5,0.5 0.5,0.5"
-                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
-            </tlibborder:MainBorder.Background>
-        </tlibborder:MainBorder>-->
-
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.Background>
-                <ImageBrush Viewbox="0.5,0.5 0.5,0.5"
-                    Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
-            </Grid.Background>
-        </Grid>
+        <ContentPresenter Content="{StaticResource Panel4}" Grid.Row="1" Grid.Column="1" />
 
     </Grid>
 

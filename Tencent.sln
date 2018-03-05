@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TencentLibrary", "TencentLibrary\TencentLibrary.csproj", "{35AE723F-416A-4076-870B-EE8022010ECC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloorPlanMap", "..\CSharp\FloorPlanProjectV2\FloorPlanMap\FloorPlanMap.csproj", "{9207325A-AAF6-48AB-8F5F-80721A6C6D19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloorPlanMap", "..\..\FloorPlanProjectV2\FloorPlanMap\FloorPlanMap.csproj", "{9207325A-AAF6-48AB-8F5F-80721A6C6D19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,7 +19,7 @@
             <Viewbox.CacheMode>
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
-            <tlibborder:MainBorder Padding="15" Width="932" Height="475" Title="人脸追踪记录">
+            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="人脸追踪记录">
                 <scv:CustomScrollViewer
                                         IsTabStop="False"
                                         ScrollContentMargin="0,0,0,5"

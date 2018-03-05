@@ -29,9 +29,9 @@
             <Viewbox.CacheMode>
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
-            <tlibborder:MainBorder Padding="15" Width="932" Height="475" Title="人脸追踪详情">
+            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="人脸追踪详情">
 
-                <Grid>
+                <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="190" />
                         <ColumnDefinition Width="20*" />
