@@ -6,9 +6,15 @@
              xmlns:local="clr-namespace:Tencent.Components"
              xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
+             xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
+
+    <UserControl.Resources>
+        <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+    </UserControl.Resources>
 
     <DockPanel>
         <DockPanel.Background>
@@ -23,7 +29,9 @@
                 <scv:CustomScrollViewer
                                         IsTabStop="False"
                                         ScrollContentMargin="0,0,0,5"
-                                        ScrollBarMargin="0,30,0,5">
+                                        ScrollBarMargin="0,30,0,5"
+                                        ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
+                    >
 
                     <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}">
                         <ItemsControl.ItemsPanel>
@@ -40,7 +48,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding createtime}" />
+                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

@@ -22,7 +22,7 @@
 
                         <Grid>
                             <!-- Picture -->
-                            <Border Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="White">
+                            <Border Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="Transparent">
                                 <Border.OpacityMask>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>

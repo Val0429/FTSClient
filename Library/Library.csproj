@@ -52,6 +52,8 @@
     <Compile Include="Converters\DrawingBitmapToWpfConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenHeightConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenWidthConverter.cs" />
+    <Compile Include="Converters\UnixTimestampToDateStringConverter.cs" />
+    <Compile Include="Extensions\ScrollViewerExtension.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />
     <Compile Include="Windows\EmbedWindow.xaml.cs">
       <DependentUpon>EmbedWindow.xaml</DependentUpon>
