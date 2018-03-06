@@ -40,36 +40,6 @@
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
                     
-                    <!--<WrapPanel Margin="0,5,5,5">
-                        <WrapPanel.Resources>
-                            <Style TargetType="{x:Type Control}">
-                                <Setter Property="Margin" Value="5" />
-                            </Style>
-                            <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
-                        </WrapPanel.Resources>
-
-                        <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="10:05:32" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="11:21:02" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="12:45:37" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="12:55:12" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="12:55:30" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:04:05" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl7.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl2.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl3.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl4.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl5.png" Title="13:20:47" />
-                        <tlibborder:FaceTracingBorder Image="D:\girl6.png" Title="13:20:47" />
-                    </WrapPanel>-->
-
                 </scv:CustomScrollViewer>
             </tlibborder:MainBorder>
         </Viewbox>
