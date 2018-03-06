@@ -32,6 +32,14 @@ namespace Tencent.DataSources {
                     Faces.Add(face);
                 }));
             };
+            ws.OnClose += (sender, e) => {
+                ws.Connect();
+                Console.WriteLine("Do reconnect");
+            };
+            ws.OnError += (sender, e) => {
+                ws.Connect();
+                Console.WriteLine("Do reconnect");
+            };
             ws.Connect();
             Console.WriteLine("ws connected");
         }
