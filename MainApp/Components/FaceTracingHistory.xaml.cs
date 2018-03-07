@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tencent.DataSources;
 using TencentLibrary.Borders;
 
 namespace Tencent.Components {
@@ -37,5 +38,19 @@ namespace Tencent.Components {
             DependencyProperty.Register("Panel", typeof(ObservableCollection<FaceTracingBorder>), typeof(FaceTracingHistory), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
         #endregion "Dependency Properties"
+
+        #region "Routed Events"
+        public static readonly RoutedEvent FaceItemSelectedEvent = EventManager.RegisterRoutedEvent("FaceItemSelected", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FaceTracingHistory));
+        public event RoutedEventHandler FaceItemSelected {
+            add { AddHandler(FaceItemSelectedEvent, value); }
+            remove { RemoveHandler(FaceItemSelectedEvent, value); }
+        }
+        #endregion "Routed Events"
+
+        private void FaceTracingBorder_MouseDown(object sender, MouseButtonEventArgs e) {
+            var vm = sender as FaceTracingBorder;
+            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.DataContext);
+            base.RaiseEvent(ea);
+        }
     }
 }

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tencent.DataSources;
 
 namespace Tencent {
     /// <summary>
@@ -22,5 +23,10 @@ namespace Tencent {
         public MainWindow() {
             InitializeComponent();
         }
+
+        private void FaceTracingHistory_FaceItemSelected(object sender, RoutedEventArgs e) {
+            ((FaceListenerSource)this.FindResource("FaceListenerSource")).StartSearch((FaceItem)e.OriginalSource);
+        }
+
     }
 }

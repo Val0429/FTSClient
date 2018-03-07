@@ -8,6 +8,8 @@
              xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
              xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
+             xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
@@ -17,6 +19,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -39,7 +43,16 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- 1st column -->
-                    <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="目标人物" TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <!--<tlibborder:FaceTracingBorder Image="D:\girl.png" Title="目标人物" TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" />-->
+                    <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
+                        <ContentPresenter.ContentTemplate>
+                            <DataTemplate>
+                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="目标人物"
+                                                              TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                                              />
+                            </DataTemplate>
+                        </ContentPresenter.ContentTemplate>
+                    </ContentPresenter>
                     <!-- 1st column -->
 
                     <!-- 2nd column -->
