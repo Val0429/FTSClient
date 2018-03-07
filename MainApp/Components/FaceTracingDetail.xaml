@@ -10,6 +10,7 @@
              xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
              xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+             xmlns:ds="clr-namespace:Tencent.DataSources"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
@@ -110,7 +111,7 @@
                         ScrollContentMargin="0,0,0,10"
                         ScrollBarMargin="0,-20,0,5">
 
-                            <ItemsControl ItemsSource="{Binding RightPanel}" Margin="0,16,0,0">
+                            <!--<ItemsControl ItemsSource="{Binding RightPanel}" Margin="0,16,0,0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel>
@@ -123,6 +124,26 @@
                                         </WrapPanel>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
+                            </ItemsControl>-->
+
+                            <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.PossibleContacts}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel>
+                                            <WrapPanel.Resources>
+                                                <Style TargetType="{x:Type Control}">
+                                                    <Setter Property="Margin" Value="4,8" />
+                                                </Style>
+                                                <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
+                                            </WrapPanel.Resources>
+                                        </WrapPanel>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type ds:SearchItem}">
+                                        <ftd:EntryUnitFace Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
                         </scv:CustomScrollViewer>

@@ -15,7 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <tlibborder:FaceTracingBorder Image="{Binding Image}">
         <tlibborder:FaceTracingBorder.LayoutTransform>
             <ScaleTransform ScaleX="0.32" ScaleY="0.32" />
