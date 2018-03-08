@@ -41,6 +41,13 @@
                                 <!--<Image Width="140" Height="142" Stretch="UniformToFill" hp:ImageAsyncHelper.SourceUri="{TemplateBinding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
                                 <Image Width="140" Height="142" Stretch="UniformToFill" VerticalAlignment="Stretch" Source="{Binding Image, IsAsync=True, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ImageConverter}}"  />
 
+                                <!--<Grid
+                                    DataContext="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ImageConverter}}"
+                                    >
+                                    <Image Width="140" Height="142" Stretch="UniformToFill" VerticalAlignment="Stretch"
+                                       Source="{Binding Path=Result, IsAsync=True}" />
+                                </Grid>-->
+
                                 <!--<Rectangle Width="140" Height="142">
                                     <Rectangle.Fill>
                                         <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Image}" Stretch="UniformToFill" />
