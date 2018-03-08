@@ -105,7 +105,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{868f774c-8887-4c62-8e29-ac3b3a73d6c9}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\facetracing_bk.png" />
   </ItemGroup>

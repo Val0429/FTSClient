@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:hp="clr-namespace:Library.Helpers;assembly=Library"
                     xmlns:local="clr-namespace:TencentLibrary.Borders">
 
     <ResourceDictionary.MergedDictionaries>
@@ -34,10 +35,12 @@
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Border.OpacityMask>
-                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" Source="{TemplateBinding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, IsAsync=True}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" hp:ImageAsyncHelper.SourceUri="{TemplateBinding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
                                 <Rectangle Width="140" Height="142">
                                     <Rectangle.Fill>
                                         <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Image}" Stretch="UniformToFill" />
+                                        <!--<ImageBrush hp:ImageAsyncHelper.SourceUri="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Image}" Stretch="UniformToFill" />-->
                                     </Rectangle.Fill>
                                 </Rectangle>
                             </Border>

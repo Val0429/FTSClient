@@ -45,19 +45,9 @@
                         <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
                     </ftd:EntryUnit>
                 </comps:FaceTracingDetail.LeftPanel>
-                <comps:FaceTracingDetail.RightPanel>
+                <!--<comps:FaceTracingDetail.RightPanel>
                     <ftd:EntryUnitFace Image="D:\girl2.png" />
-                    <ftd:EntryUnitFace Image="D:\girl3.png" />
-                    <ftd:EntryUnitFace Image="D:\girl4.png" />
-                    <ftd:EntryUnitFace Image="D:\girl5.png" />
-                    <ftd:EntryUnitFace Image="D:\girl6.png" />
-                    <ftd:EntryUnitFace Image="D:\girl7.png" />
-                    <ftd:EntryUnitFace Image="D:\girl.png" />
-                    <ftd:EntryUnitFace Image="D:\girl2.png" />
-                    <ftd:EntryUnitFace Image="D:\girl3.png" />
-                    <ftd:EntryUnitFace Image="D:\girl4.png" />
-                    <ftd:EntryUnitFace Image="D:\girl5.png" />
-                </comps:FaceTracingDetail.RightPanel>
+                </comps:FaceTracingDetail.RightPanel>-->
             </comps:FaceTracingDetail>
 
             <comps:FaceTracingMap x:Key="Panel3">
