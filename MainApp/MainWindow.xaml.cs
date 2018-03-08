@@ -25,7 +25,18 @@ namespace Tencent {
         }
 
         private void FaceTracingHistory_FaceItemSelected(object sender, RoutedEventArgs e) {
-            ((FaceListenerSource)this.FindResource("FaceListenerSource")).StartSearch((FaceItem)e.OriginalSource);
+            FaceItem faceitem = null;
+            if (e.OriginalSource.GetType() == typeof(SearchItem)) {
+                var searchitem = (SearchItem)e.OriginalSource;
+                faceitem = new FaceItem() {
+                    createtime = searchitem.createtime,
+                    image = searchitem.image,
+                    sourceid = searchitem.sourceid
+                };
+            } else {
+                faceitem = (FaceItem)e.OriginalSource;
+            }
+            ((FaceListenerSource)this.FindResource("FaceListenerSource")).StartSearch(faceitem);
         }
 
     }

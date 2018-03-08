@@ -52,11 +52,23 @@ namespace Tencent.DataSources {
         public double Y { get; set; }
     }
 
-    public class TraceItem {
+    public class TraceItem : DependencyObject {
         public TraceItem() {
             Faces = new ObservableCollection<SearchItem>();
         }
+
+
         public Camera Camera { get; set; }
+
+        //public Camera Camera {
+        //    get { return (Camera)GetValue(CameraProperty); }
+        //    set { SetValue(CameraProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for Camera.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty CameraProperty =
+        //    DependencyProperty.Register("Camera", typeof(Camera), typeof(TraceItem), new PropertyMetadata(null));
+
         public long starttime { get; set; }
         public long endtime { get; set; }
         public ObservableCollection<SearchItem> Faces { get; private set; }
@@ -101,7 +113,7 @@ namespace Tencent.DataSources {
                 ["Camera02"] = new Camera() { name = "2号摄像头走廊", sourceid = "Camera02", type = 0, X = 0, Y = 0 },
                 ["Camera03"] = new Camera() { name = "3号摄像头3705会议室", sourceid = "Camera03", type = 0, X = 0, Y = 0 },
                 ["Camera04"] = new Camera() { name = "4号摄像头", sourceid = "Camera04", type = 0, X = 0, Y = 0 },
-                ["Camera05"] = new Camera() { name = "5号摄像头", sourceid = "Camera05", type = 0, X = 0, Y = 0 },
+                ["Camera05"] = new Camera() { name = "5号摄像头", sourceid = "Camera05", type = 1, X = 0, Y = 0 },
             };
 
             StartServer();
@@ -166,7 +178,7 @@ namespace Tencent.DataSources {
             ws.ConnectAsync();
         }
 
-        public void StartSearch(FaceItem face) {
+        public void StartSearch(dynamic face) {
             this.FaceDetail.CurrentFace = face;
             this.FaceDetail.EntryTime = 0;
             this.FaceDetail.Traces.Clear();
@@ -182,13 +194,13 @@ namespace Tencent.DataSources {
                         ws.CloseAsync();
                     }
                 } else {
-                    const double rate = 0.7;
+                    const double rate = 0.6;
 
                         this.FaceDetail.Dispatcher.BeginInvoke(
                                 new Action(() => {
                                     if (obj_item.score < rate) {
 
-                                        Console.WriteLine("not match! {0}", obj_item);
+                                        //Console.WriteLine("not match! {0}", obj_item);
                                         /// not match
                                         this.FaceDetail.PossibleContacts.Add(obj_item);
                                     } else {
@@ -196,7 +208,7 @@ namespace Tencent.DataSources {
                                         /// 1) get last traces, if camera match, add into it.
                                         /// 2) if not match, add new trace, then add into it.
 
-                                        Console.WriteLine("match! {0}", obj_item);
+                                        //Console.WriteLine("match! {0}", obj_item);
                                         do {
                                             // 1)
                                             if (this.FaceDetail.Traces.Count > 0) {

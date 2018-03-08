@@ -87,12 +87,56 @@
                             ScrollContentMargin="0,0,0,10"
                             ScrollBarMargin="0,-20,0,5">
 
-                            <ItemsControl ItemsSource="{Binding LeftPanel}" Margin="0,0,0,35">
+                            <!--<ItemsControl ItemsSource="{Binding LeftPanel}" Margin="0,0,0,35">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
+                            </ItemsControl>-->
+
+                            <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}" Margin="0,0,0,35">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!--<ftd:EntryUnit Title="1号摄像头大堂">
+                                            <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
+                                            <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
+                                            <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
+                                        </ftd:EntryUnit>-->
+                                        <ftd:EntryUnit x:Name="EntryUnit"
+                                            Title="{Binding Path=DataContext.Camera.name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            >
+                                            <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType=ContentPresenter}}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ftd:EntryUnitBorder
+                                                            Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                                            Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}"
+                                                            MouseDown="EntryUnitFace_MouseDown"
+                                                            />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ftd:EntryUnit>
+                                        
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Camera.type}" Value="1">
+                                                <Setter TargetName="EntryUnit" Property="Icon" Value="{StaticResource NormalCameraTemplate}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </scv:CustomScrollViewer>
                     </Grid>
@@ -144,7 +188,11 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type ds:SearchItem}">
-                                        <ftd:EntryUnitFace Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}" />
+                                        <ftd:EntryUnitFace
+                                            Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            MouseDown="EntryUnitFace_MouseDown"
+                                            />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

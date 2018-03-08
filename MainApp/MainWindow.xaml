@@ -30,8 +30,9 @@
 
             <comps:FaceTracingDetail x:Key="Panel2"
                                  EntryTime="12:55:12"
+                                 FaceItemSelected="FaceTracingHistory_FaceItemSelected"
                                  >
-                <comps:FaceTracingDetail.LeftPanel>
+                <!--<comps:FaceTracingDetail.LeftPanel>
                     <ftd:EntryUnit Title="1号摄像头大堂">
                         <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                         <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
@@ -44,7 +45,7 @@
                         <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                         <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:51:00" />
                     </ftd:EntryUnit>
-                </comps:FaceTracingDetail.LeftPanel>
+                </comps:FaceTracingDetail.LeftPanel>-->
                 <!--<comps:FaceTracingDetail.RightPanel>
                     <ftd:EntryUnitFace Image="D:\girl2.png" />
                 </comps:FaceTracingDetail.RightPanel>-->

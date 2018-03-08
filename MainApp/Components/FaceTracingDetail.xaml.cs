@@ -61,5 +61,19 @@ namespace Tencent.Components {
                 ));
 
         #endregion "Dependency Properties"
+
+        #region "Routed Events"
+        public static readonly RoutedEvent FaceItemSelectedEvent = EventManager.RegisterRoutedEvent("FaceItemSelected", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FaceTracingDetail));
+        public event RoutedEventHandler FaceItemSelected {
+            add { AddHandler(FaceItemSelectedEvent, value); }
+            remove { RemoveHandler(FaceItemSelectedEvent, value); }
+        }
+        #endregion "Routed Events"
+
+        private void EntryUnitFace_MouseDown(object sender, MouseButtonEventArgs e) {
+            var vm = sender as FrameworkElement;
+            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingDetail.FaceItemSelectedEvent, vm.Tag);
+            base.RaiseEvent(ea);
+        }
     }
 }
