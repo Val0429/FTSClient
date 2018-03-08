@@ -71,7 +71,10 @@
                                 </Grid.RowDefinitions>
 
                                 <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
-                                <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="{Binding EntryTime}" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">
+                                <!--<Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="{Binding EntryTime}" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">-->
+                                <Label Grid.Row="1" Style="{StaticResource DefaultFont}"
+                                       Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.EntryTime, Converter={StaticResource UnixTimestampToDateString}, TargetNullValue=''}"
+                                       Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">
                                     <Label.Effect>
                                         <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="#FF00FFF9" />
                                     </Label.Effect>
