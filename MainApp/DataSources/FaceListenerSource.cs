@@ -44,12 +44,23 @@ namespace Tencent.DataSources {
         public double score { get; set; }
     }
 
-    public class Camera {
+    public class Camera : DependencyObject {
         public string name { get; set; }
         public string sourceid { get; set; }
         public int type { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
+        public double Angle { get; set; }
+
+        public SearchItem Face {
+            get { return (SearchItem)GetValue(FaceProperty); }
+            set { SetValue(FaceProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for Face.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FaceProperty =
+            DependencyProperty.Register("Face", typeof(SearchItem), typeof(Camera), new PropertyMetadata(null));
+
+
     }
 
     public class TraceItem : DependencyObject {
@@ -109,13 +120,12 @@ namespace Tencent.DataSources {
             Faces = new ObservableCollection<FaceItem>();
             FaceDetail = new FaceDetail();
             Cameras = new Dictionary<string, Camera>() {
-                ["Camera01"] = new Camera() { name = "1号摄像头大堂", sourceid = "Camera01", type = 0, X = 0, Y = 0 },
-                ["Camera02"] = new Camera() { name = "2号摄像头走廊", sourceid = "Camera02", type = 0, X = 0, Y = 0 },
-                ["Camera03"] = new Camera() { name = "3号摄像头3705会议室", sourceid = "Camera03", type = 0, X = 0, Y = 0 },
-                ["Camera04"] = new Camera() { name = "4号摄像头", sourceid = "Camera04", type = 0, X = 0, Y = 0 },
-                ["Camera05"] = new Camera() { name = "5号摄像头", sourceid = "Camera05", type = 1, X = 0, Y = 0 },
+                ["Camera01"] = new Camera() { name = "1号摄像头很多別間公司的人的電梯", sourceid = "Camera01", type = 0, X = 200, Y = 267, Angle = -75 },
+                ["Camera02"] = new Camera() { name = "2号摄像头有沙發的玄關", sourceid = "Camera02", type = 0, X = 785, Y = 367, Angle = 150 },
+                ["Camera03"] = new Camera() { name = "3号摄像头很多電腦的機架", sourceid = "Camera03", type = 1, X = 507, Y = 114, Angle = 40 },
+                ["Camera04"] = new Camera() { name = "4号摄像头", sourceid = "Camera04", type = 0, X = 203, Y = 80, Angle = -30 },
+                ["Camera05"] = new Camera() { name = "5号摄像头Jasmine的座位前面", sourceid = "Camera05", type = 1, X = 767, Y = 78, Angle = 50 },
             };
-
             StartServer();
         }
 
@@ -184,6 +194,10 @@ namespace Tencent.DataSources {
             this.FaceDetail.Traces.Clear();
             this.FaceDetail.PossibleContacts.Clear();
 
+            foreach (var value in Cameras.Values) {
+                ((Camera)value).Face = null;
+            }
+
             var ws = new WebSocket( string.Format("{0}/search", Host) );
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
@@ -194,7 +208,7 @@ namespace Tencent.DataSources {
                         ws.CloseAsync();
                     }
                 } else {
-                    const double rate = 0.6;
+                    const double rate = 0.7;
 
                         this.FaceDetail.Dispatcher.BeginInvoke(
                                 new Action(() => {
@@ -232,7 +246,10 @@ namespace Tencent.DataSources {
                                             traceitem.starttime = traceitem.endtime = obj_item.createtime;
                                             traceitem.Faces.Add(obj_item);
                                             this.FaceDetail.Traces.Add(traceitem);
-                                            this.FaceDetail.EntryTime = obj_item.createtime;
+                                            this.FaceDetail.EntryTime = Math.Min(
+                                                this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+                                                    obj_item.createtime);
+                                            camera.Face = obj_item;
 
                                         } while (false);
                                     }

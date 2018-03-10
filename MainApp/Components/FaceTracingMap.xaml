@@ -6,16 +6,29 @@
              xmlns:local="clr-namespace:Tencent.Components"
              xmlns:map="clr-namespace:FloorPlanMap;assembly=FloorPlanMap"
              xmlns:device="clr-namespace:FloorPlanMap.Components.Objects.Devices;assembly=FloorPlanMap"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+                <ResourceDictionary Source="/Themes/FRCameraModel.xaml" />
+                <ResourceDictionary Source="/Themes/NormalCameraModel.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
-        <map:FloorPlanMapUnit MapSource="Resources/map.png" Margin="10,0" ClipToBounds="True">
-            <map:FloorPlanMapUnit.Objects>
+        <map:FloorPlanMapUnit x:Name="MainMap" MapSource="Resources/map.png" Margin="10,0" ClipToBounds="True">
+            <!--<map:FloorPlanMapUnit.Objects>
                 <device:CameraDevice X="200" Y="267" Angle="-75" Size="0.7" />
                 <device:CameraDevice X="785" Y="367" Angle="150" Size="0.7" />
                 <device:CameraDevice X="507" Y="114" Angle="40" Size="0.7" />
-            </map:FloorPlanMapUnit.Objects>
+            </map:FloorPlanMapUnit.Objects>-->
         </map:FloorPlanMapUnit>
     </Grid>
 </UserControl>

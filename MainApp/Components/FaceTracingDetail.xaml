@@ -176,23 +176,27 @@
                             <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.PossibleContacts}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <WrapPanel>
-                                            <WrapPanel.Resources>
+                                        <StackPanel>
+                                            <StackPanel.Resources>
                                                 <Style TargetType="{x:Type Control}">
                                                     <Setter Property="Margin" Value="4,8" />
                                                 </Style>
                                                 <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
-                                            </WrapPanel.Resources>
-                                        </WrapPanel>
+                                            </StackPanel.Resources>
+                                        </StackPanel>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type ds:SearchItem}">
                                         <ftd:EntryUnitFace
                                             Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            Image="{Binding Path=DataContext.image, IsAsync=True, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                             MouseDown="EntryUnitFace_MouseDown"
-                                            />
+                                            >
+                                            <ftd:EntryUnitFace.LayoutTransform>
+                                                <ScaleTransform ScaleX="3" ScaleY="3" />
+                                            </ftd:EntryUnitFace.LayoutTransform>
+                                        </ftd:EntryUnitFace>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

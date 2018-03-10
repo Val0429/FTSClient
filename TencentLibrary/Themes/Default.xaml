@@ -133,7 +133,7 @@
         </Rectangle.Fill>
     </Rectangle>
 
-    <Grid x:Key="FRCameraTemplate" Width="500" Height="500">
+    <Grid x:Key="FRCameraTemplate" Width="500" Height="500" x:Shared="False">
         <Grid.LayoutTransform>
             <ScaleTransform ScaleX="0.2" ScaleY="0.2" />
         </Grid.LayoutTransform>
@@ -152,7 +152,7 @@
         </ContentPresenter>
     </Grid>
 
-    <Grid x:Key="NormalCameraTemplate" Width="500" Height="500">
+    <Grid x:Key="NormalCameraTemplate" Width="500" Height="500" x:Shared="False">
         <Grid.LayoutTransform>
             <ScaleTransform ScaleX="0.2" ScaleY="0.2" />
         </Grid.LayoutTransform>
@@ -171,4 +171,8 @@
         </ContentPresenter>
     </Grid>
 
+    
+    
+    
+    
 </ResourceDictionary>
