@@ -125,12 +125,6 @@
       <DependentUpon>FaceTracingVideoMonitor.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataSources\FaceListenerSource.cs" />
-    <Compile Include="FormControls\VideoCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FormControls\VideoCtrl.Designer.cs">
-      <DependentUpon>VideoCtrl.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -202,11 +196,6 @@
     <Content Include="Resources\websocket-sharp.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="FormControls\VideoCtrl.resx">
-      <DependentUpon>VideoCtrl.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxNvrViewerLib">
