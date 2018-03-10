@@ -153,55 +153,37 @@
                             <Label Style="{StaticResource DefaultFont}" Content="可能接触人群" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
                         </tlibborder:SubBorder>
 
-                        <scv:CustomScrollViewer Grid.Row="1"
-                        Margin="10,0,0,0"
-                        ScrollContentMargin="0,0,0,10"
-                        ScrollBarMargin="0,-20,0,5">
-
-                            <!--<ItemsControl ItemsSource="{Binding RightPanel}" Margin="0,16,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel>
-                                            <WrapPanel.Resources>
-                                                <Style TargetType="{x:Type Control}">
-                                                    <Setter Property="Margin" Value="4,8" />
-                                                </Style>
-                                                <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
-                                            </WrapPanel.Resources>
-                                        </WrapPanel>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>-->
-
-                            <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.PossibleContacts}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel>
-                                            <StackPanel.Resources>
-                                                <Style TargetType="{x:Type Control}">
-                                                    <Setter Property="Margin" Value="4,8" />
-                                                </Style>
-                                                <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
-                                            </StackPanel.Resources>
-                                        </StackPanel>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type ds:SearchItem}">
-                                        <ftd:EntryUnitFace
+                        <scv:CustomListView Grid.Row="1"
+                                            IsTabStop="False"
+                                            Margin="10,0,0,0"
+                                            ScrollContentMargin="0,0,0,10"
+                                            ScrollBarMargin="0,-20,0,5"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                            ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.PossibleContacts}"
+                                            >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <WrapPanel.Resources>
+                                            <Style TargetType="{x:Type Control}">
+                                                <Setter Property="Margin" Value="4,8" />
+                                            </Style>
+                                            <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
+                                        </WrapPanel.Resources>
+                                    </WrapPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="{x:Type ds:SearchItem}">
+                                    <ftd:EntryUnitFace
                                             Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                             Image="{Binding Path=DataContext.image, IsAsync=True, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                             MouseDown="EntryUnitFace_MouseDown"
-                                            >
-                                            <ftd:EntryUnitFace.LayoutTransform>
-                                                <ScaleTransform ScaleX="3" ScaleY="3" />
-                                            </ftd:EntryUnitFace.LayoutTransform>
-                                        </ftd:EntryUnitFace>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                        </scv:CustomScrollViewer>
+                                            />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </scv:CustomListView>
+                        
                     </Grid>
                     <!-- 3rd column -->
 

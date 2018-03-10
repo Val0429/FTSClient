@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hp="clr-namespace:Library.Helpers;assembly=Library"
                     xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
-                    xmlns:local="clr-namespace:TencentLibrary.Borders">
+                    xmlns:local="clr-namespace:TencentLibrary.Borders"
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
@@ -12,8 +13,8 @@
     <cvt:ImageConverter x:Key="ImageConverter" />
 
     <Style TargetType="{x:Type local:FaceTracingBorder}">
-        <Setter Property="MinWidth" Value="158" />
-        <Setter Property="MinHeight" Value="172" />
+        <!--<Setter Property="MinWidth" Value="158" />
+        <Setter Property="MinHeight" Value="172" />-->
         <Setter Property="Width" Value="158" />
         <Setter Property="Height" Value="172" />
         <Setter Property="Template">

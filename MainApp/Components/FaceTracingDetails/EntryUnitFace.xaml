@@ -13,16 +13,68 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type tlibborder:FaceTracingBorder}">
+                <Setter Property="Width" Value="46.6" />
+                <Setter Property="Height" Value="47.3" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type tlibborder:FaceTracingBorder}">
+                            <Grid>
+                                <tlibborder:SubBorder>
+                                    <tlibborder:SubBorder.LayoutTransform>
+                                        <ScaleTransform ScaleX="0.33" ScaleY="0.33" />
+                                    </tlibborder:SubBorder.LayoutTransform>
+                                </tlibborder:SubBorder>
+
+                                <Grid>
+                                    <!-- Picture -->
+                                    <Border Width="46.6" Height="47.3" VerticalAlignment="Top" Margin="0,0,0,0" Background="Transparent">
+                                        <Border.OpacityMask>
+                                            <DrawingBrush>
+                                                <DrawingBrush.Drawing>
+                                                    <DrawingGroup>
+                                                        <!-- Basement -->
+                                                        <GeometryDrawing Brush="Transparent">
+                                                            <GeometryDrawing.Geometry>
+                                                                <RectangleGeometry Rect="-3,-3 52.6,55.3" />
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                        <!-- Basement -->
+
+                                                        <GeometryDrawing Brush="Black">
+                                                            <GeometryDrawing.Geometry>
+                                                                <PathGeometry Figures="M 0,0 L 43.3,0 L 46.6,3.3 L 46.6,47.3 L 3.3,47.3 L 0,44 Z" />
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingGroup>
+                                                </DrawingBrush.Drawing>
+                                            </DrawingBrush>
+                                        </Border.OpacityMask>
+                                        <Grid Width="46.6" Height="47.3">
+                                            <Image Stretch="UniformToFill" VerticalAlignment="Stretch" Source="{Binding Image, IsAsync=True, RelativeSource={RelativeSource TemplatedParent}}"  />
+                                        </Grid>
+                                    </Border>
+                                    <!-- Picture -->
+
+                                    <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" HorizontalContentAlignment="{TemplateBinding TitleAlignment}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="23.4" Height="6" VerticalContentAlignment="Center" FontSize="5" />
+                                </Grid>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <tlibborder:FaceTracingBorder Image="{Binding Image}">
-        <tlibborder:FaceTracingBorder.LayoutTransform>
+        <!--<tlibborder:FaceTracingBorder.LayoutTransform>
             <ScaleTransform ScaleX="0.32" ScaleY="0.32" />
-        </tlibborder:FaceTracingBorder.LayoutTransform>
-        <tlibborder:FaceTracingBorder.Effect>
+        </tlibborder:FaceTracingBorder.LayoutTransform>-->
+        <!--<tlibborder:FaceTracingBorder.Effect>
             <DropShadowEffect ShadowDepth="0" BlurRadius="35" Color="SkyBlue" />
-        </tlibborder:FaceTracingBorder.Effect>
+        </tlibborder:FaceTracingBorder.Effect>-->
     </tlibborder:FaceTracingBorder>
+
 
 </UserControl>
