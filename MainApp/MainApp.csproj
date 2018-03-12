@@ -124,6 +124,7 @@
     <Compile Include="Components\FaceTracingVideoMonitor.xaml.cs">
       <DependentUpon>FaceTracingVideoMonitor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configurations\CameraInfoConfiguration.cs" />
     <Compile Include="DataSources\FaceListenerSource.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

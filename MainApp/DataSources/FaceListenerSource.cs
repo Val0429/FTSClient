@@ -10,6 +10,8 @@ using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
+using System.Xml.Serialization;
+using Tencent.Configurations;
 using WebSocketSharp;
 
 namespace Tencent.DataSources {
@@ -45,11 +47,17 @@ namespace Tencent.DataSources {
     }
 
     public class Camera : DependencyObject {
+        [XmlAttribute("name")]
         public string name { get; set; }
+        [XmlAttribute("sourceid")]
         public string sourceid { get; set; }
+        [XmlAttribute("type")]
         public int type { get; set; }
+        [XmlAttribute("X")]
         public double X { get; set; }
+        [XmlAttribute("Y")]
         public double Y { get; set; }
+        [XmlAttribute("Angle")]
         public double Angle { get; set; }
 
         public SearchItem Face {
@@ -119,13 +127,12 @@ namespace Tencent.DataSources {
         public FaceListenerSource() {
             Faces = new ObservableCollection<FaceItem>();
             FaceDetail = new FaceDetail();
-            Cameras = new Dictionary<string, Camera>() {
-                ["Camera01"] = new Camera() { name = "1号摄像头很多別間公司的人的電梯", sourceid = "Camera01", type = 0, X = 200, Y = 267, Angle = -75 },
-                ["Camera02"] = new Camera() { name = "2号摄像头有沙發的玄關", sourceid = "Camera02", type = 0, X = 785, Y = 367, Angle = 150 },
-                ["Camera03"] = new Camera() { name = "3号摄像头很多電腦的機架", sourceid = "Camera03", type = 1, X = 507, Y = 114, Angle = 40 },
-                ["Camera04"] = new Camera() { name = "4号摄像头", sourceid = "Camera04", type = 0, X = 203, Y = 80, Angle = -30 },
-                ["Camera05"] = new Camera() { name = "5号摄像头Jasmine的座位前面", sourceid = "Camera05", type = 1, X = 767, Y = 78, Angle = 50 },
-            };
+            Cameras = new Dictionary<string, Camera>();
+
+            List<Camera> config = (List<Camera>)ConfigurationManager.GetSection("CameraInfo");
+            foreach (var camera in config)
+                Cameras[camera.sourceid] = camera;
+
             StartServer();
         }
 
@@ -238,7 +245,8 @@ namespace Tencent.DataSources {
 
                                             // 2)
                                             // find camera
-                                            var camera = Cameras[obj_item.sourceid];
+                                            Camera camera = null;
+                                            Cameras.TryGetValue(obj_item.sourceid, out camera);
                                             if (camera == null) break;
                                             /// create trace
                                             var traceitem = new TraceItem();

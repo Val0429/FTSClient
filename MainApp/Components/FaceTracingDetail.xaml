@@ -34,7 +34,7 @@
             <Viewbox.CacheMode>
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
-            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="人脸追踪详情">
+            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Detail">
 
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
                     <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
                         <ContentPresenter.ContentTemplate>
                             <DataTemplate>
-                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="目标人物"
+                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="Target"
                                                               TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"
                                                               />
                             </DataTemplate>
@@ -70,7 +70,7 @@
                                     <RowDefinition Height="10*" />
                                 </Grid.RowDefinitions>
 
-                                <Label Style="{StaticResource DefaultFont}" Content="今日入场时间" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
+                                <Label Style="{StaticResource DefaultFont}" Content="Check-In Time" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
                                 <!--<Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="{Binding EntryTime}" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">-->
                                 <Label Grid.Row="1" Style="{StaticResource DefaultFont}"
                                        Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.EntryTime, Converter={StaticResource UnixTimestampToDateString}, TargetNullValue=''}"
@@ -82,18 +82,54 @@
                             </Grid>
                         </tlibborder:SubBorder>
 
-                        <scv:CustomScrollViewer Grid.Row="1"
+                        <scv:CustomListView Grid.Row="1"
+                                            Margin="0,0,5,0"
+                                            ScrollContentMargin="0,0,0,10"
+                                            ScrollBarMargin="0,-20,0,5"
+                                            ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}"
+                                            >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Margin="0,0,0,35" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ftd:EntryUnit x:Name="EntryUnit"
+                                            Title="{Binding Path=DataContext.Camera.name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            >
+                                        <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType=ContentPresenter}}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ftd:EntryUnitBorder
+                                                            Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                                            Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}"
+                                                            MouseDown="EntryUnitFace_MouseDown"
+                                                            />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ftd:EntryUnit>
+
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Camera.type}" Value="1">
+                                            <Setter TargetName="EntryUnit" Property="Icon" Value="{StaticResource NormalCameraTemplate}" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </scv:CustomListView>
+                        
+                        <!--<scv:CustomScrollViewer Grid.Row="1"
                             Margin="0,0,5,0"
                             ScrollContentMargin="0,0,0,10"
                             ScrollBarMargin="0,-20,0,5">
-
-                            <!--<ItemsControl ItemsSource="{Binding LeftPanel}" Margin="0,0,0,35">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>-->
 
                             <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}" Margin="0,0,0,35">
                                 <ItemsControl.ItemsPanel>
@@ -103,11 +139,11 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <!--<ftd:EntryUnit Title="1号摄像头大堂">
+                                        --><!--<ftd:EntryUnit Title="1号摄像头大堂">
                                             <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
                                             <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
                                             <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
-                                        </ftd:EntryUnit>-->
+                                        </ftd:EntryUnit>--><!--
                                         <ftd:EntryUnit x:Name="EntryUnit"
                                             Title="{Binding Path=DataContext.Camera.name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                             >
@@ -138,7 +174,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                        </scv:CustomScrollViewer>
+                        </scv:CustomScrollViewer>-->
                     </Grid>
                     <!-- 2nd column -->
 
@@ -150,7 +186,7 @@
                         </Grid.RowDefinitions>
 
                         <tlibborder:SubBorder Width="135" Height="67" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Label Style="{StaticResource DefaultFont}" Content="可能接触人群" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
+                            <Label Style="{StaticResource DefaultFont}" Content="Possible Comp" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
                         </tlibborder:SubBorder>
 
                         <scv:CustomListView Grid.Row="1"

@@ -88,7 +88,8 @@ namespace Tencent.Components {
                     tmp.Add(string.Format("{0},{1}", trace.starttime / 1000, cameraid));
                 }
                 if (starttime == null) return;
-                this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime;
+                //this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime;
+                this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + 30*1000;
                 uri += string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
 
                 /// Clean Connect Event
