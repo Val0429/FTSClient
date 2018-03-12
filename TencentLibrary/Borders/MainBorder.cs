@@ -20,6 +20,11 @@ namespace TencentLibrary.Borders {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainBorder), new FrameworkPropertyMetadata(typeof(MainBorder)));
         }
 
+        public override void OnApplyTemplate() {
+            UIElement element = this.Template.FindName("LBIcon", this) as UIElement;
+            element.MouseDown += Instance_LBIconClicked;
+        }
+
         #region "Dependency Properties"
         public string Title {
             get { return (string)GetValue(TitleProperty); }
@@ -29,5 +34,19 @@ namespace TencentLibrary.Borders {
             DependencyProperty.Register("Title", typeof(string), typeof(MainBorder), new PropertyMetadata(""));
 
         #endregion "Dependency Properties"
+
+        #region "Routed Events"
+        public static readonly RoutedEvent LBIconClickedEvent = EventManager.RegisterRoutedEvent("LBIconClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainBorder));
+        public event RoutedEventHandler LBIconClicked {
+            add { AddHandler(LBIconClickedEvent, value); }
+            remove { RemoveHandler(LBIconClickedEvent, value); }
+        }
+        #endregion "Routed Events"
+
+        private void Instance_LBIconClicked(object sender, MouseButtonEventArgs e) {
+            var vm = sender as FrameworkElement;
+            RoutedEventArgs ea = new RoutedEventArgs(MainBorder.LBIconClickedEvent, null);
+            base.RaiseEvent(ea);
+        }
     }
 }

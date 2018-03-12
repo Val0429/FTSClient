@@ -37,6 +37,14 @@ namespace Tencent.Components {
         public static readonly DependencyProperty PanelProperty =
             DependencyProperty.Register("Panel", typeof(ObservableCollection<FaceTracingBorder>), typeof(FaceTracingHistory), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+        public int IconType {
+            get { return (int)GetValue(IconTypeProperty); }
+            set { SetValue(IconTypeProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for IconType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconTypeProperty =
+            DependencyProperty.Register("IconType", typeof(int), typeof(FaceTracingHistory), new PropertyMetadata(0));
+
         #endregion "Dependency Properties"
 
         #region "Routed Events"
@@ -51,6 +59,11 @@ namespace Tencent.Components {
             var vm = sender as FaceTracingBorder;
             RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.DataContext);
             base.RaiseEvent(ea);
+        }
+
+        private void MainBorder_LBIconClicked(object sender, RoutedEventArgs e) {
+            if (IconType == 0) IconType = 1;
+            else IconType = 0;
         }
     }
 }
