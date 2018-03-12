@@ -48,6 +48,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Borders\MapContentBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Borders\ThirdBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Default.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,7 +92,9 @@
   <ItemGroup>
     <Compile Include="Borders\FaceTracingBorder.cs" />
     <Compile Include="Borders\MainBorder.cs" />
+    <Compile Include="Borders\MapContentBorder.cs" />
     <Compile Include="Borders\SubBorder.cs" />
+    <Compile Include="Borders\ThirdBorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

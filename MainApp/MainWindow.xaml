@@ -75,7 +75,7 @@
         </ResourceDictionary>
     </libwin:EmbedContainerWindow.Resources>
 
-    <!--<Grid>
+    <Grid>
 
         <ContentPresenter Content="{StaticResource Panel1}" />
 
@@ -90,9 +90,9 @@
         <libwin:EmbedWindow LeftRatio="0.5" TopRatio="0.5" WidthRatio="0.5" HeightRatio="0.5">
             <ContentPresenter Content="{StaticResource Panel4}" Grid.Row="1" Grid.Column="1" />
         </libwin:EmbedWindow>
-    </Grid>-->
+    </Grid>
 
-    <Grid>
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -112,6 +112,6 @@
 
         <ContentPresenter Content="{StaticResource Panel4}" Grid.Row="1" Grid.Column="1" />
 
-    </Grid>
+    </Grid>-->
 
 </libwin:EmbedContainerWindow>

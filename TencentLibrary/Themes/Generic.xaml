@@ -7,6 +7,8 @@
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/MainBorder.xaml" />
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/SubBorder.xaml" />
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/FaceTracingBorder.xaml" />
+        <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/ThirdBorder.xaml" />
+        <ResourceDictionary Source="/TencentLibrary;component/Themes/Borders/MapContentBorder.xaml" />
         <ResourceDictionary Source="/TencentLibrary;component/Themes/ScrollViewers/CustomScrollViewer.xaml" />
         <ResourceDictionary Source="/TencentLibrary;component/Themes/ScrollViewers/CustomListView.xaml" />
     </ResourceDictionary.MergedDictionaries>
