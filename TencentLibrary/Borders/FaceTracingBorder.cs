@@ -47,6 +47,14 @@ namespace TencentLibrary.Borders {
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(FaceTracingBorder), new PropertyMetadata(null));
 
+        public string RealName {
+            get { return (string)GetValue(RealNameProperty); }
+            set { SetValue(RealNameProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RealName.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RealNameProperty =
+            DependencyProperty.Register("RealName", typeof(string), typeof(FaceTracingBorder), new PropertyMetadata(null));
 
         public HorizontalAlignment TitleAlignment {
             get { return (HorizontalAlignment)GetValue(TitleAlignmentProperty); }

@@ -10,7 +10,8 @@
         <Style.Resources>
             <Style TargetType="ListViewItem">
                 <Style.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent" />
                 </Style.Resources>
                 <Setter Property="IsTabStop" Value="False" />
             </Style>

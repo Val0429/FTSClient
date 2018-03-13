@@ -186,7 +186,7 @@
                         </Grid.RowDefinitions>
 
                         <tlibborder:SubBorder Width="135" Height="67" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Label Style="{StaticResource DefaultFont}" Content="Possible Comp" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
+                            <Label Style="{StaticResource DefaultFont}" Content="Associated Faces" Padding="0" FontSize="15" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
                         </tlibborder:SubBorder>
 
                         <scv:CustomListView Grid.Row="1"

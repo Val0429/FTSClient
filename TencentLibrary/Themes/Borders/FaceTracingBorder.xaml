@@ -10,6 +10,7 @@
     </ResourceDictionary.MergedDictionaries>
     
     <BitmapImage x:Key="BackgroundImage" UriSource="/TencentLibrary;component/Resources/facetracing_bk.png" />
+    <cvt:NullVisibilityConverter x:Key="NullVisibility" />
     <cvt:ImageConverter x:Key="ImageConverter" />
 
     <Style TargetType="{x:Type local:FaceTracingBorder}">
@@ -61,6 +62,23 @@
                             </Border>
                             <!-- Picture -->
 
+                            <!-- Name -->
+                            <Label Style="{StaticResource DefaultFont}" FontSize="18" Height="32" VerticalAlignment="Top" Margin="0,8,0,0"
+                                   Visibility="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}"
+                                   >
+                                <Label.Background>
+                                    <LinearGradientBrush>
+                                        <GradientBrush.GradientStops>
+                                            <GradientStopCollection>
+                                                <GradientStop Color="#99330088" Offset="0" />
+                                                <GradientStop Color="#00330088" Offset="1" />
+                                            </GradientStopCollection>
+                                        </GradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Label.Background>
+                                <TextBlock Padding="5,0,0,0" Text="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Label>
+                            
                             <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" HorizontalContentAlignment="{TemplateBinding TitleAlignment}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="78" Height="20" VerticalContentAlignment="Center" FontSize="15" />
                         </Grid>
 

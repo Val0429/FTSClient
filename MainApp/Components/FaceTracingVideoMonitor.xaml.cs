@@ -80,13 +80,13 @@ namespace Tencent.Components {
                 List<string> tmp = new List<string>();
                 foreach (var trace in source.FaceDetail.Traces) {
                     var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
-                    switch (cameraid) {
-                        case 1: cameraid = 6; break;
-                        case 2: cameraid = 7; break;
-                        case 3: cameraid = 8; break;
-                        case 5: cameraid = 10; break;
-                        default: cameraid = 9; break;
-                    }
+                    //switch (cameraid) {
+                    //    case 1: cameraid = 6; break;
+                    //    case 2: cameraid = 7; break;
+                    //    case 3: cameraid = 8; break;
+                    //    case 5: cameraid = 10; break;
+                    //    default: cameraid = 9; break;
+                    //}
 
                     if (first) {
                         uri += cameraid;

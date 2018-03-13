@@ -17,6 +17,7 @@ using WebSocketSharp;
 namespace Tencent.DataSources {
     public class FaceItem {
         public string sourceid { get; set; }
+        public string name { get; set; }
         public string image { get; set; }
         public double facewidth { get; set; }
         public double faceheight { get; set; }
@@ -195,17 +196,24 @@ namespace Tencent.DataSources {
             ws.ConnectAsync();
         }
 
+        WebSocket ws = null;
         public void StartSearch(dynamic face) {
             this.FaceDetail.CurrentFace = face;
             this.FaceDetail.EntryTime = 0;
             this.FaceDetail.Traces.Clear();
             this.FaceDetail.PossibleContacts.Clear();
 
+            List<SearchItem> matches = new List<SearchItem>();
+            List<SearchItem> notmatches = new List<SearchItem>();
+
+            long comp_duration = long.Parse(ConfigurationManager.AppSettings["possible_companion_duration_seconds"]) * 1000;
+
             foreach (var value in Cameras.Values) {
                 ((Camera)value).Face = null;
             }
 
-            var ws = new WebSocket( string.Format("{0}/search", Host) );
+            if (ws != null) ws.Close();
+            ws = new WebSocket( string.Format("{0}/search", Host) );
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
@@ -220,16 +228,33 @@ namespace Tencent.DataSources {
                         this.FaceDetail.Dispatcher.BeginInvoke(
                                 new Action(() => {
                                     if (obj_item.score < rate) {
-
-                                        //Console.WriteLine("not match! {0}", obj_item);
                                         /// not match
-                                        this.FaceDetail.PossibleContacts.Add(obj_item);
+                                            ///this.FaceDetail.PossibleContacts.Add(obj_item);
+                                        /// check for matches to add
+                                        if (matches.Count > 0) {
+                                            SearchItem item = matches.Last();
+                                            if (Math.Abs(item.createtime - obj_item.createtime) <= comp_duration) {
+                                                this.FaceDetail.PossibleContacts.Add(obj_item);
+                                            } else {
+                                                notmatches.Add(obj_item);
+                                            }
+                                        } else {
+                                            notmatches.Add(obj_item);
+                                        }
+
                                     } else {
                                         /// matches
                                         /// 1) get last traces, if camera match, add into it.
                                         /// 2) if not match, add new trace, then add into it.
+                                        matches.Add(obj_item);
+                                        /// check for notmatches to add
+                                        foreach (var obj in notmatches) {
+                                            if (Math.Abs(obj.createtime - obj_item.createtime) <= comp_duration) {
+                                                this.FaceDetail.PossibleContacts.Add(obj_item);
+                                            }
+                                        }
+                                        notmatches.Clear();
 
-                                        //Console.WriteLine("match! {0}", obj_item);
                                         do {
                                             // 1)
                                             if (this.FaceDetail.Traces.Count > 0) {
@@ -268,9 +293,12 @@ namespace Tencent.DataSources {
             };
             ws.OnOpen += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
+                long duration = long.Parse(ConfigurationManager.AppSettings["search_duration_seconds"]) * 1000;
                 var param = new SearchParam() {
-                    starttime = face.createtime - 1000 * 60 * 5,
-                    endtime = face.createtime + 1000 * 60 * 5,
+                    //starttime = face.createtime - 1000 * 60 * 5,
+                    //endtime = face.createtime + 1000 * 60 * 5,
+                    starttime = face.createtime - duration,
+                    endtime = face.createtime + duration,
                     image = face.image,
                     score = 0,
                     searchid = "",
