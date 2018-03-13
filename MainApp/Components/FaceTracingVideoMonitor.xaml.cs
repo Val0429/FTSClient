@@ -19,6 +19,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Controls.Primitives;
+using System.IO;
 
 namespace Tencent.Components {
     /// <summary>
@@ -79,18 +80,23 @@ namespace Tencent.Components {
                 List<string> tmp = new List<string>();
                 foreach (var trace in source.FaceDetail.Traces) {
                     var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
+                    switch (cameraid) {
+                        case 1: cameraid = 6; break; case 2: cameraid = 7; break; case 3: cameraid = 8; break; case 5: cameraid = 10; break; default: cameraid = 9; break;
+                    }
+
                     if (first) {
                         uri += cameraid;
-                        starttime = trace.starttime;
+                        starttime = trace.starttime - 3000;
                         this.Slider.Minimum = (double)starttime;
                         first = false;
                     }
-                    tmp.Add(string.Format("{0},{1}", trace.starttime / 1000, cameraid));
+                    tmp.Add(string.Format("{0},{1}", (trace.starttime - 3000) / 1000, cameraid));
                 }
                 if (starttime == null) return;
                 //this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime;
                 this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + 30*1000;
-                uri += string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
+                uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
+                Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum/1000, this.Slider.Maximum/1000);
 
                 /// Clean Connect Event
                 foreach (var eh in delegates) {

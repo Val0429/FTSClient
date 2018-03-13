@@ -17,7 +17,7 @@
         <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
     </UserControl.Resources>
 
-    <DockPanel>
+    <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown">
         <DockPanel.Background>
             <ImageBrush Viewbox="0,0 0.5,0.5"
                             Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
@@ -45,6 +45,7 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <dtl:EntryUnitBorder
+                                                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                                 Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
                                                 Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}">
                                             </dtl:EntryUnitBorder>
@@ -62,7 +63,9 @@
                                                 <Setter Property="Margin" Value="5" />
                                             </Style>
                                             <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
-                                            <Style TargetType="{x:Type dtl:EntryUnitBorder}" BasedOn="{StaticResource {x:Type Control}}" />
+                                            <Style TargetType="{x:Type dtl:EntryUnitBorder}">
+                                                <Setter Property="Margin" Value="6" />
+                                            </Style>
                                         </WrapPanel.Resources>
                                     </WrapPanel>
                                 </ItemsPanelTemplate>

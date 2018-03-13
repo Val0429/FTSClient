@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tencent.Components.FaceTracingDetails;
 using Tencent.DataSources;
 using TencentLibrary.Borders;
 
@@ -55,9 +57,18 @@ namespace Tencent.Components {
         }
         #endregion "Routed Events"
 
-        private void FaceTracingBorder_MouseDown(object sender, MouseButtonEventArgs e) {
-            var vm = sender as FaceTracingBorder;
-            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.DataContext);
+        private void FaceTracingBorder_MouseDown(object sender, RoutedEventArgs e) {
+            var vm = e.OriginalSource as FaceTracingBorder;
+            RoutedEventArgs ea;
+            if (vm.DataContext.GetType() == typeof(FaceItem)) {
+                ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.DataContext);
+                base.RaiseEvent(ea);
+            }
+        }
+
+        private void EntryUnitBorder_MouseDown(object sender, RoutedEventArgs e) {
+            var vm = e.OriginalSource as EntryUnitBorder;
+            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.Tag);
             base.RaiseEvent(ea);
         }
 

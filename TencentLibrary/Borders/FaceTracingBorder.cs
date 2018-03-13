@@ -21,6 +21,14 @@ namespace TencentLibrary.Borders {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FaceTracingBorder), new FrameworkPropertyMetadata(typeof(FaceTracingBorder)));
         }
 
+        public override void OnApplyTemplate() {
+            base.OnApplyTemplate();
+            this.MouseDown += (object sender, MouseButtonEventArgs e) => {
+                RoutedEventArgs ea = new RoutedEventArgs(FaceTracingBorder.OnClickEvent);
+                base.RaiseEvent(ea);
+            };
+        }
+
         #region "Dependency Properties"
         public ImageSource Image {
             get { return (ImageSource)GetValue(ImageProperty); }
@@ -50,5 +58,12 @@ namespace TencentLibrary.Borders {
 
         #endregion "Dependency Properties"
 
+        #region "Routed Events"
+        public static readonly RoutedEvent OnClickEvent = EventManager.RegisterRoutedEvent("OnClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FaceTracingBorder));
+        public event RoutedEventHandler OnClick {
+            add { AddHandler(OnClickEvent, value); }
+            remove { RemoveHandler(OnClickEvent, value); }
+        }
+        #endregion "Routed Events"
     }
 }

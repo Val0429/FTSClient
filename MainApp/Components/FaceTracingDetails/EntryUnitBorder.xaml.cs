@@ -22,6 +22,14 @@ namespace Tencent.Components.FaceTracingDetails {
             InitializeComponent();
         }
 
+        public override void OnApplyTemplate() {
+            base.OnApplyTemplate();
+            this.MouseDown += (object sender, MouseButtonEventArgs e) => {
+                RoutedEventArgs ea = new RoutedEventArgs(EntryUnitBorder.OnClickEvent);
+                base.RaiseEvent(ea);
+            };
+        }
+
         #region "Dependency Properties"
 
         public string Title {
@@ -44,5 +52,12 @@ namespace Tencent.Components.FaceTracingDetails {
 
         #endregion "Dependency Properties"
 
+        #region "Routed Events"
+        public static readonly RoutedEvent OnClickEvent = EventManager.RegisterRoutedEvent("OnClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(EntryUnitBorder));
+        public event RoutedEventHandler OnClick {
+            add { AddHandler(OnClickEvent, value); }
+            remove { RemoveHandler(OnClickEvent, value); }
+        }
+        #endregion "Routed Events"
     }
 }

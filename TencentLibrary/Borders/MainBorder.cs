@@ -21,6 +21,7 @@ namespace TencentLibrary.Borders {
         }
 
         public override void OnApplyTemplate() {
+            base.OnApplyTemplate();
             UIElement element = this.Template.FindName("LBIcon", this) as UIElement;
             element.MouseDown += Instance_LBIconClicked;
         }
