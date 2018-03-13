@@ -115,7 +115,8 @@
                         </ContentPresenter>
 
                         <!-- Side Content -->
-                        <ContentPresenter Content="{Binding Face,RelativeSource={RelativeSource TemplatedParent}}">
+                        <ContentPresenter Content="{Binding Face,RelativeSource={RelativeSource TemplatedParent}}"
+                                          Visibility="{Binding Face, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">
                             <ContentPresenter.RenderTransform>
                                 <TransformGroup>
                                     <TranslateTransform X="60" Y="-30" />
@@ -130,7 +131,7 @@
                                 </DataTemplate>
                             </ContentPresenter.ContentTemplate>
                         </ContentPresenter>
-
+                        
                         <!-- Light -->
                         <Rectangle Width="100" Height="100" Canvas.Top="50" Canvas.Left="0" RenderTransformOrigin="0.5,0" IsHitTestVisible="False">
                             <Rectangle.RenderTransform>

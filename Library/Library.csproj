@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Converters\DrawingBitmapToWpfConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenHeightConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenWidthConverter.cs" />
     <Compile Include="Converters\UnixTimestampToDateStringConverter.cs" />

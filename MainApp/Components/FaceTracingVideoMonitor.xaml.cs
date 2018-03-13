@@ -81,7 +81,11 @@ namespace Tencent.Components {
                 foreach (var trace in source.FaceDetail.Traces) {
                     var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
                     switch (cameraid) {
-                        case 1: cameraid = 6; break; case 2: cameraid = 7; break; case 3: cameraid = 8; break; case 5: cameraid = 10; break; default: cameraid = 9; break;
+                        case 1: cameraid = 6; break;
+                        case 2: cameraid = 7; break;
+                        case 3: cameraid = 8; break;
+                        case 5: cameraid = 10; break;
+                        default: cameraid = 9; break;
                     }
 
                     if (first) {
@@ -97,6 +101,7 @@ namespace Tencent.Components {
                 this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + 30*1000;
                 uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
                 Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum/1000, this.Slider.Maximum/1000);
+                //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
 
                 /// Clean Connect Event
                 foreach (var eh in delegates) {
