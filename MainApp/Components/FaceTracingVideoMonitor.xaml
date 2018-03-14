@@ -8,6 +8,72 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="50">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Slider}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Slider}">
+                            <Track x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
+                                        <RepeatButton.RenderTransform>
+                                            <ScaleTransform ScaleY="0.3" />
+                                        </RepeatButton.RenderTransform>
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Rectangle>
+                                                    <Rectangle.Fill>
+                                                        <LinearGradientBrush>
+                                                            <GradientStop Color="#FF00FFFA" Offset="1" />
+                                                            <GradientStop Color="#5500FFFA" Offset="0.5" />
+                                                            <GradientStop Color="#1100FFFA" Offset="0" />
+                                                        </LinearGradientBrush>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb FocusVisualStyle="{x:Null}">
+                                        <Thumb.Template>
+                                            <ControlTemplate>
+                                                <Ellipse Width="10" Height="10" Fill="White">
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect Color="White" ShadowDepth="0" Opacity="1" BlurRadius="15" />
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
+                                        <RepeatButton.RenderTransform>
+                                            <ScaleTransform ScaleY="0.3" />
+                                        </RepeatButton.RenderTransform>
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Rectangle>
+                                                    <Rectangle.Fill>
+                                                        <LinearGradientBrush>
+                                                            <GradientStop Color="#FF00FFFA" Offset="0" />
+                                                            <GradientStop Color="#5500FFFA" Offset="0.5" />
+                                                            <GradientStop Color="#1100FFFA" Offset="1" />
+                                                        </LinearGradientBrush>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="30" />

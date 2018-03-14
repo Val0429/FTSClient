@@ -31,17 +31,17 @@ namespace Library.Extensions {
         private static void AlwaysScrollToEndChanged(object sender, DependencyPropertyChangedEventArgs e) {
             do {
                 bool alwaysScrollToEnd = (e.NewValue != null) && (bool)e.NewValue;
-                /// try ScrollViewer
-                {
-                    ScrollViewer scroll = sender as ScrollViewer;
-                    if (scroll != null) {
-                        if (alwaysScrollToEnd) {
-                            scroll.ScrollToEnd();
-                            scroll.ScrollChanged += ScrollChanged;
-                        } else { scroll.ScrollChanged -= ScrollChanged; }
-                        return;
-                    }
-                }
+                ///// try ScrollViewer
+                //{
+                //    ScrollViewer scroll = sender as ScrollViewer;
+                //    if (scroll != null) {
+                //        if (alwaysScrollToEnd) {
+                //            scroll.ScrollToEnd();
+                //            scroll.ScrollChanged += ScrollChanged;
+                //        } else { scroll.ScrollChanged -= ScrollChanged; }
+                //        return;
+                //    }
+                //}
                 /// try ListView
                 {
                     ListView scroll = sender as ListView;
@@ -66,12 +66,12 @@ namespace Library.Extensions {
             throw new InvalidOperationException("The attached AlwaysScrollToEnd property can only be applied to ScrollViewer or ListView instances.");
         }
 
-        public static bool GetAlwaysScrollToEnd(ScrollViewer scroll) {
+        public static bool GetAlwaysScrollToEnd(DependencyObject scroll) {
             if (scroll == null) { throw new ArgumentNullException("scroll"); }
             return (bool)scroll.GetValue(AlwaysScrollToEndProperty);
         }
 
-        public static void SetAlwaysScrollToEnd(ScrollViewer scroll, bool alwaysScrollToEnd) {
+        public static void SetAlwaysScrollToEnd(DependencyObject scroll, bool alwaysScrollToEnd) {
             if (scroll == null) { throw new ArgumentNullException("scroll"); }
             scroll.SetValue(AlwaysScrollToEndProperty, alwaysScrollToEnd);
         }
