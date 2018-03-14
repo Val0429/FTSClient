@@ -27,6 +27,7 @@ namespace Tencent.DataSources {
 
     public class SearchParam {
         public string searchid { get; set; }
+        public string name { get; set; }
         public long starttime { get; set; }
         public long endtime { get; set; }
         public string image { get; set; }
@@ -40,6 +41,7 @@ namespace Tencent.DataSources {
 
     public class SearchItem {
         public string searchid { get; set; }
+        public string name { get; set; }
         public string status { get; set; }
         public string sourceid { get; set; }
         public string image { get; set; }
@@ -297,6 +299,7 @@ namespace Tencent.DataSources {
                 var param = new SearchParam() {
                     //starttime = face.createtime - 1000 * 60 * 5,
                     //endtime = face.createtime + 1000 * 60 * 5,
+                    name = face.name,
                     starttime = face.createtime - duration,
                     endtime = face.createtime + duration,
                     image = face.image,

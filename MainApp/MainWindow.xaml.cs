@@ -69,6 +69,7 @@ namespace Tencent {
                 var searchitem = (SearchItem)e.OriginalSource;
                 faceitem = new FaceItem() {
                     createtime = searchitem.createtime,
+                    name = searchitem.name,
                     image = searchitem.image,
                     sourceid = searchitem.sourceid
                 };

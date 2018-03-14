@@ -101,7 +101,7 @@ namespace Tencent.Components {
                 this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + 30*1000;
                 uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
                 Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum/1000, this.Slider.Maximum/1000);
-                //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
+                File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
 
                 /// Clean Connect Event
                 foreach (var eh in delegates) {
