@@ -48,11 +48,6 @@
                                             <dtl:EntryUnitBorder
                                                 Image="{Binding image}"
                                                 Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
-                                            <!--<dtl:EntryUnitBorder
-                                                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}">
-                                            </dtl:EntryUnitBorder>-->
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>

@@ -97,9 +97,9 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ftd:EntryUnit x:Name="EntryUnit"
-                                            Title="{Binding Path=DataContext.Camera.name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
+                                            Title="{Binding Camera.name}"
                                             >
-                                        <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType=ContentPresenter}}">
+                                        <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <WrapPanel />
@@ -108,9 +108,8 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <ftd:EntryUnitBorder
-                                                            Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                            Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}"
+                                                            Image="{Binding image}"
+                                                            Title="{Binding createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                                             MouseDown="EntryUnitFace_MouseDown"
                                                             />
                                                 </DataTemplate>
@@ -218,9 +217,8 @@
                                             MouseDown="EntryUnitFace_MouseDown"
                                             />-->
                                     <ftd:EntryUnitBorder
-                                        Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                        Image="{Binding Path=DataContext.image, IsAsync=True, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                        Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}"
+                                        Image="{Binding image}"
+                                        Title="{Binding createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                         MouseDown="EntryUnitFace_MouseDown"
                                         />
                                 </DataTemplate>
