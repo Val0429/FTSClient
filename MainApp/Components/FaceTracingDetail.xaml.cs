@@ -72,7 +72,7 @@ namespace Tencent.Components {
 
         private void EntryUnitFace_MouseDown(object sender, MouseButtonEventArgs e) {
             var vm = sender as FrameworkElement;
-            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingDetail.FaceItemSelectedEvent, vm.Tag);
+            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingDetail.FaceItemSelectedEvent, vm.DataContext);
             base.RaiseEvent(ea);
         }
     }

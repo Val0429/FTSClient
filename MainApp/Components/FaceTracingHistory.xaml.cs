@@ -68,7 +68,7 @@ namespace Tencent.Components {
 
         private void EntryUnitBorder_MouseDown(object sender, RoutedEventArgs e) {
             var vm = e.OriginalSource as EntryUnitBorder;
-            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.Tag);
+            RoutedEventArgs ea = new RoutedEventArgs(FaceTracingHistory.FaceItemSelectedEvent, vm.DataContext);
             base.RaiseEvent(ea);
         }
 
