@@ -3,6 +3,7 @@ using FloorPlanMap.Components.Footprints;
 using FloorPlanMap.Components.Objects.Devices;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace Tencent.Components {
     public partial class FaceTracingMap : UserControl {
         public FaceTracingMap() {
             InitializeComponent();
+
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
 
             FloorPlanMapUnit mainmap = this.MainMap;
             Style fr_camera_template = (Style)this.FindResource("FRCameraModel");

@@ -31,6 +31,8 @@ namespace Tencent.Components {
         public FaceTracingVideoMonitor() {
             InitializeComponent();
 
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+
             /// Initial Video Control
             AxNvrCtrl videoctrl = this.VideoCtrl;
             videoctrl.SetPlayMode(1);

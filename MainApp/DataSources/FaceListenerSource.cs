@@ -132,6 +132,8 @@ namespace Tencent.DataSources {
             FaceDetail = new FaceDetail();
             Cameras = new Dictionary<string, Camera>();
 
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+
             List<Camera> config = (List<Camera>)ConfigurationManager.GetSection("CameraInfo");
             foreach (var camera in config)
                 Cameras[camera.sourceid] = camera;
