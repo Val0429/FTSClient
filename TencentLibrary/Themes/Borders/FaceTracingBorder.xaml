@@ -27,7 +27,7 @@
 
                         <Grid>
                             <!-- Group Border - Special Area -->
-                            <Rectangle>
+                            <Rectangle Visibility="{Binding GroupName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">
                                 <Rectangle.Effect>
                                     <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Rectangle.Effect>

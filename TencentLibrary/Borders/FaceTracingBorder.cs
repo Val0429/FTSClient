@@ -68,7 +68,6 @@ namespace TencentLibrary.Borders {
             get { return (string)GetValue(GroupNameProperty); }
             set { SetValue(GroupNameProperty, value); }
         }
-
         // Using a DependencyProperty as the backing store for GroupName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty GroupNameProperty =
             DependencyProperty.Register("GroupName", typeof(string), typeof(FaceTracingBorder), new PropertyMetadata(null));
@@ -77,7 +76,6 @@ namespace TencentLibrary.Borders {
             get { return (Color)GetValue(ColorProperty); }
             set { SetValue(ColorProperty, value); }
         }
-
         // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(FaceTracingBorder), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
