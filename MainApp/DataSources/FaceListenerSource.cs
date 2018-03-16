@@ -148,18 +148,8 @@ namespace Tencent.DataSources {
         public Dictionary<string, Camera> Cameras { get; private set; }
 
         public void StartServer() {
-            string ip, port;
-            if (LicenseManager.UsageMode == LicenseUsageMode.Runtime) {
-                ip = ConfigurationManager.AppSettings["ip"];
-                port = ConfigurationManager.AppSettings["port"];
-            } else {
-                //XmlDocument doc = new XmlDocument();
-                //doc.Load("App.config");
-                //ip = doc.SelectSingleNode("configuration/startup/appSettings/add[@key='ip']").Value;
-                //port = doc.SelectSingleNode("configuration/startup/appSettings/add[@key='port']").Value;
-                ip = "localhost";
-                port = "7070";
-            }
+            string ip = ConfigurationManager.AppSettings["ip"];
+            string port = ConfigurationManager.AppSettings["port"];
 
             Host = string.Format("ws://{0}:{1}", ip, port);
             /// Fetch Latest
@@ -238,7 +228,8 @@ namespace Tencent.DataSources {
                                         if (matches.Count > 0) {
                                             SearchItem item = matches.Last();
                                             if (Math.Abs(item.createtime - obj_item.createtime) <= comp_duration) {
-                                                this.FaceDetail.PossibleContacts.Add(obj_item);
+                                                if (item.sourceid == obj_item.sourceid)
+                                                    this.FaceDetail.PossibleContacts.Add(obj_item);
                                             } else {
                                                 notmatches.Add(obj_item);
                                             }
@@ -253,7 +244,7 @@ namespace Tencent.DataSources {
                                         matches.Add(obj_item);
                                         /// check for notmatches to add
                                         foreach (var obj in notmatches) {
-                                            if (Math.Abs(obj.createtime - obj_item.createtime) <= comp_duration) {
+                                            if (Math.Abs(obj.createtime - obj_item.createtime) <= comp_duration && obj.sourceid == obj_item.sourceid) {
                                                 this.FaceDetail.PossibleContacts.Add(obj_item);
                                             }
                                         }
