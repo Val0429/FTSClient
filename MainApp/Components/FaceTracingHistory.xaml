@@ -35,7 +35,7 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
-                                                                          RealName="{Binding name}">
+                                                                          RealName="{Binding name}" GroupName="VIP">
                                             </tlibborder:FaceTracingBorder>
                                         </DataTemplate>
                                     </Setter.Value>

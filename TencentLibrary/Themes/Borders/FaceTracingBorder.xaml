@@ -12,6 +12,7 @@
     <BitmapImage x:Key="BackgroundImage" UriSource="/TencentLibrary;component/Resources/facetracing_bk.png" />
     <cvt:NullVisibilityConverter x:Key="NullVisibility" />
     <cvt:ImageConverter x:Key="ImageConverter" />
+    <cvt:OpacityColorConverter x:Key="OpacityColor" />
 
     <Style TargetType="{x:Type local:FaceTracingBorder}">
         <!--<Setter Property="MinWidth" Value="158" />
@@ -22,10 +23,59 @@
             <Setter.Value>
 
                 <ControlTemplate TargetType="{x:Type local:FaceTracingBorder}">
-
                     <local:SubBorder>
 
                         <Grid>
+                            <!-- Group Border - Special Area -->
+                            <Rectangle>
+                                <Rectangle.Effect>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Rectangle.Effect>
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <!-- Basement -->
+                                                <GeometryDrawing Brush="Transparent">
+                                                    <GeometryDrawing.Geometry>
+                                                        <RectangleGeometry Rect="0,0 142,171" />
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+
+                                                <!-- Border -->
+                                                <GeometryDrawing>
+                                                    <GeometryDrawing.Pen>
+                                                        <Pen Thickness="2">
+                                                            <Pen.Brush>
+                                                                <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                            </Pen.Brush>
+                                                        </Pen>
+                                                    </GeometryDrawing.Pen>
+                                                    <GeometryDrawing.Brush>
+                                                        <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource OpacityColor}, ConverterParameter=0.18}" />
+                                                    </GeometryDrawing.Brush>
+                                                    <GeometryDrawing.Geometry>
+                                                        <PathGeometry Figures="M 1,1 L 142,1 L 157,15 L 157,171 L 28,171 L 1,143 L 1,1" />
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+
+                                                <!-- Banner -->
+                                                <GeometryDrawing>
+                                                    <GeometryDrawing.Brush>
+                                                        <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    </GeometryDrawing.Brush>
+                                                    <GeometryDrawing.Geometry>
+                                                        <PathGeometry Figures="M 13,156 L 69,156 L 83,171 L 28,171 Z" />
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!-- Group Border - Special Area -->
+
                             <!-- Picture -->
                             <Border Width="140" Height="142" VerticalAlignment="Top" Margin="0,8,0,0" Background="Transparent">
                                 <Border.OpacityMask>
@@ -39,47 +89,42 @@
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Border.OpacityMask>
-                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, IsAsync=True}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
-                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" hp:ImageAsyncHelper.SourceUri="{TemplateBinding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
-                                <!--<Image Width="140" Height="142" Stretch="UniformToFill" VerticalAlignment="Stretch" Source="{Binding Image, IsAsync=True, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ImageConverter}}"  />-->
 
                                 <Grid Width="140" Height="142">
                                     <Image Stretch="UniformToFill" VerticalAlignment="Stretch" Source="{Binding Image, IsAsync=True, RelativeSource={RelativeSource TemplatedParent}}"  />
                                 </Grid>
 
-                                <!--<Grid
-                                    DataContext="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ImageConverter}}"
-                                    >
-                                    <Image Width="140" Height="142" Stretch="UniformToFill" VerticalAlignment="Stretch"
-                                       Source="{Binding Path=Result, IsAsync=True}" />
-                                </Grid>-->
-
-                                <!--<Rectangle Width="140" Height="142">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Image}" Stretch="UniformToFill" />
-                                    </Rectangle.Fill>
-                                </Rectangle>-->
                             </Border>
                             <!-- Picture -->
 
                             <!-- Name -->
-                            <Label Style="{StaticResource DefaultFont}" FontSize="18" Height="32" VerticalAlignment="Top" Margin="0,8,0,0"
+                            <Label Style="{StaticResource DefaultFont}" FontSize="18" Height="32" VerticalAlignment="Top" Margin="9,8,20,0" Foreground="Black"
                                    Visibility="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}"
                                    >
                                 <Label.Background>
                                     <LinearGradientBrush>
                                         <GradientBrush.GradientStops>
                                             <GradientStopCollection>
-                                                <GradientStop Color="#99330088" Offset="0" />
-                                                <GradientStop Color="#00330088" Offset="1" />
+                                                <!-- #BB4D746C -->
+                                                <GradientStop Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource OpacityColor}, ConverterParameter=0.8}" Offset="0" />
+                                                <GradientStop Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource OpacityColor}, ConverterParameter=0}" Offset="1" />
                                             </GradientStopCollection>
                                         </GradientBrush.GradientStops>
                                     </LinearGradientBrush>
                                 </Label.Background>
                                 <TextBlock Padding="5,0,0,0" Text="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Label>
+                            <!-- Name -->
                             
+                            <!-- Title -->
                             <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" HorizontalContentAlignment="{TemplateBinding TitleAlignment}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="78" Height="20" VerticalContentAlignment="Center" FontSize="15" />
+                            <!-- Title -->
+
+                            <!-- Group Name -->
+                            <Label Style="{StaticResource DefaultFont}" FontSize="9" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="24,0,0,2" Height="14" Width="48" Foreground="Black">
+                                <TextBlock Text="{TemplateBinding GroupName}" />
+                            </Label>
+                            <!-- Group Name -->
                         </Grid>
 
                     </local:SubBorder>
