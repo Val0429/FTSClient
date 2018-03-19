@@ -72,7 +72,7 @@ namespace Tencent.Components {
             base.RaiseEvent(ea);
         }
 
-        private void MainBorder_LBIconClicked(object sender, RoutedEventArgs e) {
+        private void LBIcon_MouseDown(object sender, MouseButtonEventArgs e) {
             if (IconType == 0) IconType = 1;
             else IconType = 0;
         }

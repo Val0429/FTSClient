@@ -17,6 +17,8 @@
     <UserControl.Resources>
         <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
         <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
+        <SolidColorBrush x:Key="LbIconBkBrush" Color="#AA105F62" />
+        <SolidColorBrush x:Key="LbIconBrush" Color="#FF3CD8BB" />
     </UserControl.Resources>
 
     <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown">
@@ -28,7 +30,7 @@
             <Viewbox.CacheMode>
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
-            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Record" LBIconClicked="MainBorder_LBIconClicked">
+            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Record">
                 <tlibborder:MainBorder.Resources>
                     <Style TargetType="scv:CustomListView">
                         <Style.Triggers>
@@ -78,18 +80,83 @@
                     </Style>
                 </tlibborder:MainBorder.Resources>
 
-                <!--<ListView IsTabStop="False" Background="Transparent" ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <tlibborder:FaceTracingBorder MouseDown="FaceTracingBorder_MouseDown" Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ListView>-->
+                <tlibborder:MainBorder.Buttons>
+                    <!-- Left Bottom Icon -->
+                    <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">
+                        <Rectangle.Effect>
+                            <DropShadowEffect Color="LemonChiffon" Opacity="1" ShadowDepth="0" BlurRadius="3" />
+                        </Rectangle.Effect>
+                        <Rectangle.Fill>
+                            <DrawingBrush>
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <!-- Left Bottom Icon -->
+                                        <GeometryDrawing Brush="{StaticResource LbIconBkBrush}">
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 15,463 L 98,463 Q 100,463 104,465 L 130,493 L 44,493 Z" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <!-- Left Buttom Icon -->
+
+                                        <GeometryDrawing Brush="{StaticResource LbIconBrush}">
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <RectangleGeometry Rect="60,467 10,10" />
+                                                    <RectangleGeometry Rect="62,469 6,6" />
+                                                    <RectangleGeometry Rect="72,467 10,10" />
+                                                    <RectangleGeometry Rect="74,469 6,6" />
+                                                    <RectangleGeometry Rect="60,479 10,10" />
+                                                    <RectangleGeometry Rect="62,481 6,6" />
+                                                    <RectangleGeometry Rect="72,479 10,10" />
+                                                    <RectangleGeometry Rect="74,481 6,6" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <!-- Left Bottom Icon -->
+
+                    <!-- Left Bottom Icon -->
+                    <Rectangle Width="115" Height="30">
+                        <Rectangle.Effect>
+                            <DropShadowEffect Color="LemonChiffon" Opacity="1" ShadowDepth="0" BlurRadius="3" />
+                        </Rectangle.Effect>
+                        <Rectangle.Fill>
+                            <DrawingBrush>
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <!-- Left Bottom Icon -->
+                                        <GeometryDrawing Brush="{StaticResource LbIconBkBrush}">
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 15,463 L 98,463 Q 100,463 104,465 L 130,493 L 44,493 Z" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <!-- Left Buttom Icon -->
+
+                                        <GeometryDrawing Brush="{StaticResource LbIconBrush}">
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <RectangleGeometry Rect="60,467 10,10" />
+                                                    <RectangleGeometry Rect="62,469 6,6" />
+                                                    <RectangleGeometry Rect="72,467 10,10" />
+                                                    <RectangleGeometry Rect="74,469 6,6" />
+                                                    <RectangleGeometry Rect="60,479 10,10" />
+                                                    <RectangleGeometry Rect="62,481 6,6" />
+                                                    <RectangleGeometry Rect="72,479 10,10" />
+                                                    <RectangleGeometry Rect="74,481 6,6" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <!-- Left Bottom Icon -->
+                </tlibborder:MainBorder.Buttons>
 
                 <scv:CustomListView
                     IsTabStop="False"
@@ -100,34 +167,6 @@
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
                 />
-
-                <!--<scv:CustomScrollViewer
-                                        IsTabStop="False"
-                                        ScrollContentMargin="0,0,0,5"
-                                        ScrollBarMargin="0,30,0,5"
-                                        ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
-                    >
-
-                    <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel>
-                                    <WrapPanel.Resources>
-                                        <Style TargetType="{x:Type Control}">
-                                            <Setter Property="Margin" Value="5" />
-                                        </Style>
-                                        <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
-                                    </WrapPanel.Resources>
-                                </WrapPanel>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <tlibborder:FaceTracingBorder MouseDown="FaceTracingBorder_MouseDown" Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </scv:CustomScrollViewer>-->
                 
             </tlibborder:MainBorder>
         </Viewbox>

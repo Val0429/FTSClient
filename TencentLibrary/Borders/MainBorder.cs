@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,18 @@ using System.Windows.Shapes;
 
 namespace TencentLibrary.Borders {
     public class MainBorder : ContentControl {
+        public MainBorder() {
+            SetValue(ButtonsProperty, new ObservableCollection<UIElement>());
+        }
+
         static MainBorder() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainBorder), new FrameworkPropertyMetadata(typeof(MainBorder)));
         }
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
-            UIElement element = this.Template.FindName("LBIcon", this) as UIElement;
-            element.MouseDown += Instance_LBIconClicked;
+            //UIElement element = this.Template.FindName("LBIcon", this) as UIElement;
+            //element.MouseDown += Instance_LBIconClicked;
         }
 
         #region "Dependency Properties"
@@ -33,6 +38,16 @@ namespace TencentLibrary.Borders {
         }
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(MainBorder), new PropertyMetadata(""));
+
+        public ObservableCollection<UIElement> Buttons {
+            get { return (ObservableCollection<UIElement>)GetValue(ButtonsProperty); }
+            set { SetValue(ButtonsProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for CustomContent.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ButtonsProperty =
+            DependencyProperty.Register("Buttons", typeof(ObservableCollection<UIElement>), typeof(MainBorder), new FrameworkPropertyMetadata(
+                null, FrameworkPropertyMetadataOptions.AffectsRender
+                ));
 
         #endregion "Dependency Properties"
 
