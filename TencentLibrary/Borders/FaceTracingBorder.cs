@@ -80,6 +80,14 @@ namespace TencentLibrary.Borders {
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(FaceTracingBorder), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
 
+        public Color GlowColor {
+            get { return (Color)GetValue(GlowColorProperty); }
+            set { SetValue(GlowColorProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GlowColorProperty =
+            DependencyProperty.Register("GlowColor", typeof(Color), typeof(FaceTracingBorder), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
+
         #endregion "Dependency Properties"
 
         #region "Routed Events"

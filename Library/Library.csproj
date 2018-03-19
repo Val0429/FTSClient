@@ -49,6 +49,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ContractColorConverter.cs" />
     <Compile Include="Converters\DrawingBitmapToWpfConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\NullVisibilityConverter.cs" />

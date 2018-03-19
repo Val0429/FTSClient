@@ -23,6 +23,7 @@ namespace Tencent.DataSources {
         public double faceheight { get; set; }
         public double quality { get; set; }
         public long createtime { get; set; }
+        public string groupname { get; set; }
     }
 
     public class SearchParam {
@@ -47,6 +48,15 @@ namespace Tencent.DataSources {
         public string image { get; set; }
         public long createtime { get; set; }
         public double score { get; set; }
+    }
+
+    public class PeopleGroup {
+        [XmlAttribute("name")]
+        public string name { get; set; }
+        [XmlAttribute("color")]
+        public string color { get; set; }
+        [XmlAttribute("glowcolor")]
+        public string glowcolor { get; set; }
     }
 
     public class Camera : DependencyObject {
@@ -131,12 +141,19 @@ namespace Tencent.DataSources {
             Faces = new ObservableCollection<FaceItem>();
             FaceDetail = new FaceDetail();
             Cameras = new Dictionary<string, Camera>();
+            PeopleGroups = new Dictionary<string, PeopleGroup>();
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
 
             List<Camera> config = (List<Camera>)ConfigurationManager.GetSection("CameraInfo");
             foreach (var camera in config)
                 Cameras[camera.sourceid] = camera;
+
+            List<PeopleGroup> pg = (List<PeopleGroup>)ConfigurationManager.GetSection("PeopleGroupInfo");
+            foreach (var peoplegroup in pg) {
+                if (peoplegroup.glowcolor == null) peoplegroup.glowcolor = peoplegroup.color;
+                PeopleGroups[peoplegroup.name] = peoplegroup;
+            }
 
             StartServer();
         }
@@ -146,6 +163,8 @@ namespace Tencent.DataSources {
         public FaceDetail FaceDetail { get; private set; }
 
         public Dictionary<string, Camera> Cameras { get; private set; }
+
+        public Dictionary<string, PeopleGroup> PeopleGroups { get; private set; }
 
         public void StartServer() {
             string ip = ConfigurationManager.AppSettings["ip"];
@@ -158,6 +177,18 @@ namespace Tencent.DataSources {
                 var jsonSerializer = new JavaScriptSerializer();
 
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
+
+                var names = new List<string> { "VIP", "Blacklist", null, null, null, null, null, null, null };
+                var random = new Random();
+                int index = random.Next(names.Count);
+                if (face.name == "Val") face.groupname = "VIP";
+                else if (face.name == "") {
+                    face.name = null;
+                    face.groupname = "Stranger";
+                } else {
+                    face.groupname = names[index];
+                }
+
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     Faces.Add(face);
                 }));

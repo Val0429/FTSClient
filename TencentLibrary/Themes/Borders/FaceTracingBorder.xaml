@@ -13,6 +13,7 @@
     <cvt:NullVisibilityConverter x:Key="NullVisibility" />
     <cvt:ImageConverter x:Key="ImageConverter" />
     <cvt:OpacityColorConverter x:Key="OpacityColor" />
+    <cvt:ContractColorConverter x:Key="ContractColor" />
 
     <Style TargetType="{x:Type local:FaceTracingBorder}">
         <!--<Setter Property="MinWidth" Value="158" />
@@ -29,7 +30,7 @@
                             <!-- Group Border - Special Area -->
                             <Rectangle Visibility="{Binding GroupName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">
                                 <Rectangle.Effect>
-                                    <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="{Binding GlowColor, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Rectangle.Effect>
                                 <Rectangle.Fill>
                                     <DrawingBrush>
@@ -98,9 +99,12 @@
                             <!-- Picture -->
 
                             <!-- Name -->
-                            <Label Style="{StaticResource DefaultFont}" FontSize="18" Height="32" VerticalAlignment="Top" Margin="9,8,20,0" Foreground="Black"
+                            <Label Style="{StaticResource DefaultFont}" FontSize="18" Height="32" VerticalAlignment="Top" Margin="9,8,20,0"
                                    Visibility="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}"
                                    >
+                                <Label.Foreground>
+                                    <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ContractColor}}" />
+                                </Label.Foreground>
                                 <Label.Background>
                                     <LinearGradientBrush>
                                         <GradientBrush.GradientStops>
@@ -121,7 +125,11 @@
                             <!-- Title -->
 
                             <!-- Group Name -->
-                            <Label Style="{StaticResource DefaultFont}" FontSize="9" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="24,0,0,2" Height="14" Width="48" Foreground="Black">
+                            <Label Style="{StaticResource DefaultFont}" FontSize="9" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="24,0,0,2" Height="14" Width="48"
+                                   >
+                                <Label.Foreground>
+                                    <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ContractColor}}" />
+                                </Label.Foreground>
                                 <TextBlock Text="{TemplateBinding GroupName}" />
                             </Label>
                             <!-- Group Name -->

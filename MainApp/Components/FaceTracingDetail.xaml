@@ -10,6 +10,7 @@
              xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
              xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+             xmlns:localcvt="clr-namespace:Tencent.Converters"
              xmlns:ds="clr-namespace:Tencent.DataSources"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -22,6 +23,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+            <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -49,7 +51,9 @@
                         <ContentPresenter.ContentTemplate>
                             <DataTemplate>
                                 <tlibborder:FaceTracingBorder Image="{Binding image}" Title="Target"
-                                                              RealName="{Binding name}"
+                                                              RealName="{Binding name}" GroupName="{Binding groupname}"
+                                                              Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                              GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
                                                               TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"
                                                               />
                             </DataTemplate>

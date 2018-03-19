@@ -8,6 +8,7 @@
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
              xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+             xmlns:localcvt="clr-namespace:Tencent.Converters"
              xmlns:dtl="clr-namespace:Tencent.Components.FaceTracingDetails"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -15,6 +16,7 @@
 
     <UserControl.Resources>
         <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+        <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
     </UserControl.Resources>
 
     <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown">
@@ -35,7 +37,10 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
-                                                                          RealName="{Binding name}">
+                                                                          RealName="{Binding name}" GroupName="{Binding groupname}"
+                                                                          Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                                          GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
+                                                                          >
                                             </tlibborder:FaceTracingBorder>
                                         </DataTemplate>
                                     </Setter.Value>
