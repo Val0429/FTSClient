@@ -15,10 +15,86 @@
              d:DesignHeight="480" d:DesignWidth="640">
 
     <UserControl.Resources>
-        <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
-        <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
-        <SolidColorBrush x:Key="LbIconBkBrush" Color="#AA105F62" />
-        <SolidColorBrush x:Key="LbIconBrush" Color="#FF3CD8BB" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+            <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
+            <SolidColorBrush x:Key="LbIconBkBrush" Color="#AA105F62" />
+            <SolidColorBrush x:Key="LbIconBrush" Color="#FF3CD8BB" />
+
+            <Style x:Key="DefaultTextBox" TargetType="TextBox">
+                <Setter Property="Background" Value="#FF10221F" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+
+            <Style x:Key="DefaultLabel" TargetType="Label" BasedOn="{StaticResource DefaultFont}">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+
+            <Style TargetType="scv:CustomListView">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="0">
+                        <Setter Property="ItemTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
+                                                                          RealName="{Binding name}" GroupName="{Binding groupname}"
+                                                                          Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                                          GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
+                                                                          >
+                                    </tlibborder:FaceTracingBorder>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="1">
+                        <Setter Property="ItemTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <dtl:EntryUnitBorder
+                                                Image="{Binding image}"
+                                                Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+                <Setter Property="ListView.ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal">
+                                <WrapPanel.Resources>
+                                    <Style TargetType="{x:Type Control}">
+                                        <Setter Property="Margin" Value="5" />
+                                    </Style>
+                                    <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
+                                    <Style TargetType="{x:Type dtl:EntryUnitBorder}">
+                                        <Setter Property="Margin" Value="6" />
+                                    </Style>
+                                </WrapPanel.Resources>
+                            </WrapPanel>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <scv:CustomListView
+                    x:Key="MainContent"
+                    IsTabStop="False"
+                    Background="Transparent"
+                    ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollContentMargin="0,0,0,5"
+                    ScrollBarMargin="0,30,0,5"
+                    ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
+                />
+        </ResourceDictionary>
+
     </UserControl.Resources>
 
     <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown">
@@ -31,55 +107,6 @@
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
             <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Record">
-                <tlibborder:MainBorder.Resources>
-                    <Style TargetType="scv:CustomListView">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="0">
-                                <Setter Property="ItemTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
-                                                                          RealName="{Binding name}" GroupName="{Binding groupname}"
-                                                                          Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
-                                                                          GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
-                                                                          >
-                                            </tlibborder:FaceTracingBorder>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="1">
-                                <Setter Property="ItemTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <dtl:EntryUnitBorder
-                                                Image="{Binding image}"
-                                                Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                        <Setter Property="ListView.ItemsPanel">
-                            <Setter.Value>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal">
-                                        <WrapPanel.Resources>
-                                            <Style TargetType="{x:Type Control}">
-                                                <Setter Property="Margin" Value="5" />
-                                            </Style>
-                                            <Style TargetType="{x:Type tlibborder:FaceTracingBorder}" BasedOn="{StaticResource {x:Type Control}}" />
-                                            <Style TargetType="{x:Type dtl:EntryUnitBorder}">
-                                                <Setter Property="Margin" Value="6" />
-                                            </Style>
-                                        </WrapPanel.Resources>
-                                    </WrapPanel>
-                                </ItemsPanelTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </tlibborder:MainBorder.Resources>
-
                 <tlibborder:MainBorder.Buttons>
                     <!-- Left Bottom Icon -->
                     <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">
@@ -149,18 +176,39 @@
                     <!-- Left Bottom Icon -->
                 </tlibborder:MainBorder.Buttons>
 
-                <scv:CustomListView
-                    IsTabStop="False"
-                    Background="Transparent"
-                    ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollContentMargin="0,0,0,5"
-                    ScrollBarMargin="0,30,0,5"
-                    ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
-                />
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Style="{StaticResource DefaultLabel}" Content="Name" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="181" />
+                    <Label Style="{StaticResource DefaultLabel}" Content="Time Range" HorizontalAlignment="Left" Margin="23,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
+                    <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,154,0,0" TextWrapping="Wrap" Text="00:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="75"/>
+                    <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
+                    <Label Style="{StaticResource DefaultLabel}" Content="To" HorizontalAlignment="Left" Margin="107,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
+
+                    <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <CheckBox x:Name="Filter_Group_All" FontSize="20" Foreground="White" Padding="15,0" Content="All" Grid.Column="1" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="Filter_Group_VIP" FontSize="20" Foreground="White" Padding="15,0" Content="VIP" Grid.Column="1" HorizontalAlignment="Left" Margin="57,103,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="Filter_Group_Blacklist" FontSize="20" Foreground="White" Padding="15,0" Content="Blacklist" Grid.Column="1" HorizontalAlignment="Left" Margin="57,138,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="Filter_Group_Stranger" FontSize="20" Foreground="White" Padding="15,0" Content="Stranger" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
+
+                    <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                    <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Key}" HorizontalContentAlignment="Center" Background="#FF0B413F" Margin="1,2" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" />
+                </Grid>
+
             </tlibborder:MainBorder>
         </Viewbox>
     </DockPanel>
-    
+
 </UserControl>
