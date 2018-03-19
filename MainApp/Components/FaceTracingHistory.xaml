@@ -138,16 +138,7 @@
 
                                         <GeometryDrawing Brush="{StaticResource LbIconBrush}">
                                             <GeometryDrawing.Geometry>
-                                                <GeometryGroup>
-                                                    <RectangleGeometry Rect="60,467 10,10" />
-                                                    <RectangleGeometry Rect="62,469 6,6" />
-                                                    <RectangleGeometry Rect="72,467 10,10" />
-                                                    <RectangleGeometry Rect="74,469 6,6" />
-                                                    <RectangleGeometry Rect="60,479 10,10" />
-                                                    <RectangleGeometry Rect="62,481 6,6" />
-                                                    <RectangleGeometry Rect="72,479 10,10" />
-                                                    <RectangleGeometry Rect="74,481 6,6" />
-                                                </GeometryGroup>
+                                                <PathGeometry Figures="M 60,469 L 83,469 L 74,480 L 74,489 L 70,486 L 69,480 L 60,469" />
                                             </GeometryDrawing.Geometry>
                                         </GeometryDrawing>
                                     </DrawingGroup>
