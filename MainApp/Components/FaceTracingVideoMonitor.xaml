@@ -78,11 +78,16 @@
             <RowDefinition />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        
-        <WindowsFormsHost HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <!--<fc:VideoCtrl x:Name="VideoCtrl" Dock="Fill" />-->
-            <fc:AxNvrCtrl x:Name="VideoCtrl" Dock="Fill" />
-        </WindowsFormsHost>
+
+        <Grid>
+            <WindowsFormsHost HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8">
+                <!--<fc:VideoCtrl x:Name="VideoCtrl" Dock="Fill" />-->
+                <fc:AxNvrCtrl x:Name="VideoCtrl" Dock="Fill" />
+            </WindowsFormsHost>
+
+            <Border BorderBrush="#FF01C4C1" BorderThickness="2,2,0,2" CornerRadius="8,0,0,8" Width="90" HorizontalAlignment="Left" />
+            <Border BorderBrush="#FF01C4C1" BorderThickness="0,2,2,2" CornerRadius="0,8,8,0" Width="90" HorizontalAlignment="Right" />
+        </Grid>
 
         <Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" />
 
