@@ -178,6 +178,7 @@ namespace Tencent.DataSources {
 
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
 
+                /// workaround, todo remove
                 var names = new List<string> { "VIP", "Blacklist", null, null, null, null, null, null, null };
                 var random = new Random();
                 int index = random.Next(names.Count);
@@ -188,6 +189,7 @@ namespace Tencent.DataSources {
                 } else {
                     face.groupname = names[index];
                 }
+                /// workaround, todo remove
 
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     Faces.Add(face);
