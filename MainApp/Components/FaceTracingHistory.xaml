@@ -93,6 +93,38 @@
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
                 />
+
+            <Grid x:Key="FilterContent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Label Style="{StaticResource DefaultLabel}" Content="Name" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" Text="{Binding Path=FilterName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}, Mode=TwoWay}" VerticalAlignment="Top" Width="181" />
+                <Label Style="{StaticResource DefaultLabel}" Content="Time Range" HorizontalAlignment="Left" Margin="23,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
+                <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,154,0,0" TextWrapping="Wrap" Text="00:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="75"/>
+                <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
+                <Label Style="{StaticResource DefaultLabel}" Content="To" HorizontalAlignment="Left" Margin="107,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
+
+                <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                <CheckBox x:Name="Filter_Group_All" Click="Filter_Group_All_Click" IsChecked="{Binding FilterGroupAll}" FontSize="20" Foreground="White" Padding="15,0" Content="All" Grid.Column="1" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="Filter_Group_VIP" IsChecked="{Binding FilterGroupVIP}" FontSize="20" Foreground="White" Padding="15,0" Content="VIP" Grid.Column="1" HorizontalAlignment="Left" Margin="57,103,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="Filter_Group_Blacklist" IsChecked="{Binding FilterGroupBlacklist}" FontSize="20" Foreground="White" Padding="15,0" Content="Blacklist" Grid.Column="1" HorizontalAlignment="Left" Margin="57,138,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="Filter_Group_Stranger" IsChecked="{Binding FilterGroupStranger}" FontSize="20" Foreground="White" Padding="15,0" Content="Stranger" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
+
+                <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Key}" HorizontalContentAlignment="Center" Background="#FF0B413F" Margin="1,2" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" Click="button_Click" />
+            </Grid>
+
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -147,7 +179,7 @@
                     <!-- Left Bottom Icon -->
 
                     <!-- Left Bottom Icon -->
-                    <Rectangle Width="115" Height="30">
+                    <Rectangle Width="115" Height="30" MouseDown="FilterIcon_MouseDown">
                         <Rectangle.Effect>
                             <DropShadowEffect Color="LemonChiffon" Opacity="1" ShadowDepth="0" BlurRadius="3" />
                         </Rectangle.Effect>
@@ -176,36 +208,7 @@
                     <!-- Left Bottom Icon -->
                 </tlibborder:MainBorder.Buttons>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Style="{StaticResource DefaultLabel}" Content="Name" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="181" />
-                    <Label Style="{StaticResource DefaultLabel}" Content="Time Range" HorizontalAlignment="Left" Margin="23,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
-                    <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,154,0,0" TextWrapping="Wrap" Text="00:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="75"/>
-                    <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
-                    <Label Style="{StaticResource DefaultLabel}" Content="To" HorizontalAlignment="Left" Margin="107,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
-
-                    <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <CheckBox x:Name="Filter_Group_All" FontSize="20" Foreground="White" Padding="15,0" Content="All" Grid.Column="1" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="Filter_Group_VIP" FontSize="20" Foreground="White" Padding="15,0" Content="VIP" Grid.Column="1" HorizontalAlignment="Left" Margin="57,103,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="Filter_Group_Blacklist" FontSize="20" Foreground="White" Padding="15,0" Content="Blacklist" Grid.Column="1" HorizontalAlignment="Left" Margin="57,138,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="Filter_Group_Stranger" FontSize="20" Foreground="White" Padding="15,0" Content="Stranger" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
-
-                    <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
-                    <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Key}" HorizontalContentAlignment="Center" Background="#FF0B413F" Margin="1,2" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" />
-                </Grid>
+                <ContentPresenter x:Name="ContentArea" Content="{StaticResource MainContent}" />
 
             </tlibborder:MainBorder>
         </Viewbox>
