@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tencent.Components"
              xmlns:fc="clr-namespace:AxNvrViewerLib;assembly=AxInterop.NvrViewerLib"
+             xmlns:pl="clr-namespace:Tencent.Panels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="50">
@@ -89,7 +90,35 @@
             <Border BorderBrush="#FF01C4C1" BorderThickness="0,2,2,2" CornerRadius="0,8,8,0" Width="90" HorizontalAlignment="Right" />
         </Grid>
 
-        <Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" />
+        <Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" Visibility="Collapsed" />
+        
+        
+        <!--<pl:TimeTrackPanel Background="Red" Grid.Row="1" TimeStart="0" TimeEnd="100">
+            <Rectangle Fill="Green" pl:TimeTrackPanel.TrackTimeStart="50" pl:TimeTrackPanel.TrackTimeEnd="60" />
+        </pl:TimeTrackPanel>-->
+
+        <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}" Grid.Row="1">
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="pl:TimeTrackPanel.TrackTimeStart" Value="{Binding starttime}" />
+                    <Setter Property="pl:TimeTrackPanel.TrackTimeEnd" Value="{Binding endtime}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <pl:TimeTrackPanel Background="Red"
+                        TimeStart="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.EntryTime}"
+                        TimeEnd="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.LastTime}"
+                        />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Fill="Gold" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
 
     </Grid>
 </UserControl>

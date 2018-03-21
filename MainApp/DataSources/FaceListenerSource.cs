@@ -127,6 +127,15 @@ namespace Tencent.DataSources {
         // Using a DependencyProperty as the backing store for EntryTime.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EntryTimeProperty =
             DependencyProperty.Register("EntryTime", typeof(long), typeof(FaceDetail), new PropertyMetadata(null));
+
+        public long LastTime {
+            get { return (long)GetValue(LastTimeProperty); }
+            set { SetValue(LastTimeProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for LastTime.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LastTimeProperty =
+            DependencyProperty.Register("LastTime", typeof(long), typeof(FaceDetail), new PropertyMetadata(null));
+
         #endregion "Dependency Properties"
 
         public ObservableCollection<TraceItem> Traces { get; private set; }
@@ -227,6 +236,7 @@ namespace Tencent.DataSources {
         public void StartSearch(dynamic face) {
             this.FaceDetail.CurrentFace = face;
             this.FaceDetail.EntryTime = 0;
+            this.FaceDetail.LastTime = 0;
             this.FaceDetail.Traces.Clear();
             this.FaceDetail.PossibleContacts.Clear();
 
@@ -292,6 +302,7 @@ namespace Tencent.DataSources {
                                                     lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
                                                     lasttrace.endtime = Math.Min(obj_item.createtime, lasttrace.endtime);
                                                     this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
+                                                    this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
                                                     break;
                                                 }
                                             }
@@ -310,6 +321,7 @@ namespace Tencent.DataSources {
                                             this.FaceDetail.EntryTime = Math.Min(
                                                 this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
                                                     obj_item.createtime);
+                                            this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
                                             camera.Face = obj_item;
 
                                         } while (false);
