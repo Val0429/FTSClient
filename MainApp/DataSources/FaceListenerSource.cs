@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -244,8 +245,7 @@ namespace Tencent.DataSources {
             this.TrackChanged?.Invoke(true);
             this.FaceDetail.PossibleContacts.Clear();
 
-            List<SearchItem> matches = new List<SearchItem>();
-            List<SearchItem> notmatches = new List<SearchItem>();
+            ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
 
             long comp_duration = long.Parse(ConfigurationManager.AppSettings["possible_companion_duration_seconds"]) * 1000;
 
@@ -265,75 +265,142 @@ namespace Tencent.DataSources {
                     }
                 } else {
                     const double rate = 0.7;
+                    allitem.Add(obj_item);
+                    allitem = new ConcurrentBag<SearchItem>(allitem.OrderByDescending(x => x.createtime));
 
-                        this.FaceDetail.Dispatcher.BeginInvoke(
-                                new Action(() => {
-                                    if (obj_item.score < rate) {
-                                        /// not match
-                                            ///this.FaceDetail.PossibleContacts.Add(obj_item);
-                                        /// check for matches to add
-                                        if (matches.Count > 0) {
-                                            SearchItem item = matches.Last();
-                                            if (Math.Abs(item.createtime - obj_item.createtime) <= comp_duration) {
-                                                if (item.sourceid == obj_item.sourceid)
-                                                    this.FaceDetail.PossibleContacts.Add(obj_item);
-                                            } else {
-                                                notmatches.Add(obj_item);
-                                            }
-                                        } else {
-                                            notmatches.Add(obj_item);
-                                        }
+                    this.FaceDetail.Dispatcher.BeginInvoke(
+                        new Action(() => {
+                            this.FaceDetail.Traces.Clear();
+                            this.FaceDetail.PossibleContacts.Clear();
+                            SearchItem match = null;
+                            List<SearchItem> notmatches = new List<SearchItem>();
 
-                                    } else {
-                                        /// matches
-                                        /// 1) get last traces, if camera match, add into it.
-                                        /// 2) if not match, add new trace, then add into it.
-                                        matches.Add(obj_item);
-                                        /// check for notmatches to add
-                                        foreach (var obj in notmatches) {
-                                            if (Math.Abs(obj.createtime - obj_item.createtime) <= comp_duration && obj.sourceid == obj_item.sourceid) {
-                                                this.FaceDetail.PossibleContacts.Add(obj_item);
-                                            }
+                            foreach (SearchItem obj in allitem) {
+                                if (obj.score < rate) {
+                                    /// not match
+                                    if (match == null || Math.Abs(match.createtime - obj.createtime) > comp_duration)
+                                        notmatches.Add(obj);
+                                    else
+                                        this.FaceDetail.PossibleContacts.Add(obj);
+
+                                } else {
+                                    /// matches
+                                    /// 1) get last traces, if camera match, add into it.
+                                    /// 2) if not match, add new trace, then add into it.
+                                    do {
+                                        /// detect possible comps
+                                        match = obj;
+                                        foreach (var notmatch in notmatches) {
+                                            if (Math.Abs(obj.createtime - notmatch.createtime) <= comp_duration)
+                                                this.FaceDetail.PossibleContacts.Add(notmatch);
                                         }
                                         notmatches.Clear();
 
-                                        do {
-                                            // 1)
-                                            if (this.FaceDetail.Traces.Count > 0) {
-                                                var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
-                                                if (lasttrace.Camera.sourceid == obj_item.sourceid) {
-                                                    lasttrace.Faces.Add(obj_item);
-                                                    lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
-                                                    lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
-                                                    this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
-                                                    this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
-                                                    this.TrackChanged?.Invoke(true);
-                                                    break;
-                                                }
+                                        // 1)
+                                        if (this.FaceDetail.Traces.Count > 0) {
+                                            var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
+                                            if (lasttrace.Camera.sourceid == obj.sourceid) {
+                                                lasttrace.Faces.Add(obj);
+                                                lasttrace.starttime = Math.Min(obj.createtime, lasttrace.starttime);
+                                                lasttrace.endtime = Math.Max(obj.createtime, lasttrace.endtime);
+                                                this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj.createtime);
+                                                this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+                                                break;
                                             }
+                                        }
 
-                                            // 2)
-                                            // find camera
-                                            Camera camera = null;
-                                            Cameras.TryGetValue(obj_item.sourceid, out camera);
-                                            if (camera == null) break;
-                                            /// create trace
-                                            var traceitem = new TraceItem();
-                                            traceitem.Camera = camera;
-                                            traceitem.starttime = traceitem.endtime = obj_item.createtime;
-                                            traceitem.Faces.Add(obj_item);
-                                            this.FaceDetail.Traces.Add(traceitem);
-                                            this.FaceDetail.EntryTime = Math.Min(
-                                                this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
-                                                    obj_item.createtime);
-                                            this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
-                                            camera.Face = obj_item;
-                                            this.TrackChanged?.Invoke(true);
+                                        // 2)
+                                        // find camera
+                                        Camera camera = null;
+                                        Cameras.TryGetValue(obj.sourceid, out camera);
+                                        if (camera == null) break;
+                                        /// create trace
+                                        var traceitem = new TraceItem();
+                                        traceitem.Camera = camera;
+                                        traceitem.starttime = traceitem.endtime = obj.createtime;
+                                        traceitem.Faces.Add(obj);
+                                        this.FaceDetail.Traces.Add(traceitem);
+                                        this.FaceDetail.EntryTime = Math.Min(
+                                            this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+                                                obj.createtime);
+                                        this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+                                        camera.Face = obj;
 
-                                        } while (false);
-                                    }
-                                })
-                            );
+                                    } while (false);
+                                }
+                            }
+                            this.TrackChanged?.Invoke(true);
+                        })
+                    );
+
+                        //this.FaceDetail.Dispatcher.BeginInvoke(
+                        //        new Action(() => {
+                        //            if (obj_item.score < rate) {
+                        //                /// not match
+                        //                    ///this.FaceDetail.PossibleContacts.Add(obj_item);
+                        //                /// check for matches to add
+                        //                if (matches.Count > 0) {
+                        //                    SearchItem item = matches.Last();
+                        //                    if (Math.Abs(item.createtime - obj_item.createtime) <= comp_duration) {
+                        //                        if (item.sourceid == obj_item.sourceid)
+                        //                            this.FaceDetail.PossibleContacts.Add(obj_item);
+                        //                    } else {
+                        //                        notmatches.Add(obj_item);
+                        //                    }
+                        //                } else {
+                        //                    notmatches.Add(obj_item);
+                        //                }
+
+                        //            } else {
+                        //                /// matches
+                        //                /// 1) get last traces, if camera match, add into it.
+                        //                /// 2) if not match, add new trace, then add into it.
+                        //                matches.Add(obj_item);
+                        //                /// check for notmatches to add
+                        //                foreach (var obj in notmatches) {
+                        //                    if (Math.Abs(obj.createtime - obj_item.createtime) <= comp_duration && obj.sourceid == obj_item.sourceid) {
+                        //                        this.FaceDetail.PossibleContacts.Add(obj_item);
+                        //                    }
+                        //                }
+                        //                notmatches.Clear();
+
+                        //                do {
+                        //                    // 1)
+                        //                    if (this.FaceDetail.Traces.Count > 0) {
+                        //                        var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
+                        //                        if (lasttrace.Camera.sourceid == obj_item.sourceid) {
+                        //                            lasttrace.Faces.Add(obj_item);
+                        //                            lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
+                        //                            lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
+                        //                            this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
+                        //                            this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
+                        //                            this.TrackChanged?.Invoke(true);
+                        //                            break;
+                        //                        }
+                        //                    }
+
+                        //                    // 2)
+                        //                    // find camera
+                        //                    Camera camera = null;
+                        //                    Cameras.TryGetValue(obj_item.sourceid, out camera);
+                        //                    if (camera == null) break;
+                        //                    /// create trace
+                        //                    var traceitem = new TraceItem();
+                        //                    traceitem.Camera = camera;
+                        //                    traceitem.starttime = traceitem.endtime = obj_item.createtime;
+                        //                    traceitem.Faces.Add(obj_item);
+                        //                    this.FaceDetail.Traces.Add(traceitem);
+                        //                    this.FaceDetail.EntryTime = Math.Min(
+                        //                        this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+                        //                            obj_item.createtime);
+                        //                    this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
+                        //                    camera.Face = obj_item;
+                        //                    this.TrackChanged?.Invoke(true);
+
+                        //                } while (false);
+                        //            }
+                        //        })
+                        //    );
                 }
                 return;
             };
