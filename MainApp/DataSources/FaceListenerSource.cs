@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -168,8 +169,7 @@ namespace Tencent.DataSources {
             StartServer();
         }
 
-        public delegate void TrackChangedHandler(bool o);
-        public event TrackChangedHandler TrackChanged;
+        public Subject<bool> TrackChanged = new Subject<bool>();
 
         public ObservableCollection<FaceItem> Faces { get; private set; }
 
@@ -242,7 +242,7 @@ namespace Tencent.DataSources {
             this.FaceDetail.EntryTime = 0;
             this.FaceDetail.LastTime = 0;
             this.FaceDetail.Traces.Clear();
-            this.TrackChanged?.Invoke(true);
+            TrackChanged.OnNext(true);
             this.FaceDetail.PossibleContacts.Clear();
 
             ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
@@ -329,7 +329,7 @@ namespace Tencent.DataSources {
                                     } while (false);
                                 }
                             }
-                            this.TrackChanged?.Invoke(true);
+                            TrackChanged.OnNext(true);
                         })
                     );
 

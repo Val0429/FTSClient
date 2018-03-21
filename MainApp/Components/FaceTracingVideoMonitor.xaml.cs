@@ -21,6 +21,8 @@ using System.Configuration;
 using System.Windows.Controls.Primitives;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
+using System.Windows.Threading;
 
 namespace Tencent.Components {
     /// <summary>
@@ -28,9 +30,12 @@ namespace Tencent.Components {
     /// </summary>
     public partial class FaceTracingVideoMonitor : UserControl {
         bool dragging = false;
+        private IDisposable _subscription;
 
         public FaceTracingVideoMonitor() {
             InitializeComponent();
+
+            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
 
             this.Traces = new ObservableCollection<Track>();
 
@@ -79,125 +84,85 @@ namespace Tencent.Components {
 
             /// Initial Resource
             List<_INvrViewerEvents_OnConnectEventHandler> delegates = new List<_INvrViewerEvents_OnConnectEventHandler>();
-            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
 
-            source.TrackChanged += (o) => {
-                bool first = true;
-                string uri = "/airvideo/playback?channel=channel";
-                long? starttime = null;
-                List<string> tmp = new List<string>();
+            /// initial video throttle
+            _subscription = Observable.CombineLatest(source.TrackChanged)
+                .Select((o) => {
+                    return Observable.Timer(TimeSpan.FromMilliseconds(600))
+                    .Select(t => o);
+                })
+                .Switch()
+                .Subscribe((o) => {
+                    this.Dispatcher.BeginInvoke(
+                        new Action(() => {
 
-                Traces.Clear();
-                begintime = 0;
-                endtime = 0;
+                            bool first = true;
+                            string uri = "/airvideo/playback?channel=channel";
+                            long? starttime = null;
+                            List<string> tmp = new List<string>();
 
-                foreach (var trace in source.FaceDetail.Traces) {
-                    var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
+                            Traces.Clear();
+                            begintime = 0;
+                            endtime = 0;
 
-                    ///// workaround, todo remove
-                    //switch (cameraid) { case 1: cameraid = 6; break; case 2: cameraid = 7; break; case 3: cameraid = 8; break; case 5: cameraid = 10; break; default: cameraid = 9; break; }
-                    ///// workaround, todo remove
+                            foreach (var trace in source.FaceDetail.Traces) {
+                                var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
 
-                    var st = trace.starttime - (long)(startpaddingseconds * 1000);
-                    /// for first, starttime - 5 seconds
-                    if (first) {
-                        uri += cameraid;
-                        starttime = st;
-                        this.Slider.Minimum = (double)st;
-                        begintime = st;
-                        first = false;
-                    }
-                    /// for every, add into uri
-                    tmp.Add(string.Format("{0},{1}", st / 1000, cameraid));
-                    /// Check previous trace first
-                    var et = trace.endtime + endpaddingseconds * 1000;
-                    var lt = Traces.LastOrDefault();
-                    if (lt != null && lt.endtime > st) lt.endtime = st;
-                    /// Add into local Traces
-                    begintime = Math.Min(begintime, st);
-                    endtime = Math.Max(endtime, (long)et);
-                    Traces.Add(
-                        new Track() { camera = trace.Camera, starttime = st, endtime = et }
-                        );
-                    Console.WriteLine("Begin: {0}, End: {1}, st: {2}, ed: {3}", begintime, endtime, st, et);
-                }
-                if (starttime == null) return;
-                
-                /// endtime + 10 second
-                this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + endpaddingseconds * 1000;
-                uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
-                Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000);
-                File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
+                                ///// workaround, todo remove
+                                //switch (cameraid) { case 1: cameraid = 6; break; case 2: cameraid = 7; break; case 3: cameraid = 8; break; case 5: cameraid = 10; break; default: cameraid = 9; break; }
+                                ///// workaround, todo remove
 
-                /// Clean Connect Event
-                foreach (var eh in delegates) {
-                    videoctrl.OnConnect -= eh;
-                }
-                delegates.Clear();
+                                var st = trace.starttime - (long)(startpaddingseconds * 1000);
+                                /// for first, starttime - 5 seconds
+                                if (first) {
+                                    uri += cameraid;
+                                    starttime = st;
+                                    this.Slider.Minimum = (double)st;
+                                    begintime = st;
+                                    first = false;
+                                }
+                                /// for every, add into uri
+                                tmp.Add(string.Format("{0},{1}", st / 1000, cameraid));
+                                /// Check previous trace first
+                                var et = trace.endtime + endpaddingseconds * 1000;
+                                var lt = Traces.LastOrDefault();
+                                if (lt != null && lt.endtime > st) lt.endtime = st;
+                                /// Add into local Traces
+                                begintime = Math.Min(begintime, st);
+                                endtime = Math.Max(endtime, (long)et);
+                                Traces.Add(
+                                    new Track() { camera = trace.Camera, starttime = st, endtime = et }
+                                    );
+                                Console.WriteLine("Begin: {0}, End: {1}, st: {2}, ed: {3}", begintime, endtime, st, et);
+                            }
+                            if (starttime == null) return;
 
-                videoctrl.Disconnect();
-                videoctrl.ServerUri = uri;
-                videoctrl.Connect();
-                _INvrViewerEvents_OnConnectEventHandler evt = (object s2, _INvrViewerEvents_OnConnectEvent e2) => {
-                    Console.WriteLine("On Connect Called");
-                    videoctrl.Goto((ulong)starttime, 2);
-                    this.Slider.Value = (double)starttime;
-                };
-                videoctrl.OnConnect += evt;
-                delegates.Add(evt);
-            };
+                            /// endtime + 10 second
+                            this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + endpaddingseconds * 1000;
+                            uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
+                            Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000);
+                            //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
 
-            //source.FaceDetail.Traces.CollectionChanged += (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => {
+                            /// Clean Connect Event
+                            foreach (var eh in delegates) {
+                                videoctrl.OnConnect -= eh;
+                            }
+                            delegates.Clear();
 
-            //    bool first = true;
-            //    string uri = "/airvideo/playback?channel=channel";
-            //    long? starttime = null;
-            //    List<string> tmp = new List<string>();
-            //    foreach (var trace in source.FaceDetail.Traces) {
-            //        var cameraid = int.Parse(Regex.Match(trace.Camera.sourceid, @"\d+").Value);
+                            videoctrl.Disconnect();
+                            videoctrl.ServerUri = uri;
+                            videoctrl.Connect();
+                            _INvrViewerEvents_OnConnectEventHandler evt = (object s2, _INvrViewerEvents_OnConnectEvent e2) => {
+                                Console.WriteLine("On Connect Called");
+                                videoctrl.Goto((ulong)starttime, 2);
+                                this.Slider.Value = (double)starttime;
+                            };
+                            videoctrl.OnConnect += evt;
+                            delegates.Add(evt);
 
-            //        ///// workaround, todo remove
-            //        //switch (cameraid) {
-            //        //    case 1: cameraid = 6; break;
-            //        //    case 2: cameraid = 7; break;
-            //        //    case 3: cameraid = 8; break;
-            //        //    case 5: cameraid = 10; break;
-            //        //    default: cameraid = 9; break;
-            //        //}
-            //        ///// workaround, todo remove
-
-            //        if (first) {
-            //            uri += cameraid;
-            //            starttime = trace.starttime - 3000;
-            //            this.Slider.Minimum = (double)starttime;
-            //            first = false;
-            //        }
-            //        tmp.Add(string.Format("{0},{1}", (trace.starttime - 3000) / 1000, cameraid));
-            //    }
-            //    if (starttime == null) return;
-            //    //this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime;
-            //    this.Slider.Maximum = (double)source.FaceDetail.Traces[source.FaceDetail.Traces.Count - 1].endtime + 30*1000;
-            //    uri = string.Format("{0}&mix={1}", uri, string.Join(";", tmp.ToArray()));
-            //    Console.WriteLine("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum/1000, this.Slider.Maximum/1000);
-            //    File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
-
-            //    /// Clean Connect Event
-            //    foreach (var eh in delegates) {
-            //        videoctrl.OnConnect -= eh;
-            //    }
-            //    delegates.Clear();
-
-            //    videoctrl.Disconnect();
-            //    videoctrl.ServerUri = uri;
-            //    videoctrl.Connect();
-            //    _INvrViewerEvents_OnConnectEventHandler evt = (object s2, _INvrViewerEvents_OnConnectEvent e2) => {
-            //        Console.WriteLine("On Connect Called");
-            //        videoctrl.Goto((ulong)starttime, 2);
-            //        this.Slider.Value = (double)starttime;
-            //    };
-            //    videoctrl.OnConnect += evt;
-            //    delegates.Add(evt);
-            //};
+                        })
+                    , DispatcherPriority.ContextIdle);
+                });
         }
 
         public class Track : DependencyObject {
