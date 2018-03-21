@@ -8,7 +8,7 @@
              xmlns:pl="clr-namespace:Tencent.Panels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="50">
+    <Grid Margin="50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
         <Grid.Resources>
             <Style TargetType="{x:Type Slider}">
                 <Setter Property="Template">
@@ -97,7 +97,7 @@
             <Rectangle Fill="Green" pl:TimeTrackPanel.TrackTimeStart="50" pl:TimeTrackPanel.TrackTimeEnd="60" />
         </pl:TimeTrackPanel>-->
 
-        <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}" Grid.Row="1">
+        <ItemsControl ItemsSource="{Binding Traces}" Grid.Row="1">
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="pl:TimeTrackPanel.TrackTimeStart" Value="{Binding starttime}" />
@@ -106,18 +106,33 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <pl:TimeTrackPanel Background="Red"
-                        TimeStart="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.EntryTime}"
-                        TimeEnd="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.LastTime}"
+                    <pl:TimeTrackPanel
+                        TimeStart="{Binding begintime}"
+                        TimeEnd="{Binding endtime}"
                         />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Fill="Gold" />
+                    <Rectangle Opacity="0.2" Fill="Gold" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <!--<Label Foreground="White" Background="Red" Content="{Binding Path=Traces}" Grid.Row="1" />-->
+
+        <!--<ItemsControl ItemsSource="{Binding Traces}" Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Background="Red" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Fill="Gold" Width="30" Margin="1" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>-->
 
 
     </Grid>

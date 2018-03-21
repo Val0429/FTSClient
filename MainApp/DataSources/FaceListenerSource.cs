@@ -167,6 +167,9 @@ namespace Tencent.DataSources {
             StartServer();
         }
 
+        public delegate void TrackChangedHandler(bool o);
+        public event TrackChangedHandler TrackChanged;
+
         public ObservableCollection<FaceItem> Faces { get; private set; }
 
         public FaceDetail FaceDetail { get; private set; }
@@ -238,6 +241,7 @@ namespace Tencent.DataSources {
             this.FaceDetail.EntryTime = 0;
             this.FaceDetail.LastTime = 0;
             this.FaceDetail.Traces.Clear();
+            this.TrackChanged?.Invoke(true);
             this.FaceDetail.PossibleContacts.Clear();
 
             List<SearchItem> matches = new List<SearchItem>();
@@ -300,9 +304,10 @@ namespace Tencent.DataSources {
                                                 if (lasttrace.Camera.sourceid == obj_item.sourceid) {
                                                     lasttrace.Faces.Add(obj_item);
                                                     lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
-                                                    lasttrace.endtime = Math.Min(obj_item.createtime, lasttrace.endtime);
+                                                    lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
                                                     this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
                                                     this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
+                                                    this.TrackChanged?.Invoke(true);
                                                     break;
                                                 }
                                             }
@@ -323,6 +328,7 @@ namespace Tencent.DataSources {
                                                     obj_item.createtime);
                                             this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
                                             camera.Face = obj_item;
+                                            this.TrackChanged?.Invoke(true);
 
                                         } while (false);
                                     }
