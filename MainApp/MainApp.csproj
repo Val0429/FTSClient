@@ -116,6 +116,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\FaceTracingVideoMonitors\TimeTrack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,6 +148,9 @@
     </Compile>
     <Compile Include="Components\FaceTracingVideoMonitor.xaml.cs">
       <DependentUpon>FaceTracingVideoMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingVideoMonitors\TimeTrack.xaml.cs">
+      <DependentUpon>TimeTrack.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configurations\CameraInfoConfiguration.cs" />
     <Compile Include="Configurations\PeopleGroupInfoConfiguration.cs" />

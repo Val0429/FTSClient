@@ -6,78 +6,17 @@
              xmlns:local="clr-namespace:Tencent.Components"
              xmlns:fc="clr-namespace:AxNvrViewerLib;assembly=AxInterop.NvrViewerLib"
              xmlns:pl="clr-namespace:Tencent.Panels"
+             xmlns:tt="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
         <Grid.Resources>
-            <Style TargetType="{x:Type Slider}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Slider}">
-                            <Track x:Name="PART_Track">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="Slider.DecreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
-                                        <RepeatButton.RenderTransform>
-                                            <ScaleTransform ScaleY="0.3" />
-                                        </RepeatButton.RenderTransform>
-                                        <RepeatButton.Template>
-                                            <ControlTemplate TargetType="RepeatButton">
-                                                <Rectangle>
-                                                    <Rectangle.Fill>
-                                                        <LinearGradientBrush>
-                                                            <GradientStop Color="#FF00FFFA" Offset="1" />
-                                                            <GradientStop Color="#5500FFFA" Offset="0.5" />
-                                                            <GradientStop Color="#1100FFFA" Offset="0" />
-                                                        </LinearGradientBrush>
-                                                    </Rectangle.Fill>
-                                                </Rectangle>
-                                            </ControlTemplate>
-                                        </RepeatButton.Template>
-                                    </RepeatButton>
-                                </Track.DecreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb FocusVisualStyle="{x:Null}">
-                                        <Thumb.Template>
-                                            <ControlTemplate>
-                                                <Ellipse Width="10" Height="10" Fill="White">
-                                                    <Ellipse.Effect>
-                                                        <DropShadowEffect Color="White" ShadowDepth="0" Opacity="1" BlurRadius="15" />
-                                                    </Ellipse.Effect>
-                                                </Ellipse>
-                                            </ControlTemplate>
-                                        </Thumb.Template>
-                                    </Thumb>
-                                </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="Slider.IncreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
-                                        <RepeatButton.RenderTransform>
-                                            <ScaleTransform ScaleY="0.3" />
-                                        </RepeatButton.RenderTransform>
-                                        <RepeatButton.Template>
-                                            <ControlTemplate TargetType="RepeatButton">
-                                                <Rectangle>
-                                                    <Rectangle.Fill>
-                                                        <LinearGradientBrush>
-                                                            <GradientStop Color="#FF00FFFA" Offset="0" />
-                                                            <GradientStop Color="#5500FFFA" Offset="0.5" />
-                                                            <GradientStop Color="#1100FFFA" Offset="1" />
-                                                        </LinearGradientBrush>
-                                                    </Rectangle.Fill>
-                                                </Rectangle>
-                                            </ControlTemplate>
-                                        </RepeatButton.Template>
-                                    </RepeatButton>
-                                </Track.IncreaseRepeatButton>
-                            </Track>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+
         </Grid.Resources>
         
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
 
         <Grid>
@@ -91,49 +30,8 @@
         </Grid>
 
         <Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" Visibility="Collapsed" />
-        
-        
-        <!--<pl:TimeTrackPanel Background="Red" Grid.Row="1" TimeStart="0" TimeEnd="100">
-            <Rectangle Fill="Green" pl:TimeTrackPanel.TrackTimeStart="50" pl:TimeTrackPanel.TrackTimeEnd="60" />
-        </pl:TimeTrackPanel>-->
 
-        <ItemsControl ItemsSource="{Binding Traces}" Grid.Row="1">
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="pl:TimeTrackPanel.TrackTimeStart" Value="{Binding starttime}" />
-                    <Setter Property="pl:TimeTrackPanel.TrackTimeEnd" Value="{Binding endtime}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <pl:TimeTrackPanel
-                        TimeStart="{Binding begintime}"
-                        TimeEnd="{Binding endtime}"
-                        />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Rectangle Opacity="0.2" Fill="Gold" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <!--<Label Foreground="White" Background="Red" Content="{Binding Path=Traces}" Grid.Row="1" />-->
-
-        <!--<ItemsControl ItemsSource="{Binding Traces}" Grid.Row="1">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" Background="Red" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Rectangle Fill="Gold" Width="30" Margin="1" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
-
+        <tt:TimeTrack Traces="{Binding Traces}" BeginTime="{Binding begintime}" EndTime="{Binding endtime}" Grid.Row="1" />
 
     </Grid>
 </UserControl>
