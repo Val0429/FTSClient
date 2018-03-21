@@ -149,6 +149,7 @@
     <Compile Include="Components\FaceTracingVideoMonitor.xaml.cs">
       <DependentUpon>FaceTracingVideoMonitor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\FaceTracingVideoMonitors\PopupEx.cs" />
     <Compile Include="Components\FaceTracingVideoMonitors\TimeTrack.xaml.cs">
       <DependentUpon>TimeTrack.xaml</DependentUpon>
     </Compile>

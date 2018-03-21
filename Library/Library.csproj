@@ -57,6 +57,7 @@
     <Compile Include="Converters\RatioToActualScreenHeightConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenWidthConverter.cs" />
     <Compile Include="Converters\UnixTimestampToDateStringConverter.cs" />
+    <Compile Include="Converters\ZeroVisibilityConverter.cs" />
     <Compile Include="Extensions\ScrollViewerExtension.cs" />
     <Compile Include="Helpers\ImageAsyncHelper.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />

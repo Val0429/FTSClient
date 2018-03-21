@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
-    <Grid>
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TimeTrack}}}">
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -17,70 +17,7 @@
                 </ResourceDictionary.MergedDictionaries>
                 
                 <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
-
-                <Style TargetType="{x:Type Slider}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Slider}">
-                                <Track x:Name="PART_Track">
-                                    <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="Slider.DecreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
-                                            <RepeatButton.RenderTransform>
-                                                <ScaleTransform ScaleY="0.3" />
-                                            </RepeatButton.RenderTransform>
-                                            <RepeatButton.Template>
-                                                <ControlTemplate TargetType="RepeatButton">
-                                                    <Rectangle>
-                                                        <Rectangle.Fill>
-                                                            <LinearGradientBrush>
-                                                                <GradientStop Color="#FF00FFFA" Offset="1" />
-                                                                <GradientStop Color="#5500FFFA" Offset="0.5" />
-                                                                <GradientStop Color="#1100FFFA" Offset="0" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Fill>
-                                                    </Rectangle>
-                                                </ControlTemplate>
-                                            </RepeatButton.Template>
-                                        </RepeatButton>
-                                    </Track.DecreaseRepeatButton>
-                                    <Track.Thumb>
-                                        <Thumb FocusVisualStyle="{x:Null}">
-                                            <Thumb.Template>
-                                                <ControlTemplate>
-                                                    <Ellipse Width="10" Height="10" Fill="White">
-                                                        <Ellipse.Effect>
-                                                            <DropShadowEffect Color="White" ShadowDepth="0" Opacity="1" BlurRadius="15" />
-                                                        </Ellipse.Effect>
-                                                    </Ellipse>
-                                                </ControlTemplate>
-                                            </Thumb.Template>
-                                        </Thumb>
-                                    </Track.Thumb>
-                                    <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="Slider.IncreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
-                                            <RepeatButton.RenderTransform>
-                                                <ScaleTransform ScaleY="0.3" />
-                                            </RepeatButton.RenderTransform>
-                                            <RepeatButton.Template>
-                                                <ControlTemplate TargetType="RepeatButton">
-                                                    <Rectangle>
-                                                        <Rectangle.Fill>
-                                                            <LinearGradientBrush>
-                                                                <GradientStop Color="#FF00FFFA" Offset="0" />
-                                                                <GradientStop Color="#5500FFFA" Offset="0.5" />
-                                                                <GradientStop Color="#1100FFFA" Offset="1" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Fill>
-                                                    </Rectangle>
-                                                </ControlTemplate>
-                                            </RepeatButton.Template>
-                                        </RepeatButton>
-                                    </Track.IncreaseRepeatButton>
-                                </Track>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
+                <cvt:ZeroVisibilityConverter x:Key="ZeroVisibility" />
             </ResourceDictionary>
         </Grid.Resources>
         
@@ -89,7 +26,7 @@
             <RowDefinition Height="16" />
         </Grid.RowDefinitions>
 
-        <ItemsControl ItemsSource="{Binding Traces}" Margin="10">
+        <ItemsControl ItemsSource="{Binding Traces}" Margin="18,10">
             <ItemsControl.ItemContainerStyle>
                 <Style>
                     <Setter Property="pl:TimeTrackPanel.TrackTimeStart" Value="{Binding starttime}" />
@@ -99,22 +36,100 @@
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <pl:TimeTrackPanel
-                        TimeStart="{Binding begintime}"
-                        TimeEnd="{Binding endtime}"
+                        TimeStart="{Binding BeginTime}"
+                        TimeEnd="{Binding EndTime}"
                         />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Opacity="0.25" Fill="#00FFFF" />
+                    <Rectangle Opacity="0.15" Fill="#00FFFF" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Slider x:Name="Slider" Maximum="1" Minimum="0" Value="0" Height="10" TickFrequency="1" Margin="5,0" FocusVisualStyle="{x:Null}" />
+        <Slider x:Name="Slider" Height="10" TickFrequency="1" Margin="13,0" FocusVisualStyle="{x:Null}" Visibility="{Binding BeginTime, Converter={StaticResource ZeroVisibility}}"
+                Minimum="{Binding BeginTime}"
+                Maximum="{Binding EndTime}"
+                Value="{Binding CurrentTime}"
+                >
+            <Slider.Template>
+                <ControlTemplate TargetType="{x:Type Slider}">
+                    <Grid>
+                        <local:PopupEx IsOpen="{Binding IsDragging}"
+                           StaysOpen="True"
+                           PlacementTarget="{Binding ElementName=Thumb}"
+                           PlacementRectangle="-20,20,0,0"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade"
+                           >
+                           <Label Style="{StaticResource DefaultFont}" Padding="5,3" Background="#BB003134">
+                               <TextBlock Text="{Binding CurrentTime, Converter={StaticResource UnixTimestampToDateString}}" />
+                           </Label>
+                        </local:PopupEx>
+                        
+                        <Track x:Name="PART_Track">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="Slider.DecreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
+                                    <RepeatButton.RenderTransform>
+                                        <ScaleTransform ScaleY="0.3" />
+                                    </RepeatButton.RenderTransform>
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Rectangle>
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush>
+                                                        <GradientStop Color="#FF00FFFA" Offset="1" />
+                                                        <GradientStop Color="#5500FFFA" Offset="0.5" />
+                                                        <GradientStop Color="#1100FFFA" Offset="0" />
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb FocusVisualStyle="{x:Null}" x:Name="Thumb">
+                                    <Thumb.Template>
+                                        <ControlTemplate>
+                                            <Ellipse Width="10" Height="10" Fill="White">
+                                                <Ellipse.Effect>
+                                                    <DropShadowEffect Color="White" ShadowDepth="0" Opacity="1" BlurRadius="15" />
+                                                </Ellipse.Effect>
+                                            </Ellipse>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="Slider.IncreaseLarge" RenderTransformOrigin="0.5,0.5" FocusVisualStyle="{x:Null}">
+                                    <RepeatButton.RenderTransform>
+                                        <ScaleTransform ScaleY="0.3" />
+                                    </RepeatButton.RenderTransform>
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Rectangle>
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush>
+                                                        <GradientStop Color="#FF00FFFA" Offset="0" />
+                                                        <GradientStop Color="#5500FFFA" Offset="0.5" />
+                                                        <GradientStop Color="#1100FFFA" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.IncreaseRepeatButton>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Slider.Template>
+        </Slider>
 
-        <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Padding="0" FontSize="14" Content="{Binding begintime, Converter={StaticResource UnixTimestampToDateString}}" HorizontalAlignment="Left" />
-        <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Padding="0" FontSize="14" Content="{Binding endtime, Converter={StaticResource UnixTimestampToDateString}}" HorizontalAlignment="Right" />
+        <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Padding="0" FontSize="14" Content="{Binding BeginTime, Converter={StaticResource UnixTimestampToDateString}}" HorizontalAlignment="Left" />
+        <Label Grid.Row="1" Style="{StaticResource DefaultFont}" Padding="0" FontSize="14" Content="{Binding EndTime, Converter={StaticResource UnixTimestampToDateString}}" HorizontalAlignment="Right" />
 
     </Grid>
 </UserControl>
