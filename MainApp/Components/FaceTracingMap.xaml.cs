@@ -23,6 +23,8 @@ namespace Tencent.Components {
     /// Interaction logic for FaceTracingMap.xaml
     /// </summary>
     public partial class FaceTracingMap : UserControl {
+        Dictionary<string, SideContentCameraDevice> Cameras = new Dictionary<string, SideContentCameraDevice>();
+
         public FaceTracingMap() {
             InitializeComponent();
 
@@ -33,15 +35,33 @@ namespace Tencent.Components {
             Style nm_camera_template = (Style)this.FindResource("NormalCameraModel");
             FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
             foreach (var value in source.Cameras.Values) {
-                var camera = new SideContentCameraDevice() { X = value.X, Y = value.Y, Angle = value.Angle, Size = 0.4, Style = value.type == 0 ? fr_camera_template : nm_camera_template };
+                var camera = new SideContentCameraDevice() { sourceid = value.sourceid, X = value.X, Y = value.Y, Angle = value.Angle, Size = 0.4, Style = value.type == 0 ? fr_camera_template : nm_camera_template };
+                camera.MouseDown += (object sender, MouseButtonEventArgs e) => {
+                    Camera oricamera = null;
+                    source.Cameras.TryGetValue(((SideContentCameraDevice)sender).sourceid, out oricamera);
+                    if (oricamera == null) return;
+                    source.DoMapCameraClicked(oricamera);
+                };
                 var binding = new Binding();
                 binding.Source = value;
                 binding.Path = new PropertyPath("Face");
                 camera.SetBinding(SideContentCameraDevice.FaceProperty, binding);
+                Cameras[value.sourceid] = camera;
                 mainmap.Objects.Add(
                     camera
                     );
             }
+
+            /// listen to camera change
+            source.OnPlayingCameraChanged += (Camera playingcamera) => {
+                foreach (var camera in Cameras.Values) {
+                    camera.Style = nm_camera_template;
+                    if (playingcamera == null) continue;
+                    if (playingcamera.sourceid == camera.sourceid) {
+                        camera.Style = fr_camera_template;
+                    }
+                }
+            };
 
             List<NormalFootprint> footprints = new List<NormalFootprint>();
             source.FaceDetail.Traces.CollectionChanged += (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => {
@@ -86,6 +106,7 @@ namespace Tencent.Components {
     }
 
     public class SideContentCameraDevice : CameraDevice {
+        public string sourceid { get; set; }
 
         public SearchItem Face {
             get { return (SearchItem)GetValue(FaceProperty); }

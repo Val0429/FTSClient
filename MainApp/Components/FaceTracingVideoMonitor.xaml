@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tencent.Components"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              xmlns:fc="clr-namespace:AxNvrViewerLib;assembly=AxInterop.NvrViewerLib"
              xmlns:pl="clr-namespace:Tencent.Panels"
              xmlns:tt="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
@@ -11,7 +12,12 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
         <Grid.Resources>
-
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+                <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+            </ResourceDictionary>
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -27,6 +33,14 @@
 
             <Border BorderBrush="#FF01C4C1" BorderThickness="2,2,0,2" CornerRadius="8,0,0,8" Width="90" HorizontalAlignment="Left" />
             <Border BorderBrush="#FF01C4C1" BorderThickness="0,2,2,2" CornerRadius="0,8,8,0" Width="90" HorizontalAlignment="Right" />
+
+            <Label Style="{StaticResource DefaultFont}"
+                   Margin="100,-15,0,0" Padding="0" Height="20" FontSize="16" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="10,0" Text="{Binding Source={StaticResource FaceListenerSource}, Path=PlayingCamera.name}" />
+                    <TextBlock Margin="10,0" Text="{Binding ElementName=TimeTrack, Path=CurrentTime, Converter={StaticResource UnixTimestampToDateString}}" />
+                </StackPanel>
+            </Label>
         </Grid>
 
         <!--<Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" Visibility="Collapsed" />-->

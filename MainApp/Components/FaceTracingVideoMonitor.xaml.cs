@@ -55,25 +55,78 @@ namespace Tencent.Components {
             videoctrl.StretchToFit = 1;
             videoctrl.AutoReconnect = 1;
             videoctrl.Mute = 1;
-            videoctrl.OnTimeCode += (object sender, _INvrViewerEvents_OnTimeCodeEvent e) => {
-                var time = long.Parse(e.t);
-                if (!this.TimeTrack.IsDragging) {
-                    this.TimeTrack.CurrentTime = time;
-                }
-                if (time >= this.TimeTrack.EndTime) {
-                    videoctrl.Goto((ulong)time, 1);
-                }
-            };
 
-            /// Initial TimeTrack
-            this.TimeTrack.OnDragSetCurrentTime += (long timestamp) => {
+            ///
+            /// within OnTimeCode & OnDragSetCurrentTime, calculate goto next track.
+            ///
+            Action<long, bool> gotoTime = (long timestamp, bool force) => {
+                Camera camera = null;
+                foreach (var trace in this.Traces) {
+                    /// before time
+                    if (trace.starttime > timestamp) {
+                        timestamp = (long)trace.starttime;
+                        camera = trace.camera;
+                        break;
+                    }
+                    /// matches time
+                    if (trace.starttime <= timestamp && trace.endtime >= timestamp) {
+                        camera = trace.camera;
+                        if (!force) {
+                            source.DoPlayingCameraChange(camera);
+                            return;
+                        }
+                        break;
+                    }
+                }
                 videoctrl.Goto((ulong)timestamp, 1);
                 var task = Task.Run(() => {
                     System.Threading.Thread.Sleep(1000);
                     this.Dispatcher.BeginInvoke(new Action(() => {
                         videoctrl.Goto((ulong)timestamp, 2);
+
+                        source.DoPlayingCameraChange(camera);
                     }));
                 });
+            };
+
+            videoctrl.OnTimeCode += (object sender, _INvrViewerEvents_OnTimeCodeEvent e) => {
+                var time = long.Parse(e.t);
+                if (!this.TimeTrack.IsDragging) {
+                    this.TimeTrack.CurrentTime = time;
+                }
+                /// if end then stop
+                if (time >= this.TimeTrack.EndTime) {
+                    videoctrl.Goto((ulong)time, 1);
+                    return;
+                }
+                /// goto TimeTrack
+                gotoTime(time, false);
+            };
+
+            /// Initial TimeTrack
+            this.TimeTrack.OnDragSetCurrentTime += new FaceTracingVideoMonitors.TimeTrack.DragSetCurrentTime(
+                new Action<long>((o) => gotoTime(o, true))
+                );
+
+            /// Hook Map Click event
+            source.OnMapCameraClicked += (Camera camera) => {
+                var i = 0;
+                for (; i < this.Traces.Count; ++i) {
+                    var trace = this.Traces[i];
+                    if (trace.camera.sourceid != camera.sourceid) continue;
+                    /// matches time
+                    if (trace.starttime <= this.TimeTrack.CurrentTime && trace.endtime >= this.TimeTrack.CurrentTime) {
+                        i++;
+                        break;
+                    }
+                }
+
+                for (var t = i; t < i+this.Traces.Count; ++t) {
+                    var trace = this.Traces[t % this.Traces.Count];
+                    if (trace.camera.sourceid != camera.sourceid) continue;
+                    gotoTime((long)trace.starttime, true);
+                    break;
+                }
             };
 
             /// Initial Resource
@@ -179,7 +232,8 @@ namespace Tencent.Components {
                             videoctrl.Connect();
                             _INvrViewerEvents_OnConnectEventHandler evt = (object s2, _INvrViewerEvents_OnConnectEvent e2) => {
                                 Console.WriteLine("On Connect Called");
-                                videoctrl.Goto((ulong)starttime, 2);
+                                //videoctrl.Goto((ulong)starttime, 2);
+                                gotoTime((long)starttime, true);
                                 this.TimeTrack.CurrentTime = (long)starttime;
                                 Console.WriteLine("start? {0} max? {1} min? {2}", starttime, this.begintime, this.endtime);
                             };

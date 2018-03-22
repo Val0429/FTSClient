@@ -145,7 +145,7 @@ namespace Tencent.DataSources {
         public ObservableCollection<SearchItem> PossibleContacts { get; private set; }
     }
 
-    public class FaceListenerSource : DispatcherObject {
+    public class FaceListenerSource : DependencyObject {
         private string Host { get; set; }
 
         public FaceListenerSource() {
@@ -178,6 +178,29 @@ namespace Tencent.DataSources {
         public Dictionary<string, Camera> Cameras { get; private set; }
 
         public Dictionary<string, PeopleGroup> PeopleGroups { get; private set; }
+
+        // After Video Player Camera Changed. Map should receive this to change icon.
+        public delegate void PlayingCameraChanged(Camera camera);
+        public event PlayingCameraChanged OnPlayingCameraChanged;
+        public void DoPlayingCameraChange(Camera camera) {
+            this.OnPlayingCameraChanged?.Invoke(camera);
+            PlayingCamera = camera;
+        }
+        public Camera PlayingCamera {
+            get { return (Camera)GetValue(PlayingCameraProperty); }
+            set { SetValue(PlayingCameraProperty, value); }
+        }
+        public static readonly DependencyProperty PlayingCameraProperty =
+            DependencyProperty.Register("PlayingCamera", typeof(Camera), typeof(FaceListenerSource), new PropertyMetadata(null));
+
+
+
+        // After Map Camera Selected. Video Player should receive this to goto next area.
+        public delegate void MapCameraClicked(Camera camera);
+        public event MapCameraClicked OnMapCameraClicked;
+        public void DoMapCameraClicked(Camera camera) {
+            this.OnMapCameraClicked?.Invoke(camera);
+        }
 
         public void StartServer() {
             string ip = ConfigurationManager.AppSettings["ip"];
@@ -244,6 +267,8 @@ namespace Tencent.DataSources {
             this.FaceDetail.Traces.Clear();
             TrackChanged.OnNext(true);
             this.FaceDetail.PossibleContacts.Clear();
+            this.DoPlayingCameraChange(null);
+            PlayingCamera = null;
 
             ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
 

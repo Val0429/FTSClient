@@ -11,6 +11,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+    <cvt:NullVisibilityConverter x:Key="NullVisibility" />
     <localcvt:SourceIdToCameraNameConverter x:Key="SourceIdToCameraName" />
 
     <!-- simulate selected circle -->
@@ -113,7 +114,7 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                         </ContentPresenter>
-
+                        
                         <!-- Side Content -->
                         <ContentPresenter Content="{Binding Face,RelativeSource={RelativeSource TemplatedParent}}"
                                           Visibility="{Binding Face, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">
@@ -131,7 +132,7 @@
                                 </DataTemplate>
                             </ContentPresenter.ContentTemplate>
                         </ContentPresenter>
-                        
+
                         <!-- Light -->
                         <Rectangle Width="100" Height="100" Canvas.Top="50" Canvas.Left="0" RenderTransformOrigin="0.5,0" IsHitTestVisible="False">
                             <Rectangle.RenderTransform>
