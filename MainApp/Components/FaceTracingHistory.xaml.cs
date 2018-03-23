@@ -81,7 +81,7 @@ namespace Tencent.Components {
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
                 //null
                 /// workaround, todo remove
-                "Val"
+                "Rack"
                 /// workaround, todo remove
                 ));
 

@@ -6,6 +6,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+
+        <ResourceDictionary Source="/Themes/TimeTrackUnit.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
