@@ -8,6 +8,9 @@
         <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <SolidColorBrush x:Key="OutlineBrush" Color="#6600FFFA" />
+    <SolidColorBrush x:Key="DragDotBrush" Color="#BB00FFFA" />
+
     <cvt:CalculationConverter x:Key="Calculation" />
     
     <Style TargetType="{x:Type local:TimeTrackUnit}">
@@ -36,17 +39,27 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- Left Top -->
-                            <Line Grid.Row="0" Grid.Column="0" Stroke="#9900FFFA" X1="0" Y1="12" X2="10" Y2="0" />
+                            <Line Grid.Row="0" Grid.Column="0" Stroke="{StaticResource OutlineBrush}" X1="0" Y1="12" X2="10" Y2="0" />
                             <!-- Right Top -->
-                            <Line Grid.Row="0" Grid.Column="2" Stroke="#9900FFFA" X1="0" Y1="0" X2="10" Y2="12" />
+                            <Line Grid.Row="0" Grid.Column="2" Stroke="{StaticResource OutlineBrush}" X1="0" Y1="0" X2="10" Y2="12" />
                             <!-- Left Bottom -->
-                            <Line Grid.Row="2" Grid.Column="0" Stroke="#9900FFFA" X1="0" Y1="0" X2="10" Y2="12" />
+                            <Line Grid.Row="2" Grid.Column="0" Stroke="{StaticResource OutlineBrush}" X1="0" Y1="0" X2="10" Y2="12" />
                             <!-- Right Bottom -->
-                            <Line Grid.Row="2" Grid.Column="2" Stroke="#9900FFFA" X1="0" Y1="12" X2="10" Y2="0" />
+                            <Line Grid.Row="2" Grid.Column="2" Stroke="{StaticResource OutlineBrush}" X1="0" Y1="12" X2="10" Y2="0" />
                             <!-- Left -->
-                            <Border Grid.Row="1" Grid.Column="0" BorderThickness="1,0,0,0" BorderBrush="#9900FFFA" />
+                            <Border Grid.Row="1" Grid.Column="0" BorderThickness="1,0,0,0" BorderBrush="{StaticResource OutlineBrush}">
+                                <Grid>
+                                    <Rectangle Margin="-3,0,0,8" Height="6" Width="3" Fill="{StaticResource DragDotBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Rectangle Margin="-3,8,0,0" Height="6" Width="3" Fill="{StaticResource DragDotBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
                             <!-- Right -->
-                            <Border Grid.Row="1" Grid.Column="2" BorderThickness="0,0,1,0" BorderBrush="#9900FFFA" />
+                            <Border Grid.Row="1" Grid.Column="2" BorderThickness="0,0,1,0" BorderBrush="{StaticResource OutlineBrush}">
+                                <Grid>
+                                    <Rectangle Margin="0,0,-3,8" Height="6" Width="3" Fill="{StaticResource DragDotBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                    <Rectangle Margin="0,8,-3,0" Height="6" Width="3" Fill="{StaticResource DragDotBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
 
                             <!-- Main -->
                             <Grid Grid.Row="2" Grid.Column="1">
