@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
                     xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+                    xmlns:hlp="clr-namespace:Library.Helpers;assembly=Library"
                     >
     
     <ResourceDictionary.MergedDictionaries>
@@ -10,8 +12,6 @@
 
     <SolidColorBrush x:Key="OutlineBrush" Color="#6600FFFA" />
     <SolidColorBrush x:Key="DragDotBrush" Color="#BB00FFFA" />
-
-    <cvt:CalculationConverter x:Key="Calculation" />
     
     <Style TargetType="{x:Type local:TimeTrackUnit}">
         <Setter Property="Template">
@@ -238,7 +238,11 @@
                                                 
                                                 <!-- Content -->
                                                 <Label Margin="3,0" Style="{StaticResource DefaultFont}" Padding="0" Grid.RowSpan="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                                                       FontWeight="Bold" FontSize="12" Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource Calculation}, ConverterParameter='\{0\}-10'}">
+                                                       FontWeight="Bold" FontSize="12"
+                                                       Width="{hlp:ExpressionMultiBinding {Binding Source={}{0}-10},
+                                                              {Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}
+                                                              }"
+                                                       >
                                                     <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
                                                 </Label>
                                             </Grid>
