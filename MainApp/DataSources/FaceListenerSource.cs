@@ -193,7 +193,12 @@ namespace Tencent.DataSources {
         public static readonly DependencyProperty PlayingCameraProperty =
             DependencyProperty.Register("PlayingCamera", typeof(Camera), typeof(FaceListenerSource), new PropertyMetadata(null));
 
-
+        // After Video Player Playing Time Changed. Detail should receive this to change track.
+        public delegate void PlayingTimeChanged(long timestamp);
+        public event PlayingTimeChanged OnPlayingTimeChanged;
+        public void DoPlayingTimeChange(long timestamp) {
+            this.OnPlayingTimeChanged?.Invoke(timestamp);
+        }
 
         // After Map Camera Selected. Video Player should receive this to goto next area.
         public delegate void MapCameraClicked(Camera camera);
@@ -289,7 +294,7 @@ namespace Tencent.DataSources {
                         ws.CloseAsync();
                     }
                 } else {
-                    const double rate = 0.7;
+                    const double rate = 0.8;
                     allitem.Add(obj_item);
                     allitem = new ConcurrentBag<SearchItem>(allitem.OrderByDescending(x => x.createtime));
 

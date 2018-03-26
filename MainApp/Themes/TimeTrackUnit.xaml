@@ -132,9 +132,6 @@
                                             </ControlTemplate.Resources>
                                             
                                             <Grid SnapsToDevicePixels="True">
-                                                <Grid.CacheMode>
-                                                    <BitmapCache RenderAtScale="3" />
-                                                </Grid.CacheMode>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="7" />
                                                     <RowDefinition Height="*" />

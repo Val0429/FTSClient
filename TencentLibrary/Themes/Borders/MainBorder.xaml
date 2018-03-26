@@ -28,12 +28,10 @@
 
                 <ControlTemplate TargetType="{x:Type local:MainBorder}">
 
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.CacheMode>
-                            <BitmapCache RenderAtScale="3" />
-                        </Grid.CacheMode>
+                    <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 
-                        <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" ShowGridLines="False">
+                        <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="120" />
                                 <RowDefinition Height="*" />

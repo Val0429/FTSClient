@@ -129,7 +129,7 @@
 
     </UserControl.Resources>
 
-    <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown">
+    <DockPanel dtl:EntryUnitBorder.OnClick="EntryUnitBorder_MouseDown" tlibborder:FaceTracingBorder.OnClick="FaceTracingBorder_MouseDown" SnapsToDevicePixels="True">
         <DockPanel.Background>
             <ImageBrush Viewbox="0,0 0.5,0.5"
                             Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
@@ -138,7 +138,7 @@
             <Viewbox.CacheMode>
                 <BitmapCache RenderAtScale="3" />
             </Viewbox.CacheMode>
-            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Record">
+            <tlibborder:MainBorder Padding="15" Width="932" Height="500" Title="Tracking Record" SnapsToDevicePixels="True">
                 <tlibborder:MainBorder.Buttons>
                     <!-- Left Bottom Icon -->
                     <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">
@@ -208,7 +208,7 @@
                     <!-- Left Bottom Icon -->
                 </tlibborder:MainBorder.Buttons>
 
-                <ContentPresenter x:Name="ContentArea" Content="{StaticResource MainContent}" />
+                <ContentPresenter x:Name="ContentArea" Content="{StaticResource MainContent}" SnapsToDevicePixels="True" />
 
             </tlibborder:MainBorder>
         </Viewbox>

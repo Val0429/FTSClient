@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tencent.DataSources;
 
 namespace Tencent.Components.FaceTracingDetails {
     /// <summary>
@@ -24,7 +25,7 @@ namespace Tencent.Components.FaceTracingDetails {
         public EntryUnit() {
             InitializeComponent();
 
-            SetValue(IconProperty, this.FindResource("FRCameraTemplate"));
+            SetValue(IconProperty, this.FindResource("NormalCameraTemplate"));
             SetValue(CustomContentProperty, new ObservableCollection<UIElement>());
         }
 

@@ -1,4 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hp="clr-namespace:Library.Helpers;assembly=Library"
                     xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
@@ -28,7 +29,11 @@
 
                         <Grid>
                             <!-- Group Border - Special Area -->
-                            <Rectangle Visibility="{Binding GroupName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">
+                            <!--<Rectangle Visibility="{Binding GroupName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullVisibility}}">-->
+                            <Rectangle Visibility="{hp:ExpressionMultiBinding
+                                                      {Binding Source={StaticResource VisibleExpression}},
+                                                      {Binding GroupName, RelativeSource={RelativeSource TemplatedParent}}
+                                                   }">
                                 <Rectangle.Effect>
                                     <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="{Binding GlowColor, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Rectangle.Effect>

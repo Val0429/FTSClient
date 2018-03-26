@@ -19,9 +19,6 @@
                 <ControlTemplate TargetType="{x:Type local:SubBorder}">
 
                     <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" ShowGridLines="False">
-                        <Grid.CacheMode>
-                            <BitmapCache RenderAtScale="3" />
-                        </Grid.CacheMode>
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="23" />

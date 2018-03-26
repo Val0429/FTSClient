@@ -87,7 +87,8 @@
                             </Grid>
                         </tlibborder:SubBorder>
 
-                        <scv:CustomListView Grid.Row="1"
+                        <scv:CustomListView x:Name="EntryList"
+                                            Grid.Row="1"
                                             Margin="0,0,5,0"
                                             ScrollContentMargin="0,0,0,10"
                                             ScrollBarMargin="0,-20,0,5"
@@ -102,6 +103,8 @@
                                 <DataTemplate>
                                     <ftd:EntryUnit x:Name="EntryUnit"
                                             Title="{Binding Camera.name}"
+                                            Tag="{Binding}"
+                                            MouseDown="EntryUnit_MouseDown"
                                             >
                                         <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}}">
                                             <ItemsControl.ItemsPanel>

@@ -1,5 +1,18 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Library">
+    xmlns:local="clr-namespace:Library"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    >
+
+    <sys:String x:Key="VisibleExpression">
+        {0}==null || {0}==0 ? "Hidden" : "Visible"
+    </sys:String>
+    
+    <sys:String x:Key="ContractColorExpression">
+        <![CDATA[
+            0.2126 * {0.ScR} + 0.7152 * {0.ScG} + 0.0722 * {0.ScB} < 0.5 ? "White" : "Black"
+        ]]>
+    </sys:String>
+
 </ResourceDictionary>

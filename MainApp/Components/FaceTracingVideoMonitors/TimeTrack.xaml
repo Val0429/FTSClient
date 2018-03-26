@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
              xmlns:pl="clr-namespace:Tencent.Panels"
+             xmlns:hlp="clr-namespace:Library.Helpers;assembly=Library"
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -127,7 +128,12 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <Slider x:Name="Slider" Height="10" TickFrequency="1" Margin="-4,0" FocusVisualStyle="{x:Null}" Visibility="{Binding BeginTime, Converter={StaticResource ZeroVisibility}}"
+            <!--Visibility="{Binding BeginTime, Converter={StaticResource ZeroVisibility}}"-->
+            <Slider x:Name="Slider" Height="10" TickFrequency="1" Margin="-4,0" FocusVisualStyle="{x:Null}"
+                Visibility="{hlp:ExpressionMultiBinding
+                                {Binding Source={StaticResource VisibleExpression}},
+                                {Binding BeginTime}
+                            }"
                 Minimum="{Binding BeginTime}"
                 Maximum="{Binding EndTime}"
                 Value="{Binding CurrentTime}"

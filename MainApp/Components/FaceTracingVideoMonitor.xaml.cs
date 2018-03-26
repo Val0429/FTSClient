@@ -99,6 +99,10 @@ namespace Tencent.Components {
                     videoctrl.Goto((ulong)time, 1);
                     return;
                 }
+
+                /// fire event
+                source.DoPlayingTimeChange(time);
+
                 /// goto TimeTrack
                 gotoTime(time, false);
             };

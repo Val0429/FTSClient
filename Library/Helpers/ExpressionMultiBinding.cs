@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,14 @@ namespace Library.Helpers {
             string format = values[0].ToString();
             var template = string.Format(format, values
                 .Where((v, i) => i != 0)
-                .Select((v, i) => v.ToString())
+                .Select((v, i) => v == null ? "null" : "\""+v.ToString()+"\"")
                 .ToArray()
                 );
 
             var engine = new Jurassic.ScriptEngine();
             var result = engine.Evaluate(template);
-            return result;
+
+            return TypeDescriptor.GetConverter(targetType).ConvertFrom(result.ToString());
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) {

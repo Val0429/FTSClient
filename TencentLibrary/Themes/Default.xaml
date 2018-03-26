@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:TencentLibrary">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Library;component/Themes/Generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <Style x:Key="DefaultFont" TargetType="Label">
         <Setter Property="FontFamily" Value="Microsoft YaHei" />
         <Setter Property="FontWeight" Value="Regular" />

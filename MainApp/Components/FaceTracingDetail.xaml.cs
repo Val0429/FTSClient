@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tencent.Components.FaceTracingDetails;
+using Tencent.DataSources;
 
 namespace Tencent.Components {
     /// <summary>
@@ -25,6 +26,28 @@ namespace Tencent.Components {
 
             SetValue(LeftPanelProperty, new ObservableCollection<EntryUnit>());
             SetValue(RightPanelProperty, new ObservableCollection<EntryUnitFace>());
+
+            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+            UIElement fr_camera_template = (UIElement)this.FindResource("FRCameraTemplate");
+            UIElement nm_camera_template = (UIElement)this.FindResource("NormalCameraTemplate");
+
+            const double startpaddingseconds = 5;
+            const double endpaddingseconds = 10;
+
+            // hook playing camera event
+            source.OnPlayingTimeChanged += (long timestamp) => {
+                for (var i=0; i<this.EntryList.Items.Count; ++i) {
+                    ListViewItem item = this.EntryList.ItemContainerGenerator.ContainerFromIndex(i) as ListViewItem;
+                    var cp = FindVisualChild<ContentPresenter>(item);
+                    var tpl = cp.ContentTemplate as DataTemplate;
+                    EntryUnit result = (EntryUnit)tpl.FindName("EntryUnit", cp);
+                    TraceItem obj = (TraceItem)result.Tag;
+                    if ((obj.starttime - startpaddingseconds*1000) <= timestamp && (obj.endtime + endpaddingseconds * 1000) >= timestamp)
+                        result.Icon = (UIElement)this.FindResource("FRCameraTemplate");
+                    else
+                        result.Icon = (UIElement)this.FindResource("NormalCameraTemplate");
+                }
+            };
         }
 
         #region "Dependency Properties"
@@ -74,6 +97,28 @@ namespace Tencent.Components {
             var vm = sender as FrameworkElement;
             RoutedEventArgs ea = new RoutedEventArgs(FaceTracingDetail.FaceItemSelectedEvent, vm.DataContext);
             base.RaiseEvent(ea);
+        }
+
+        public static T FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject {
+            if (depObj != null) {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++) {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T) {
+                        return (T)child;
+                    }
+
+                    T childItem = FindVisualChild<T>(child);
+                    if (childItem != null) return childItem;
+                }
+            }
+            return null;
+        }
+
+        private void EntryUnit_MouseDown(object sender, MouseButtonEventArgs e) {
+            EntryUnit unit = (EntryUnit)sender;
+            TraceItem item = (TraceItem)unit.Tag;
+            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+            source.DoMapCameraClicked(item.Camera);
         }
     }
 }

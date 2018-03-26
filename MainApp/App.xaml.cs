@@ -11,6 +11,7 @@ namespace Tencent {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+        // todo remove
         protected override void OnStartup(StartupEventArgs e) {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             base.OnStartup(e);
