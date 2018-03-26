@@ -26,7 +26,10 @@
 
                 <ControlTemplate TargetType="{x:Type local:ThirdBorder}">
 
-                    <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" ShowGridLines="False">
+                    <Grid Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <Grid.CacheMode>
+                            <BitmapCache RenderAtScale="3" />
+                        </Grid.CacheMode>
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="38" />

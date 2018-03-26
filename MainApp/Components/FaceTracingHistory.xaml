@@ -10,6 +10,7 @@
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              xmlns:localcvt="clr-namespace:Tencent.Converters"
              xmlns:dtl="clr-namespace:Tencent.Components.FaceTracingDetails"
+             xmlns:pnl="clr-namespace:Library.Panels;assembly=Library"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">

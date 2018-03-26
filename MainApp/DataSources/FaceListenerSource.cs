@@ -121,6 +121,11 @@ namespace Tencent.DataSources {
         // Using a DependencyProperty as the backing store for currentFace.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CurrentFaceProperty =
             DependencyProperty.Register("CurrentFace", typeof(FaceItem), typeof(FaceDetail), new PropertyMetadata(null));
+        public delegate void CurrentFaceChanged(FaceItem face);
+        public event CurrentFaceChanged OnCurrentFaceChanged;
+        public void DoCurrentFaceChange(FaceItem face) {
+            this.OnCurrentFaceChanged?.Invoke(face);
+        }
 
         public long EntryTime {
             get { return (long)GetValue(EntryTimeProperty); }
@@ -267,6 +272,7 @@ namespace Tencent.DataSources {
         WebSocket ws = null;
         public void StartSearch(dynamic face) {
             this.FaceDetail.CurrentFace = face;
+            this.FaceDetail.DoCurrentFaceChange(face);
             this.FaceDetail.EntryTime = 0;
             this.FaceDetail.LastTime = 0;
             this.FaceDetail.Traces.Clear();
@@ -296,7 +302,10 @@ namespace Tencent.DataSources {
                 } else {
                     const double rate = 0.8;
                     allitem.Add(obj_item);
-                    allitem = new ConcurrentBag<SearchItem>(allitem.OrderByDescending(x => x.createtime));
+                    allitem = new ConcurrentBag<SearchItem>(allitem
+                        .OrderByDescending(x => x.createtime)
+                        .ThenBy(x => x.image)
+                        );
 
                     this.FaceDetail.Dispatcher.BeginInvoke(
                         new Action(() => {

@@ -68,6 +68,7 @@
     <Compile Include="Extensions\ScrollViewerExtension.cs" />
     <Compile Include="Helpers\ImageAsyncHelper.cs" />
     <Compile Include="Helpers\ExpressionMultiBinding.cs" />
+    <Compile Include="Panels\VirtualizingWrapPanel.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />
     <Compile Include="Windows\EmbedWindow.xaml.cs">
       <DependentUpon>EmbedWindow.xaml</DependentUpon>
