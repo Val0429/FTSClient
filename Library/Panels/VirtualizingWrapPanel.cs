@@ -1,4 +1,28 @@
-﻿using System;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Windows.Controls;
+//using System.Windows.Controls.Primitives;
+//using System.Windows;
+//using System.Windows.Media;
+//using System.Diagnostics;
+//using System.ComponentModel;
+//using System.Windows.Input;
+//using System.Collections.ObjectModel;
+
+//namespace Library.Panels {
+//    public class VirtualizingWrapPanel : VirtualizingPanel, IScrollInfo {
+//        protected override Size MeasureOverride(Size availableSize) {
+//            this.Update
+//        }
+
+//        void UpdateScrollInfo(Size available)
+//    }
+//}
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +36,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 
 namespace Library.Panels {
-    public class VirtualizingWrapPanel : VirtualizingPanel, IScrollInfo
-    {
+    public class VirtualizingWrapPanel : VirtualizingPanel, IScrollInfo {
 
         #region Fields
 
@@ -23,7 +46,7 @@ namespace Library.Panels {
         private Point _offset = new Point(0, 0);
         private Size _extent = new Size(0, 0);
         private Size _viewport = new Size(0, 0);
-        private int firstIndex=0;
+        private int firstIndex = 0;
         private Size childSize;
         private Size _pixelMeasuredViewport = new Size(0, 0);
         Dictionary<UIElement, Rect> _realizedChildLayout = new Dictionary<UIElement, Rect>();
@@ -34,10 +57,8 @@ namespace Library.Panels {
 
         #region Properties
 
-        private Size ChildSlotSize
-        {
-            get
-            {
+        private Size ChildSlotSize {
+            get {
                 return new Size(ItemWidth, ItemHeight);
             }
         }
@@ -47,33 +68,26 @@ namespace Library.Panels {
         #region Dependency Properties
 
         [TypeConverter(typeof(LengthConverter))]
-        public double ItemHeight
-        {
-            get
-            {
+        public double ItemHeight {
+            get {
                 return (double)base.GetValue(ItemHeightProperty);
             }
-            set
-            {
+            set {
                 base.SetValue(ItemHeightProperty, value);
             }
         }
 
         [TypeConverter(typeof(LengthConverter))]
-        public double ItemWidth
-        {
-            get
-            {
+        public double ItemWidth {
+            get {
                 return (double)base.GetValue(ItemWidthProperty);
             }
-            set
-            {
+            set {
                 base.SetValue(ItemWidthProperty, value);
             }
         }
 
-        public Orientation Orientation
-        {
+        public Orientation Orientation {
             get { return (Orientation)GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
@@ -86,34 +100,27 @@ namespace Library.Panels {
 
         #region Methods
 
-        public void SetFirstRowViewItemIndex(int index)
-        {
+        public void SetFirstRowViewItemIndex(int index) {
             SetVerticalOffset((index) / Math.Floor((_viewport.Width) / childSize.Width));
             SetHorizontalOffset((index) / Math.Floor((_viewport.Height) / childSize.Height));
         }
 
-        private void Resizing(object sender, EventArgs e)
-        {
-            if (_viewport.Width != 0)
-            {
+        private void Resizing(object sender, EventArgs e) {
+            if (_viewport.Width != 0) {
                 int firstIndexCache = firstIndex;
                 _abstractPanel = null;
                 MeasureOverride(_viewport);
                 SetFirstRowViewItemIndex(firstIndex);
-                firstIndex = firstIndexCache;               
+                firstIndex = firstIndexCache;
             }
         }
 
-        public int GetFirstVisibleSection()
-        {
+        public int GetFirstVisibleSection() {
             int section;
             var maxSection = _abstractPanel.Max(x => x.Section);
-            if (Orientation == Orientation.Horizontal)
-            {
+            if (Orientation == Orientation.Horizontal) {
                 section = (int)_offset.Y;
-            }
-            else
-            {
+            } else {
                 section = (int)_offset.X;
             }
             if (section > maxSection)
@@ -121,8 +128,7 @@ namespace Library.Panels {
             return section;
         }
 
-        public int GetFirstVisibleIndex()
-        {
+        public int GetFirstVisibleIndex() {
             int section = GetFirstVisibleSection();
             var item = _abstractPanel.Where(x => x.Section == section).FirstOrDefault();
             if (item != null)
@@ -130,252 +136,203 @@ namespace Library.Panels {
             return 0;
         }
 
-        private void CleanUpItems(int minDesiredGenerated, int maxDesiredGenerated)
-        {
-            for (int i = _children.Count - 1; i >= 0; i--)
-            {
+        private void CleanUpItems(int minDesiredGenerated, int maxDesiredGenerated) {
+            for (int i = _children.Count - 1; i >= 0; i--) {
                 GeneratorPosition childGeneratorPos = new GeneratorPosition(i, 0);
                 int itemIndex = _generator.IndexFromGeneratorPosition(childGeneratorPos);
-                if (itemIndex < minDesiredGenerated || itemIndex > maxDesiredGenerated)
-                {
+                if (itemIndex < minDesiredGenerated || itemIndex > maxDesiredGenerated) {
                     _generator.Remove(childGeneratorPos, 1);
                     RemoveInternalChildRange(i, 1);
                 }
             }
         }
 
-        private void ComputeExtentAndViewport(Size pixelMeasuredViewportSize, int visibleSections)
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
+        private void ComputeExtentAndViewport(Size pixelMeasuredViewportSize, int visibleSections) {
+            if (Orientation == Orientation.Horizontal) {
                 _viewport.Height = visibleSections;
                 _viewport.Width = pixelMeasuredViewportSize.Width;
-            }
-            else
-            {
+            } else {
                 _viewport.Width = visibleSections;
                 _viewport.Height = pixelMeasuredViewportSize.Height;
             }
 
-            if (Orientation == Orientation.Horizontal)
-            {
+            if (Orientation == Orientation.Horizontal) {
                 _extent.Height = _abstractPanel.SectionCount + ViewportHeight - 1;
 
-            }
-            else
-            {
+            } else {
                 _extent.Width = _abstractPanel.SectionCount + ViewportWidth - 1;
             }
             _owner.InvalidateScrollInfo();
         }
 
-        private void ResetScrollInfo()
-        {
+        private void ResetScrollInfo() {
             _offset.X = 0;
             _offset.Y = 0;
         }
 
-        private int GetNextSectionClosestIndex(int itemIndex)
-        {
+        private int GetNextSectionClosestIndex(int itemIndex) {
             var abstractItem = _abstractPanel[itemIndex];
-            if (abstractItem.Section < _abstractPanel.SectionCount - 1)
-            {
+            if (abstractItem.Section < _abstractPanel.SectionCount - 1) {
                 var ret = _abstractPanel.
                     Where(x => x.Section == abstractItem.Section + 1).
                     OrderBy(x => Math.Abs(x.SectionIndex - abstractItem.SectionIndex)).
                     First();
                 return ret._index;
-            }
-            else
+            } else
                 return itemIndex;
         }
 
-        private int GetLastSectionClosestIndex(int itemIndex)
-        {
+        private int GetLastSectionClosestIndex(int itemIndex) {
             var abstractItem = _abstractPanel[itemIndex];
-            if (abstractItem.Section > 0)
-            {
+            if (abstractItem.Section > 0) {
                 var ret = _abstractPanel.
                     Where(x => x.Section == abstractItem.Section - 1).
                     OrderBy(x => Math.Abs(x.SectionIndex - abstractItem.SectionIndex)).
                     First();
                 return ret._index;
-            }
-            else
+            } else
                 return itemIndex;
         }
 
-        private void NavigateDown()
-        {
+        private void NavigateDown() {
             var gen = _generator.GetItemContainerGeneratorForPanel(this);
             UIElement selected = (UIElement)Keyboard.FocusedElement;
             int itemIndex = gen.IndexFromContainer(selected);
             int depth = 0;
-            while (itemIndex == -1)
-            {
+            while (itemIndex == -1) {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
             DependencyObject next = null;
-            if (Orientation == Orientation.Horizontal)
-            {
+            if (Orientation == Orientation.Horizontal) {
                 int nextIndex = GetNextSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
-                while (next == null)
-                {
+                while (next == null) {
                     SetVerticalOffset(VerticalOffset + 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(nextIndex);
                 }
-            }
-            else
-            {
+            } else {
                 if (itemIndex == _abstractPanel._itemCount - 1)
                     return;
                 next = gen.ContainerFromIndex(itemIndex + 1);
-                while (next == null)
-                {
+                while (next == null) {
                     SetHorizontalOffset(HorizontalOffset + 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(itemIndex + 1);
                 }
             }
-            while (depth != 0)
-            {
+            while (depth != 0) {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
             (next as UIElement).Focus();
         }
 
-        private void NavigateLeft()
-        {
+        private void NavigateLeft() {
             var gen = _generator.GetItemContainerGeneratorForPanel(this);
 
             UIElement selected = (UIElement)Keyboard.FocusedElement;
             int itemIndex = gen.IndexFromContainer(selected);
             int depth = 0;
-            while (itemIndex == -1)
-            {
+            while (itemIndex == -1) {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
             DependencyObject next = null;
-            if (Orientation == Orientation.Vertical)
-            {
+            if (Orientation == Orientation.Vertical) {
                 int nextIndex = GetLastSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
-                while (next == null)
-                {
+                while (next == null) {
                     SetHorizontalOffset(HorizontalOffset - 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(nextIndex);
                 }
-            }
-            else
-            {
+            } else {
                 if (itemIndex == 0)
                     return;
                 next = gen.ContainerFromIndex(itemIndex - 1);
-                while (next == null)
-                {
+                while (next == null) {
                     SetVerticalOffset(VerticalOffset - 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(itemIndex - 1);
                 }
             }
-            while (depth != 0)
-            {
+            while (depth != 0) {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
             (next as UIElement).Focus();
         }
 
-        private void NavigateRight()
-        {
+        private void NavigateRight() {
             var gen = _generator.GetItemContainerGeneratorForPanel(this);
             UIElement selected = (UIElement)Keyboard.FocusedElement;
             int itemIndex = gen.IndexFromContainer(selected);
             int depth = 0;
-            while (itemIndex == -1)
-            {
+            while (itemIndex == -1) {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
             DependencyObject next = null;
-            if (Orientation == Orientation.Vertical)
-            {
+            if (Orientation == Orientation.Vertical) {
                 int nextIndex = GetNextSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
-                while (next == null)
-                {
+                while (next == null) {
                     SetHorizontalOffset(HorizontalOffset + 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(nextIndex);
                 }
-            }
-            else
-            {
+            } else {
                 if (itemIndex == _abstractPanel._itemCount - 1)
                     return;
                 next = gen.ContainerFromIndex(itemIndex + 1);
-                while (next == null)
-                {
+                while (next == null) {
                     SetVerticalOffset(VerticalOffset + 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(itemIndex + 1);
                 }
             }
-            while (depth != 0)
-            {
+            while (depth != 0) {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
             (next as UIElement).Focus();
         }
 
-        private void NavigateUp()
-        {
+        private void NavigateUp() {
             var gen = _generator.GetItemContainerGeneratorForPanel(this);
             UIElement selected = (UIElement)Keyboard.FocusedElement;
             int itemIndex = gen.IndexFromContainer(selected);
             int depth = 0;
-            while (itemIndex == -1)
-            {
+            while (itemIndex == -1) {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
             DependencyObject next = null;
-            if (Orientation == Orientation.Horizontal)
-            {
+            if (Orientation == Orientation.Horizontal) {
                 int nextIndex = GetLastSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
-                while (next == null)
-                {
+                while (next == null) {
                     SetVerticalOffset(VerticalOffset - 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(nextIndex);
                 }
-            }
-            else
-            {
+            } else {
                 if (itemIndex == 0)
                     return;
                 next = gen.ContainerFromIndex(itemIndex - 1);
-                while (next == null)
-                {
+                while (next == null) {
                     SetHorizontalOffset(HorizontalOffset - 1);
                     UpdateLayout();
                     next = gen.ContainerFromIndex(itemIndex - 1);
                 }
             }
-            while (depth != 0)
-            {
+            while (depth != 0) {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
@@ -387,10 +344,8 @@ namespace Library.Panels {
 
         #region Override
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
+        protected override void OnKeyDown(KeyEventArgs e) {
+            switch (e.Key) {
                 case Key.Down:
                     NavigateDown();
                     e.Handled = true;
@@ -414,15 +369,13 @@ namespace Library.Panels {
         }
 
 
-        protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args)
-        {
+        protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args) {
             base.OnItemsChanged(sender, args);
             _abstractPanel = null;
             ResetScrollInfo();
         }
 
-        protected override void OnInitialized(EventArgs e)
-        {
+        protected override void OnInitialized(EventArgs e) {
             this.SizeChanged += new SizeChangedEventHandler(this.Resizing);
             base.OnInitialized(e);
             _itemsControl = ItemsControl.GetItemsOwner(this);
@@ -430,8 +383,7 @@ namespace Library.Panels {
             _generator = ItemContainerGenerator;
         }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
+        protected override Size MeasureOverride(Size availableSize) {
             if (availableSize.Width == double.PositiveInfinity || availableSize.Height == double.PositiveInfinity)
                 return Size.Empty;
             if (_itemsControl == null || _itemsControl.Items.Count == 0)
@@ -453,43 +405,34 @@ namespace Library.Panels {
             int childIndex = (startPos.Offset == 0) ? startPos.Index : startPos.Index + 1;
             int current = firstVisibleIndex;
             int visibleSections = 1;
-            using (_generator.StartAt(startPos, GeneratorDirection.Forward, true))
-            {
+            using (_generator.StartAt(startPos, GeneratorDirection.Forward, true)) {
                 bool stop = false;
                 bool isHorizontal = Orientation == Orientation.Horizontal;
                 double currentX = 0;
                 double currentY = 0;
                 double maxItemSize = 0;
                 int currentSection = GetFirstVisibleSection();
-                while (current < itemCount)
-                {
+                while (current < itemCount) {
                     bool newlyRealized;
 
                     // Get or create the child                    
                     UIElement child = _generator.GenerateNext(out newlyRealized) as UIElement;
-                    if (newlyRealized)
-                    {
+                    if (newlyRealized) {
                         // Figure out if we need to insert the child at the end or somewhere in the middle
-                        if (childIndex >= _children.Count)
-                        {
+                        if (childIndex >= _children.Count) {
                             base.AddInternalChild(child);
-                        }
-                        else
-                        {
+                        } else {
                             base.InsertInternalChild(childIndex, child);
                         }
                         _generator.PrepareItemContainer(child);
                         child.Measure(ChildSlotSize);
-                    }
-                    else
-                    {
+                    } else {
                         // The child has already been created, let's be sure it's in the right spot
                         Debug.Assert(child == _children[childIndex], "Wrong child was generated");
                     }
                     childSize = child.DesiredSize;
                     Rect childRect = new Rect(new Point(currentX, currentY), childSize);
-                    if (isHorizontal)
-                    {
+                    if (isHorizontal) {
                         maxItemSize = Math.Max(maxItemSize, childRect.Height);
                         if (childRect.Right > realizedFrameSize.Width) //wrap to a new line
                         {
@@ -504,9 +447,7 @@ namespace Library.Panels {
                         if (currentY > realizedFrameSize.Height)
                             stop = true;
                         currentX = childRect.Right;
-                    }
-                    else
-                    {
+                    } else {
                         maxItemSize = Math.Max(maxItemSize, childRect.Width);
                         if (childRect.Bottom > realizedFrameSize.Height) //wrap to a new column
                         {
@@ -537,12 +478,9 @@ namespace Library.Panels {
 
             return availableSize;
         }
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            if (_children != null)
-            {
-                foreach (UIElement child in _children)
-                {
+        protected override Size ArrangeOverride(Size finalSize) {
+            if (_children != null) {
+                foreach (UIElement child in _children) {
                     var layoutInfo = _realizedChildLayout[child];
                     child.Arrange(layoutInfo);
                 }
@@ -555,93 +493,78 @@ namespace Library.Panels {
         #region IScrollInfo Members
 
         private bool _canHScroll = false;
-        public bool CanHorizontallyScroll
-        {
+        public bool CanHorizontallyScroll {
             get { return _canHScroll; }
             set { _canHScroll = value; }
         }
 
         private bool _canVScroll = false;
-        public bool CanVerticallyScroll
-        {
+        public bool CanVerticallyScroll {
             get { return _canVScroll; }
             set { _canVScroll = value; }
         }
 
-        public double ExtentHeight
-        {
+        public double ExtentHeight {
             get { return _extent.Height; }
         }
 
-        public double ExtentWidth
-        {
+        public double ExtentWidth {
             get { return _extent.Width; }
         }
 
-        public double HorizontalOffset
-        {
+        public double HorizontalOffset {
             get { return _offset.X; }
         }
 
-        public double VerticalOffset
-        {
+        public double VerticalOffset {
             get { return _offset.Y; }
         }
 
-        public void LineDown()
-        {
+        public void LineDown() {
             if (Orientation == Orientation.Vertical)
                 SetVerticalOffset(VerticalOffset + 20);
             else
                 SetVerticalOffset(VerticalOffset + 1);
         }
 
-        public void LineLeft()
-        {
+        public void LineLeft() {
             if (Orientation == Orientation.Horizontal)
                 SetHorizontalOffset(HorizontalOffset - 20);
             else
                 SetHorizontalOffset(HorizontalOffset - 1);
         }
 
-        public void LineRight()
-        {
+        public void LineRight() {
             if (Orientation == Orientation.Horizontal)
                 SetHorizontalOffset(HorizontalOffset + 20);
             else
                 SetHorizontalOffset(HorizontalOffset + 1);
         }
 
-        public void LineUp()
-        {
+        public void LineUp() {
             if (Orientation == Orientation.Vertical)
                 SetVerticalOffset(VerticalOffset - 20);
             else
                 SetVerticalOffset(VerticalOffset - 1);
         }
 
-        public Rect MakeVisible(Visual visual, Rect rectangle)
-        {
+        public Rect MakeVisible(Visual visual, Rect rectangle) {
             var gen = (ItemContainerGenerator)_generator.GetItemContainerGeneratorForPanel(this);
             var element = (UIElement)visual;
             int itemIndex = gen.IndexFromContainer(element);
-            while (itemIndex == -1)
-            {
+            while (itemIndex == -1) {
                 element = (UIElement)VisualTreeHelper.GetParent(element);
                 itemIndex = gen.IndexFromContainer(element);
             }
             int section = _abstractPanel[itemIndex].Section;
             Rect elementRect = _realizedChildLayout[element];
-            if (Orientation == Orientation.Horizontal)
-            {
+            if (Orientation == Orientation.Horizontal) {
                 double viewportHeight = _pixelMeasuredViewport.Height;
                 if (elementRect.Bottom > viewportHeight)
                     _offset.Y += 1;
                 else if (elementRect.Top < 0)
                     _offset.Y -= 1;
-            }
-            else
-            {
+            } else {
                 double viewportWidth = _pixelMeasuredViewport.Width;
                 if (elementRect.Right > viewportWidth)
                     _offset.X += 1;
@@ -652,63 +575,49 @@ namespace Library.Panels {
             return elementRect;
         }
 
-        public void MouseWheelDown()
-        {
+        public void MouseWheelDown() {
             PageDown();
         }
 
-        public void MouseWheelLeft()
-        {
+        public void MouseWheelLeft() {
             PageLeft();
         }
 
-        public void MouseWheelRight()
-        {
+        public void MouseWheelRight() {
             PageRight();
         }
 
-        public void MouseWheelUp()
-        {
+        public void MouseWheelUp() {
             PageUp();
         }
 
-        public void PageDown()
-        {
+        public void PageDown() {
             SetVerticalOffset(VerticalOffset + _viewport.Height * 0.8);
         }
 
-        public void PageLeft()
-        {
+        public void PageLeft() {
             SetHorizontalOffset(HorizontalOffset - _viewport.Width * 0.8);
         }
 
-        public void PageRight()
-        {
+        public void PageRight() {
             SetHorizontalOffset(HorizontalOffset + _viewport.Width * 0.8);
         }
 
-        public void PageUp()
-        {
+        public void PageUp() {
             SetVerticalOffset(VerticalOffset - _viewport.Height * 0.8);
         }
 
         private ScrollViewer _owner;
-        public ScrollViewer ScrollOwner
-        {
+        public ScrollViewer ScrollOwner {
             get { return _owner; }
             set { _owner = value; }
         }
 
-        public void SetHorizontalOffset(double offset)
-        {
-            if (offset < 0 || _viewport.Width >= _extent.Width)
-            {
+        public void SetHorizontalOffset(double offset) {
+            if (offset < 0 || _viewport.Width >= _extent.Width) {
                 offset = 0;
-            }
-            else
-            {
-                if (offset + _viewport.Width >= _extent.Width)
-                {
+            } else {
+                if (offset + _viewport.Width >= _extent.Width) {
                     offset = _extent.Width - _viewport.Width;
                 }
             }
@@ -722,16 +631,11 @@ namespace Library.Panels {
             firstIndex = GetFirstVisibleIndex();
         }
 
-        public void SetVerticalOffset(double offset)
-        {
-            if (offset < 0 || _viewport.Height >= _extent.Height)
-            {
+        public void SetVerticalOffset(double offset) {
+            if (offset < 0 || _viewport.Height >= _extent.Height) {
                 offset = 0;
-            }
-            else
-            {
-                if (offset + _viewport.Height >= _extent.Height)
-                {
+            } else {
+                if (offset + _viewport.Height >= _extent.Height) {
                     offset = _extent.Height - _viewport.Height;
                 }
             }
@@ -747,13 +651,11 @@ namespace Library.Panels {
             firstIndex = GetFirstVisibleIndex();
         }
 
-        public double ViewportHeight
-        {
+        public double ViewportHeight {
             get { return _viewport.Height; }
         }
 
-        public double ViewportWidth
-        {
+        public double ViewportWidth {
             get { return _viewport.Width; }
         }
 
@@ -761,10 +663,8 @@ namespace Library.Panels {
 
         #region helper data structures
 
-        class ItemAbstraction
-        {
-            public ItemAbstraction(WrapPanelAbstraction panel, int index)
-            {
+        class ItemAbstraction {
+            public ItemAbstraction(WrapPanelAbstraction panel, int index) {
                 _panel = panel;
                 _index = index;
             }
@@ -774,49 +674,38 @@ namespace Library.Panels {
             public readonly int _index;
 
             int _sectionIndex = -1;
-            public int SectionIndex
-            {
-                get
-                {
-                    if (_sectionIndex == -1)
-                    {
+            public int SectionIndex {
+                get {
+                    if (_sectionIndex == -1) {
                         return _index % _panel._averageItemsPerSection - 1;
                     }
                     return _sectionIndex;
                 }
-                set
-                {
+                set {
                     if (_sectionIndex == -1)
                         _sectionIndex = value;
                 }
             }
 
             int _section = -1;
-            public int Section
-            {
-                get
-                {
-                    if (_section == -1)
-                    {
+            public int Section {
+                get {
+                    if (_section == -1) {
                         return _index / _panel._averageItemsPerSection;
                     }
                     return _section;
                 }
-                set
-                {
+                set {
                     if (_section == -1)
                         _section = value;
                 }
             }
         }
 
-        class WrapPanelAbstraction : IEnumerable<ItemAbstraction>
-        {
-            public WrapPanelAbstraction(int itemCount)
-            {
+        class WrapPanelAbstraction : IEnumerable<ItemAbstraction> {
+            public WrapPanelAbstraction(int itemCount) {
                 List<ItemAbstraction> items = new List<ItemAbstraction>(itemCount);
-                for (int i = 0; i < itemCount; i++)
-                {
+                for (int i = 0; i < itemCount; i++) {
                     ItemAbstraction item = new ItemAbstraction(this, i);
                     items.Add(item);
                 }
@@ -833,13 +722,10 @@ namespace Library.Panels {
             private int _itemsInCurrentSecction = 0;
             private object _syncRoot = new object();
 
-            public int SectionCount
-            {
-                get
-                {
+            public int SectionCount {
+                get {
                     int ret = _currentSetSection + 1;
-                    if (_currentSetItemIndex + 1 < Items.Count)
-                    {
+                    if (_currentSetItemIndex + 1 < Items.Count) {
                         int itemsLeft = Items.Count - _currentSetItemIndex;
                         ret += itemsLeft / _averageItemsPerSection + 1;
                     }
@@ -849,39 +735,31 @@ namespace Library.Panels {
 
             private ReadOnlyCollection<ItemAbstraction> Items { get; set; }
 
-            public void SetItemSection(int index, int section)
-            {
-                lock (_syncRoot)
-                {
-                    if (section <= _currentSetSection + 1 && index == _currentSetItemIndex + 1)
-                    {
+            public void SetItemSection(int index, int section) {
+                lock (_syncRoot) {
+                    if (section <= _currentSetSection + 1 && index == _currentSetItemIndex + 1) {
                         _currentSetItemIndex++;
                         Items[index].Section = section;
-                        if (section == _currentSetSection + 1)
-                        {
+                        if (section == _currentSetSection + 1) {
                             _currentSetSection = section;
-                            if (section > 0)
-                            {
+                            if (section > 0) {
                                 _averageItemsPerSection = (index) / (section);
                             }
                             _itemsInCurrentSecction = 1;
-                        }
-                        else
+                        } else
                             _itemsInCurrentSecction++;
                         Items[index].SectionIndex = _itemsInCurrentSecction - 1;
                     }
                 }
             }
 
-            public ItemAbstraction this[int index]
-            {
+            public ItemAbstraction this[int index] {
                 get { return Items[index]; }
             }
 
             #region IEnumerable<ItemAbstraction> Members
 
-            public IEnumerator<ItemAbstraction> GetEnumerator()
-            {
+            public IEnumerator<ItemAbstraction> GetEnumerator() {
                 return Items.GetEnumerator();
             }
 
@@ -889,8 +767,7 @@ namespace Library.Panels {
 
             #region IEnumerable Members
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
                 return GetEnumerator();
             }
 

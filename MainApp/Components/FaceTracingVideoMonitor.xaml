@@ -10,7 +10,7 @@
              xmlns:tt="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
+    <Grid Margin="50,20,50,50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

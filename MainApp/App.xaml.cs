@@ -11,15 +11,15 @@ namespace Tencent {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        // todo remove
-        protected override void OnStartup(StartupEventArgs e) {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            base.OnStartup(e);
-        }
+        //// todo remove
+        //protected override void OnStartup(StartupEventArgs e) {
+        //    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        //    base.OnStartup(e);
+        //}
 
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            MessageBox.Show(e.ExceptionObject.ToString());
-            //throw new NotImplementedException();
-        }
+        //private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
+        //    MessageBox.Show(e.ExceptionObject.ToString());
+        //    //throw new NotImplementedException();
+        //}
     }
 }

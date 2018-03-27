@@ -121,7 +121,11 @@
                                         </GradientBrush.GradientStops>
                                     </LinearGradientBrush>
                                 </Label.Background>
-                                <TextBlock Padding="5,0,0,0" Text="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Padding="5,0,0,0" Text="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}}" TextTrimming="CharacterEllipsis">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Text="{Binding RealName, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
                             </Label>
                             <!-- Name -->
                             

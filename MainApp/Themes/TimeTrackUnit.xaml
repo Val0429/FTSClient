@@ -17,7 +17,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:TimeTrackUnit}">
-                    <Grid>
+                    <Grid SnapsToDevicePixels="True">
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Color="#2200FFFA" Offset="0" />
@@ -26,7 +26,7 @@
                             </LinearGradientBrush>
                         </Grid.Background>
 
-                        <Grid Margin="-4,-12">
+                        <Grid Margin="-4,-12" SnapsToDevicePixels="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="12" />
                                 <RowDefinition Height="*" />
@@ -62,7 +62,7 @@
                             </Border>
 
                             <!-- Main -->
-                            <Grid Grid.Row="2" Grid.Column="1">
+                            <Grid Grid.Row="2" Grid.Column="1" SnapsToDevicePixels="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="1000*" MaxWidth="100" />
@@ -70,7 +70,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Left Line -->
-                                <Grid Grid.Column="0">
+                                <Grid Grid.Column="0" SnapsToDevicePixels="True">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="3" />
@@ -97,7 +97,7 @@
                                 </Grid>
 
                                 <!-- Right Line -->
-                                <Grid Grid.Column="2">
+                                <Grid Grid.Column="2" SnapsToDevicePixels="True">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="3" />
                                         <ColumnDefinition Width="*" />
@@ -235,10 +235,11 @@
                                                 
                                                 <!-- Content -->
                                                 <Label Margin="3,0" Style="{StaticResource DefaultFont}" Padding="0" Grid.RowSpan="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                                                       FontWeight="Bold" FontSize="12"
+                                                       FontWeight="Bold" FontSize="12" Foreground="#0B064A"
                                                        Width="{hlp:ExpressionMultiBinding {Binding Source={}{0}-10},
                                                               {Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}
                                                               }"
+                                                       Effect="{x:Null}"
                                                        >
                                                     <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
                                                 </Label>

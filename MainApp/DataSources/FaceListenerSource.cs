@@ -215,6 +215,7 @@ namespace Tencent.DataSources {
         public void StartServer() {
             string ip = ConfigurationManager.AppSettings["ip"];
             string port = ConfigurationManager.AppSettings["port"];
+            long maximumFaces = long.Parse(ConfigurationManager.AppSettings["maximum_keep_faces"]);
 
             Host = string.Format("ws://{0}:{1}", ip, port);
             /// Fetch Latest
@@ -224,21 +225,30 @@ namespace Tencent.DataSources {
 
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
 
-                /// workaround, todo remove
-                var names = new List<string> { "VIP", "Blacklist", null, null, null, null, null, null, null };
-                var random = new Random();
-                int index = random.Next(names.Count);
-                if (face.name == "Val") face.groupname = "VIP";
-                else if (face.name == "") {
-                    face.name = null;
-                    face.groupname = "Stranger";
-                } else {
-                    face.groupname = names[index];
-                }
-                /// workaround, todo remove
+                ///// workaround, todo remove
+                //var names = new List<string> { "VIP", "Blacklist", null, null, null, null, null, null, null };
+                //var random = new Random();
+                //int index = random.Next(names.Count);
+                //if (face.name == "Val") face.groupname = "VIP";
+                //else if (face.name == "") {
+                //    face.name = null;
+                //    face.groupname = "Stranger";
+                //} else {
+                //    face.groupname = names[index];
+                //}
+                ///// workaround, todo remove
+
+                // Unrecognized
+                if (face.name == null) face.groupname = "No Match";
 
                 this.Dispatcher.BeginInvoke(new Action(() => {
+                    //for (var i=0; i<8; ++i) Faces.Add(face);
                     Faces.Add(face);
+                    //Console.WriteLine("face count {0}", Faces.Count);
+                    while (Faces.Count > maximumFaces) {
+                        //Console.WriteLine("Try Remove");
+                        Faces.RemoveAt(0);
+                    }
                 }));
             };
             wsl.ConnectAsync();
@@ -249,6 +259,7 @@ namespace Tencent.DataSources {
                 var jsonSerializer = new JavaScriptSerializer();
 
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
+                if (face.name == null) face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     Faces.Add(face);
                 }));

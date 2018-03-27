@@ -32,14 +32,14 @@ namespace Tencent.Components {
             view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
                 if (FilterName != null && FilterName.Length > 0) {
-                    if (FilterName == face.name) return true;
+                    if (face.name != null && face.name.IndexOf(FilterName) >= 0) return true;
                     return false;
                 }
 
                 if (FilterGroupAll == true) return true;
                 if (FilterGroupVIP == true && face.groupname == "VIP") return true;
                 if (FilterGroupBlacklist == true && face.groupname == "Blacklist") return true;
-                if (FilterGroupStranger == true && face.groupname == "Stranger") return true;
+                if (FilterGroupStranger == true && face.groupname == "No Match") return true;
 
                 return false;
             };
@@ -79,10 +79,10 @@ namespace Tencent.Components {
         // Using a DependencyProperty as the backing store for FilterName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
-                //null
-                /// workaround, todo remove
-                "Rack"
-                /// workaround, todo remove
+                null
+                ///// workaround, todo remove
+                //"Rack"
+                ///// workaround, todo remove
                 ));
 
         public bool FilterGroupAll {

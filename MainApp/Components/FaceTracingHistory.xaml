@@ -113,13 +113,13 @@
                 <CheckBox x:Name="Filter_Group_All" Click="Filter_Group_All_Click" IsChecked="{Binding FilterGroupAll}" FontSize="20" Foreground="White" Padding="15,0" Content="All" Grid.Column="1" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top" />
                 <CheckBox x:Name="Filter_Group_VIP" IsChecked="{Binding FilterGroupVIP}" FontSize="20" Foreground="White" Padding="15,0" Content="VIP" Grid.Column="1" HorizontalAlignment="Left" Margin="57,103,0,0" VerticalAlignment="Top"/>
                 <CheckBox x:Name="Filter_Group_Blacklist" IsChecked="{Binding FilterGroupBlacklist}" FontSize="20" Foreground="White" Padding="15,0" Content="Blacklist" Grid.Column="1" HorizontalAlignment="Left" Margin="57,138,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="Filter_Group_Stranger" IsChecked="{Binding FilterGroupStranger}" FontSize="20" Foreground="White" Padding="15,0" Content="Stranger" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="Filter_Group_Stranger" IsChecked="{Binding FilterGroupStranger}" FontSize="20" Foreground="White" Padding="15,0" Content="No Match" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
 
                 <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                 <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Key}" HorizontalContentAlignment="Center" Background="#FF0B413F" Margin="1,2" />
+                            <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Value.name}" HorizontalContentAlignment="Left" Background="#FF0B413F" Margin="1,2" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
