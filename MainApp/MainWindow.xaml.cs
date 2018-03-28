@@ -129,7 +129,6 @@ namespace Tencent {
 
                 sb.Completed += (object s2, EventArgs e2) => {
                     holder.Content = null;
-                    sb.Children.Remove(da);
                     panel1.Opacity = 1;
                     this.MainGrid.Children.Add(HistoryWindow);
                 };
