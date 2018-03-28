@@ -120,5 +120,9 @@ namespace Tencent.Components {
             FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
             source.DoMapCameraClicked(item.Camera);
         }
+
+        private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {
+            this.MainBorder.IsMaximum = !this.MainBorder.IsMaximum;
+        }
     }
 }

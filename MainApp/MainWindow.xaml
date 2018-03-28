@@ -22,7 +22,8 @@
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <comps:FaceTracingHistory x:Key="Panel1" FaceItemSelected="FaceTracingHistory_FaceItemSelected" tlibborder:MainBorder.RTMaximumClicked="FaceTracingHistory_RTMaximumClicked">
+            <comps:FaceTracingHistory x:Key="Panel1" FaceItemSelected="FaceTracingHistory_FaceItemSelected"
+                                      tlibborder:MainBorder.RTMaximumClicked="FaceTracingHistory_RTMaximumClicked">
                 <!--<comps:FaceTracingHistory.Panel>
                     <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="10:05:32" />
                 </comps:FaceTracingHistory.Panel>-->
@@ -31,6 +32,7 @@
             <comps:FaceTracingDetail x:Key="Panel2"
                                  EntryTime="12:55:12"
                                  FaceItemSelected="FaceTracingHistory_FaceItemSelected"
+                                 tlibborder:MainBorder.RTMaximumClicked="FaceTracingDetail_RTMaximumClicked"
                                  >
                 <!--<comps:FaceTracingDetail.LeftPanel>
                     <ftd:EntryUnit Title="1号摄像头大堂">
@@ -111,7 +113,7 @@
 
         <ContentPresenter x:Name="Panel1Holder" Content="{StaticResource Panel1}" />
 
-        <ContentPresenter Content="{StaticResource Panel2}" Grid.Row="0" Grid.Column="1" />
+        <ContentPresenter x:Name="Panel2Holder" Content="{StaticResource Panel2}" Grid.Row="0" Grid.Column="1" />
 
         <ContentPresenter Content="{StaticResource Panel3}" Grid.Row="1" Grid.Column="0" />
 

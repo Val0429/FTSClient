@@ -72,7 +72,7 @@ namespace Library.Windows {
             };
 
             this.Unloaded += (object sender, RoutedEventArgs e) => {
-                this._window?.Hide();
+                this._window?.Close();
             };
         }
 
