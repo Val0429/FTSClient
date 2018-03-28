@@ -79,10 +79,10 @@ namespace Tencent.Components {
         // Using a DependencyProperty as the backing store for FilterName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
-                null
-                ///// workaround, todo remove
-                //"Rack"
-                ///// workaround, todo remove
+                //null
+                /// workaround, todo remove
+                "Val"
+                /// workaround, todo remove
                 ));
 
         public bool FilterGroupAll {
@@ -177,6 +177,10 @@ namespace Tencent.Components {
             //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_VIP") as CheckBox).IsChecked = cb.IsChecked;
             //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_Blacklist") as CheckBox).IsChecked = cb.IsChecked;
             //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_Stranger") as CheckBox).IsChecked = cb.IsChecked;
+        }
+
+        private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {
+            this.MainBorder.IsMaximum = !this.MainBorder.IsMaximum;
         }
     }
 }

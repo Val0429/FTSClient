@@ -20,21 +20,22 @@ namespace Library.Windows {
     /// Interaction logic for EmbedWindow.xaml
     /// </summary>
     public partial class EmbedWindow : UserControl {
+        private Window _window = null;
         public EmbedWindow() {
             InitializeComponent();
 
             this.Loaded += (object sender, RoutedEventArgs e) => {
                 if (DesignerProperties.GetIsInDesignMode(this)) return;
 
-                var win = new Window();
-                win.Content = this.Content;
+                this._window = new Window();
+                this._window.Content = this.Content;
                 {
                     Binding binding = new Binding("LeftRatio") {
                         Source = this,
                         Mode = BindingMode.OneWay,
                         Converter = new RatioToActualScreenWidthConverter()
                     };
-                    win.SetBinding(Window.LeftProperty, binding);
+                    this._window.SetBinding(Window.LeftProperty, binding);
                 }
                 {
                     Binding binding = new Binding("TopRatio") {
@@ -42,7 +43,7 @@ namespace Library.Windows {
                         Mode = BindingMode.OneWay,
                         Converter = new RatioToActualScreenHeightConverter()
                     };
-                    win.SetBinding(Window.TopProperty, binding);
+                    this._window.SetBinding(Window.TopProperty, binding);
                 }
                 {
                     Binding binding = new Binding("WidthRatio") {
@@ -50,7 +51,7 @@ namespace Library.Windows {
                         Mode = BindingMode.OneWay,
                         Converter = new RatioToActualScreenWidthConverter()
                     };
-                    win.SetBinding(WidthProperty, binding);
+                    this._window.SetBinding(WidthProperty, binding);
                 }
                 {
                     Binding binding = new Binding("HeightRatio") {
@@ -58,9 +59,20 @@ namespace Library.Windows {
                         Mode = BindingMode.OneWay,
                         Converter = new RatioToActualScreenHeightConverter()
                     };
-                    win.SetBinding(HeightProperty, binding);
+                    this._window.SetBinding(HeightProperty, binding);
                 }
-                win.Show();
+
+                this._window.Unloaded += (object s2, RoutedEventArgs e2) => {
+                    (this.Parent as Panel)?.Children.Remove(this);
+                    this._window = null;
+                };
+
+                this._window.Show();
+                this._window.Focus();
+            };
+
+            this.Unloaded += (object sender, RoutedEventArgs e) => {
+                this._window?.Hide();
             };
         }
 

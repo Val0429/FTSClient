@@ -27,8 +27,8 @@ namespace TencentLibrary.Borders {
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
-            //UIElement element = this.Template.FindName("LBIcon", this) as UIElement;
-            //element.MouseDown += Instance_LBIconClicked;
+            UIElement element = this.Template.FindName("MaximumButton", this) as UIElement;
+            (element as Button).Click += Instance_RTMaximumClicked;
         }
 
         #region "Dependency Properties"
@@ -49,6 +49,14 @@ namespace TencentLibrary.Borders {
                 null, FrameworkPropertyMetadataOptions.AffectsRender
                 ));
 
+        public bool IsMaximum {
+            get { return (bool)GetValue(IsMaximumProperty); }
+            set { SetValue(IsMaximumProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for IsMaximum.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsMaximumProperty =
+            DependencyProperty.Register("IsMaximum", typeof(bool), typeof(MainBorder), new PropertyMetadata(true));
+
         #endregion "Dependency Properties"
 
         #region "Routed Events"
@@ -57,11 +65,17 @@ namespace TencentLibrary.Borders {
             add { AddHandler(LBIconClickedEvent, value); }
             remove { RemoveHandler(LBIconClickedEvent, value); }
         }
+
+        public static readonly RoutedEvent RTMaximumClickedEvent = EventManager.RegisterRoutedEvent("RTMaximumClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainBorder));
+        public event RoutedEventHandler RTMaximumClicked {
+            add { AddHandler(RTMaximumClickedEvent, value); }
+            remove { RemoveHandler(RTMaximumClickedEvent, value); }
+        }
         #endregion "Routed Events"
 
-        private void Instance_LBIconClicked(object sender, MouseButtonEventArgs e) {
+        private void Instance_RTMaximumClicked(object sender, RoutedEventArgs e) {
             var vm = sender as FrameworkElement;
-            RoutedEventArgs ea = new RoutedEventArgs(MainBorder.LBIconClickedEvent, null);
+            RoutedEventArgs ea = new RoutedEventArgs(RTMaximumClickedEvent, null);
             base.RaiseEvent(ea);
         }
     }

@@ -22,7 +22,7 @@
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <comps:FaceTracingHistory x:Key="Panel1" FaceItemSelected="FaceTracingHistory_FaceItemSelected">
+            <comps:FaceTracingHistory x:Key="Panel1" FaceItemSelected="FaceTracingHistory_FaceItemSelected" tlibborder:MainBorder.RTMaximumClicked="FaceTracingHistory_RTMaximumClicked">
                 <!--<comps:FaceTracingHistory.Panel>
                     <tlibborder:FaceTracingBorder Image="D:\girl.png" Title="10:05:32" />
                 </comps:FaceTracingHistory.Panel>-->
@@ -92,7 +92,12 @@
         </libwin:EmbedWindow>
     </Grid>-->
 
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Grid.Background>
+            <ImageBrush Viewbox="0,0 1,1"
+                            Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
+        </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -104,7 +109,7 @@
         </Grid.ColumnDefinitions>
 
 
-        <ContentPresenter Content="{StaticResource Panel1}" />
+        <ContentPresenter x:Name="Panel1Holder" Content="{StaticResource Panel1}" />
 
         <ContentPresenter Content="{StaticResource Panel2}" Grid.Row="0" Grid.Column="1" />
 
