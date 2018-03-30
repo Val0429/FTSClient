@@ -68,11 +68,18 @@
     <Compile Include="Extensions\ScrollViewerExtension.cs" />
     <Compile Include="Helpers\ImageAsyncHelper.cs" />
     <Compile Include="Helpers\ExpressionMultiBinding.cs" />
+    <Compile Include="Helpers\Telekinesis.xaml.cs">
+      <DependentUpon>Telekinesis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panels\VirtualizingWrapPanel.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />
     <Compile Include="Windows\EmbedWindow.xaml.cs">
       <DependentUpon>EmbedWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Helpers\Telekinesis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

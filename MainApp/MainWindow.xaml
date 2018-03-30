@@ -11,6 +11,7 @@
         xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
         xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
         xmlns:comps="clr-namespace:Tencent.Components"
+        xmlns:hlp="clr-namespace:Library.Helpers;assembly=Library"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="Face Tracking System" LeftRatio="0" TopRatio="0" WidthRatio="0.5" HeightRatio="0.5" Icon="Resources/icon.png">
@@ -110,6 +111,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <hlp:Telekinesis x:Name="Telekinesis" />
 
         <ContentPresenter x:Name="Panel1Holder" Content="{StaticResource Panel1}" />
 

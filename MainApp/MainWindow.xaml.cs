@@ -81,63 +81,17 @@ namespace Tencent {
             ((FaceListenerSource)this.FindResource("FaceListenerSource")).StartSearch(faceitem);
         }
 
-        private EmbedWindow HistoryWindow = null;
         private void FaceTracingHistory_RTMaximumClicked(object sender, RoutedEventArgs e) {
+            UIElement panel1 = (UIElement)this.FindResource("Panel1");
+
             if (((MainBorder)e.OriginalSource).IsMaximum == false) {
-                UIElement panel1 = (UIElement)this.FindResource("Panel1");
-                ContentPresenter holder = this.Panel1Holder;
-                HistoryWindow = new EmbedWindow() {
-                    LeftRatio = 0,
-                    TopRatio = 0,
-                    WidthRatio = 0.5,
-                    HeightRatio = 0.5,
-                    Content = panel1
-                };
-
-                HistoryWindow.Unloaded += (object s2, RoutedEventArgs e2) => {
-                    panel1.Opacity = 0;
-                    holder.Content = panel1;
+                var task = this.Telekinesis.Teleport(panel1);
+                task.Task.GetAwaiter().OnCompleted(new Action(() => {
                     ((MainBorder)e.OriginalSource).IsMaximum = true;
-
-                    var sb2 = new Storyboard();
-                    DoubleAnimation da2 = new DoubleAnimation() {
-                        To = 1,
-                        Duration = TimeSpan.FromMilliseconds(500),
-                        FillBehavior = FillBehavior.Stop
-                    };
-                    Storyboard.SetTarget(da2, panel1);
-                    Storyboard.SetTargetProperty(da2, new PropertyPath("Opacity"));
-                    sb2.Children.Add(da2);
-
-                    sb2.Completed += (object s3, EventArgs e3) => {
-                        sb2.Children.Remove(da2);
-                        panel1.Opacity = 1;
-                    };
-                    sb2.Begin();
-                };
-
-                /// Fade Out Animation ///
-                var sb = new Storyboard();
-                DoubleAnimation da = new DoubleAnimation() {
-                    To = 0,
-                    Duration = TimeSpan.FromMilliseconds(500),
-                    FillBehavior = FillBehavior.Stop,
-                };
-                Storyboard.SetTarget(da, panel1);
-                Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
-                sb.Children.Add(da);
-
-                sb.Completed += (object s2, EventArgs e2) => {
-                    holder.Content = null;
-                    panel1.Opacity = 1;
-                    this.MainGrid.Children.Add(HistoryWindow);
-                };
-                sb.Begin();
-                /// Fade Out Animation ///
+                }));
 
             } else {
-                this.MainGrid.Children.Remove(HistoryWindow);
-                HistoryWindow = null;
+                this.Telekinesis.Recall(panel1);
             }
         }
 
