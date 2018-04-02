@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -33,6 +34,25 @@ namespace Library.Helpers {
         }
 
         private Dictionary<string, EmbedValue> CollectedParent = new Dictionary<string, EmbedValue>();
+
+        private object GetInternalField(object instance, string name) {
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            PropertyInfo field = instance.GetType().GetProperty(name, bindFlags);
+            return field.GetValue(instance);
+        }
+
+        private string GetAddress(object element) {
+            return element.GetHashCode().ToString();
+            /// Old method to get address
+            //GCHandle handle = GCHandle.Alloc(element, GCHandleType.Normal);
+            //try {
+            //    IntPtr pointer = GCHandle.ToIntPtr(handle);
+            //    return "0x" + pointer.ToString("X");
+            //}
+            //finally {
+            //    handle.Free();
+            //}
+        }
 
         public TaskCompletionSource<bool> Teleport(UIElement element, EmbedWindow window = null) {
             TaskCompletionSource<bool> task = new TaskCompletionSource<bool>();
@@ -57,39 +77,43 @@ namespace Library.Helpers {
             };
             CollectedParent.Add(GetAddress(element), embedValue);
 
-            /// Clean Parent
-            if (embedValue.parent.GetType() == typeof(ContentPresenter)) {
-                ((ContentPresenter)embedValue.parent).Content = null;
-            }
+            /// Disable Element Until Animation Finished
+            element.IsHitTestVisible = false;
 
-            /// Hook Event
-            window.Unloaded += (object sender, RoutedEventArgs e) => {
-                this.Recall(element);
+            /// Prepare storyboard
+            var sb = new Storyboard();
+            DoubleAnimation da = new DoubleAnimation() {
+                To = 0,
+                Duration = preTeleportDuration,
+                FillBehavior = FillBehavior.Stop
             };
+            Storyboard.SetTarget(da, element);
+            Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
+            sb.Children.Add(da);
 
-            /// Show
-            this.Children.Add(window);
+            sb.Completed += (object s3, EventArgs e3) => {
+                sb.Children.Remove(da);
+                element.Opacity = 1;
+
+                /// Enable Element
+                element.IsHitTestVisible = true;
+
+                /// Clean Parent
+                if (embedValue.parent.GetType() == typeof(ContentPresenter)) {
+                    ((ContentPresenter)embedValue.parent).Content = null;
+                }
+
+                /// Hook Event
+                window.Unloaded += (object sender, RoutedEventArgs e) => {
+                    this.Recall(element);
+                };
+
+                /// Show
+                this.Children.Add(window);
+            };
+            sb.Begin();
 
             return task;
-        }
-
-        private object GetInternalField(object instance, string name) {
-            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-            PropertyInfo field = instance.GetType().GetProperty(name, bindFlags);
-            return field.GetValue(instance);
-        }
-
-        private string GetAddress(object element) {
-            return element.GetHashCode().ToString();
-            /// Old method to get address
-            //GCHandle handle = GCHandle.Alloc(element, GCHandleType.Normal);
-            //try {
-            //    IntPtr pointer = GCHandle.ToIntPtr(handle);
-            //    return "0x" + pointer.ToString("X");
-            //}
-            //finally {
-            //    handle.Free();
-            //}
         }
 
         public void Recall(UIElement element) {
@@ -102,12 +126,36 @@ namespace Library.Helpers {
                 CollectedParent.Remove(address);
                 this.Children.Remove(embedValue.window);
 
+                /// Disable Element Until Animation Finished
+                element.IsHitTestVisible = false;
+                element.Opacity = 0;
+
                 /// Put Content back, if ContentPresenter
                 if (embedValue.parent.GetType() == typeof(ContentPresenter)) {
                     ((ContentPresenter)embedValue.parent).Content = embedValue.element;
                 }
 
-                embedValue.completion.TrySetResult(true);
+                /// Prepare storyboard
+                var sb = new Storyboard();
+                DoubleAnimation da = new DoubleAnimation() {
+                    To = 1,
+                    Duration = preTeleportDuration,
+                    FillBehavior = FillBehavior.Stop
+                };
+                Storyboard.SetTarget(da, element);
+                Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
+                sb.Children.Add(da);
+
+                sb.Completed += (object s3, EventArgs e3) => {
+                    sb.Children.Remove(da);
+                    element.Opacity = 1;
+
+                    /// Enable Element
+                    element.IsHitTestVisible = true;
+
+                    embedValue.completion.TrySetResult(true);
+                };
+                sb.Begin();
             }
         }
     }

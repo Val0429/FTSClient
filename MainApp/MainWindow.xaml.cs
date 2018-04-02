@@ -82,79 +82,32 @@ namespace Tencent {
         }
 
         private void FaceTracingHistory_RTMaximumClicked(object sender, RoutedEventArgs e) {
-            UIElement panel1 = (UIElement)this.FindResource("Panel1");
+            UIElement panel = (UIElement)this.FindResource("Panel1");
 
             if (((MainBorder)e.OriginalSource).IsMaximum == false) {
-                var task = this.Telekinesis.Teleport(panel1);
+                var task = this.Telekinesis.Teleport(panel);
                 task.Task.GetAwaiter().OnCompleted(new Action(() => {
                     ((MainBorder)e.OriginalSource).IsMaximum = true;
                 }));
 
             } else {
-                this.Telekinesis.Recall(panel1);
+                this.Telekinesis.Recall(panel);
             }
         }
 
-        private EmbedWindow DetailWindow = null;
         private void FaceTracingDetail_RTMaximumClicked(object sender, RoutedEventArgs e) {
+            UIElement panel = (UIElement)this.FindResource("Panel2");
+
             if (((MainBorder)e.OriginalSource).IsMaximum == false) {
-                UIElement panel1 = (UIElement)this.FindResource("Panel2");
-                ContentPresenter holder = this.Panel2Holder;
-
-                DetailWindow = new EmbedWindow() {
-                    LeftRatio = 0.5,
-                    TopRatio = 0,
-                    WidthRatio = 0.5,
-                    HeightRatio = 0.5,
-                    Content = panel1
-                };
-
-                DetailWindow.Unloaded += (object s2, RoutedEventArgs e2) => {
-                    panel1.Opacity = 0;
-                    holder.Content = panel1;
+                var task = this.Telekinesis.Teleport(panel);
+                task.Task.GetAwaiter().OnCompleted(new Action(() => {
                     ((MainBorder)e.OriginalSource).IsMaximum = true;
-
-                    var sb2 = new Storyboard();
-                    DoubleAnimation da2 = new DoubleAnimation() {
-                        To = 1,
-                        Duration = TimeSpan.FromMilliseconds(500),
-                        FillBehavior = FillBehavior.Stop
-                    };
-                    Storyboard.SetTarget(da2, panel1);
-                    Storyboard.SetTargetProperty(da2, new PropertyPath("Opacity"));
-                    sb2.Children.Add(da2);
-
-                    sb2.Completed += (object s3, EventArgs e3) => {
-                        sb2.Children.Remove(da2);
-                        panel1.Opacity = 1;
-                    };
-                    sb2.Begin();
-                };
-
-                /// Fade Out Animation ///
-                var sb = new Storyboard();
-                DoubleAnimation da = new DoubleAnimation() {
-                    To = 0,
-                    Duration = TimeSpan.FromMilliseconds(500),
-                    FillBehavior = FillBehavior.Stop,
-                };
-                Storyboard.SetTarget(da, panel1);
-                Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
-                sb.Children.Add(da);
-
-                sb.Completed += (object s2, EventArgs e2) => {
-                    holder.Content = null;
-                    sb.Children.Remove(da);
-                    panel1.Opacity = 1;
-                    this.MainGrid.Children.Add(DetailWindow);
-                };
-                sb.Begin();
-                /// Fade Out Animation ///
+                }));
 
             } else {
-                this.MainGrid.Children.Remove(DetailWindow);
-                DetailWindow = null;
+                this.Telekinesis.Recall(panel);
             }
+
         }
 
     }

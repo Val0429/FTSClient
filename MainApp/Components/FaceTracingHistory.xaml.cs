@@ -79,10 +79,10 @@ namespace Tencent.Components {
         // Using a DependencyProperty as the backing store for FilterName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
-                //null
-                /// workaround, todo remove
-                "Val"
-                /// workaround, todo remove
+                null
+                ///// workaround, todo remove
+                //"Val"
+                ///// workaround, todo remove
                 ));
 
         public bool FilterGroupAll {

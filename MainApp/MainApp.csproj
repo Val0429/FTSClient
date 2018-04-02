@@ -193,6 +193,9 @@
     <Compile Include="Converters\GroupNameToColorConverter.cs" />
     <Compile Include="Converters\SourceIdToCameraNameConverter.cs" />
     <Compile Include="DataSources\FaceListenerSource.cs" />
+    <Compile Include="DataSources\FaceListenerSource.DataStructure.cs">
+      <DependentUpon>FaceListenerSource.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

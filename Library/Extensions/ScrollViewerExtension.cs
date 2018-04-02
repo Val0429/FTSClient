@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Library.Extensions {
@@ -16,7 +17,6 @@ namespace Library.Extensions {
 
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++) {
                 var child = VisualTreeHelper.GetChild(depObj, i);
-
                 var result = (child as T) ?? GetChildOfType<T>(child);
                 if (result != null) return result;
             }
@@ -45,18 +45,32 @@ namespace Library.Extensions {
                 /// try ListView
                 {
                     ListView scroll = sender as ListView;
+                    bool atBottom = true;
                     if (scroll != null) {
+                        RoutedEventHandler scrollChanged = (object s2, RoutedEventArgs e2) => {
+                            ScrollViewer sv = scroll.GetChildOfType<ScrollViewer>();
+                            if (sv.VerticalOffset == sv.ScrollableHeight) atBottom = true;
+                            else atBottom = false;
+                        };
+
                         NotifyCollectionChangedEventHandler scrollCollectionChanged = (object s2, NotifyCollectionChangedEventArgs e2) => {
                             if (e2.NewItems == null || scroll.Items.Count == 0) return;
-                            scroll.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() => {
-                                scroll.ScrollIntoView(scroll.Items[scroll.Items.Count - 1]);
-                            }));
+
+                            if (atBottom == true) {
+                                scroll.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() => {
+                                    scroll.ScrollIntoView(scroll.Items[scroll.Items.Count - 1]);
+                                }));
+                            }
                         };
 
                         if (alwaysScrollToEnd) {
                             ((INotifyCollectionChanged)scroll.Items).CollectionChanged += scrollCollectionChanged;
-                        } else
+                            scroll.AddHandler(ScrollBar.ScrollEvent, scrollChanged);
+
+                        } else {
                             ((INotifyCollectionChanged)scroll.Items).CollectionChanged -= scrollCollectionChanged;
+                            scroll.RemoveHandler(ScrollBar.ScrollEvent, scrollChanged);
+                        }
                         return;
                     }
                 }

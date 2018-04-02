@@ -43,6 +43,17 @@
                         <Setter Property="ItemTemplate">
                             <Setter.Value>
                                 <DataTemplate>
+                                    <DataTemplate.Triggers>
+                                        <EventTrigger RoutedEvent="Control.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(tlibborder:FaceTracingBorder.Opacity)"
+                                                        From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0.0"
+                                                    />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </DataTemplate.Triggers>
                                     <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                                                           RealName="{Binding name}" GroupName="{Binding groupname}"
                                                                           Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
