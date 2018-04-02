@@ -159,6 +159,10 @@ namespace Tencent.DataSources {
             this.DoPlayingCameraChange(null);
             PlayingCamera = null;
 
+            long duration = long.Parse(ConfigurationManager.AppSettings["search_duration_seconds"]) * 1000;
+            var starttime = face.createtime - duration;
+            var endtime = face.createtime + duration;
+
             ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
 
             long comp_duration = long.Parse(ConfigurationManager.AppSettings["possible_companion_duration_seconds"]) * 1000;
@@ -174,12 +178,24 @@ namespace Tencent.DataSources {
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
                 var obj_info = jsonSerializer.Deserialize<SearchInfo>(e.Data);
                 if (obj_item.image == null) {
+                    if (obj_item.status == "start") {
+                        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 0));
+                    }
                     if (obj_item.status == "stop") {
+                        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 100));
                         ws.CloseAsync();
                     }
                 } else {
                     const double rate = 0.8;
                     allitem.Add(obj_item);
+
+                    double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
+                    this.FaceDetail.Dispatcher.BeginInvoke(
+                        new Action(() => {
+                            this.FaceDetail.Progress = Math.Max(Math.Min(100.0, percent), this.FaceDetail.Progress);
+                        })
+                    );
+
                     allitem = new ConcurrentBag<SearchItem>(allitem
                         .OrderByDescending(x => x.createtime)
                         .ThenBy(x => x.image)
@@ -254,13 +270,12 @@ namespace Tencent.DataSources {
             };
             ws.OnOpen += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
-                long duration = long.Parse(ConfigurationManager.AppSettings["search_duration_seconds"]) * 1000;
                 var param = new SearchParam() {
                     //starttime = face.createtime - 1000 * 60 * 5,
                     //endtime = face.createtime + 1000 * 60 * 5,
                     name = face.name,
-                    starttime = face.createtime - duration,
-                    endtime = face.createtime + duration,
+                    starttime = starttime,
+                    endtime = endtime,
                     image = face.image,
                     score = 0,
                     searchid = "",

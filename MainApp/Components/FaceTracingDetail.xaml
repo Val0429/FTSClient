@@ -234,6 +234,39 @@
                         
                     </Grid>
                     <!-- 3rd column -->
+                    
+                    <!-- progress -->
+                    <ProgressBar x:Name="ProgressBar" Margin="30,0,0,0" Height="12" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Minimum="0" Maximum="100"
+                                 Value="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Progress}"
+                                 Foreground="#EBAC28">
+                        <ProgressBar.Style>
+                            <Style TargetType="ProgressBar">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ProgressBar, Path=Value}" Value="100">
+                                        <DataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="FadeIn" />
+                                            <BeginStoryboard x:Name="FadeOut">
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.6" FillBehavior="HoldEnd" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=ProgressBar, Path=Value}" Value="0">
+                                        <DataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="FadeOut" />
+                                            <BeginStoryboard x:Name="FadeIn">
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.6" FillBehavior="HoldEnd" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ProgressBar.Style>
+                    </ProgressBar>
+                    <!-- progress -->
 
                 </Grid>
 

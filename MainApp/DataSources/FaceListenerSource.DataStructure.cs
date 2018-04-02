@@ -123,6 +123,15 @@ namespace Tencent.DataSources {
         public static readonly DependencyProperty LastTimeProperty =
             DependencyProperty.Register("LastTime", typeof(long), typeof(FaceDetail), new PropertyMetadata(null));
 
+        public double Progress {
+            get { return (double)GetValue(ProgressProperty); }
+            set { SetValue(ProgressProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Progress.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ProgressProperty =
+            DependencyProperty.Register("Progress", typeof(double), typeof(FaceDetail), new PropertyMetadata(100.0));
+
         #endregion "Dependency Properties"
 
         public ObservableCollection<TraceItem> Traces { get; private set; }

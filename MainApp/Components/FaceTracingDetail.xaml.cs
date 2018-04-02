@@ -124,5 +124,6 @@ namespace Tencent.Components {
         private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {
             this.MainBorder.IsMaximum = !this.MainBorder.IsMaximum;
         }
+
     }
 }
