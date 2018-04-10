@@ -68,6 +68,15 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Binarymission.WPF.Controls.VirtualizingWrapPanel">
+      <HintPath>C:\Program Files (x86)\Binarymission\Professional\WPF_SL\VirtualizingWrapPanel\Binarymission.WPF.Controls.VirtualizingWrapPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="Binarymission.WPF.Data.DataExtensions">
+      <HintPath>C:\Program Files (x86)\Binarymission\Professional\WPF_SL\VirtualizingWrapPanel\Binarymission.WPF.Data.DataExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Binarymission.WPF.Shaders.Library">
+      <HintPath>C:\Program Files (x86)\Binarymission\Professional\WPF_SL\Shaders Libarry\Binarymission.WPF.Shaders.Library.dll</HintPath>
+    </Reference>
     <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>

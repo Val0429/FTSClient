@@ -11,10 +11,11 @@
              xmlns:localcvt="clr-namespace:Tencent.Converters"
              xmlns:dtl="clr-namespace:Tencent.Components.FaceTracingDetails"
              xmlns:pnl="clr-namespace:Library.Panels;assembly=Library"
+             xmlns:bvw="clr-namespace:Binarymission.WPF.Controls.ExtendedPanelControls.VirtualizingWrapPanel.Constants;assembly=Binarymission.WPF.Controls.VirtualizingWrapPanel"
+             xmlns:sdr="clr-namespace:Binarymission.WPF.Shaders.Library.CustomEffects;assembly=Binarymission.WPF.Shaders.Library"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640">
-
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -40,10 +41,32 @@
             <Style TargetType="scv:CustomListView">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="0">
+                        <Setter Property="ItemsPanel">
+                            <Setter.Value>
+                                <ItemsPanelTemplate>
+                                    <!--<pnl:VirtualizingWrapPanel Orientation="Horizontal" />-->
+                                    <pnl:VirtualizingWrapPanel />
+                                </ItemsPanelTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="ItemTemplate">
                             <Setter.Value>
                                 <DataTemplate>
-                                    <DataTemplate.Triggers>
+                                    <!--<DataTemplate.Triggers>
+                                        <EventTrigger RoutedEvent="Control.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Effect.(sdr:PixellatingEffect.VerticalPixelCounts)"
+                                                                     From="8" To="100" Duration="0:0:0.3" BeginTime="0:0:0.0"
+                                                                     />
+                                                    <DoubleAnimation Storyboard.TargetProperty="Effect.(sdr:PixellatingEffect.HorizontalPixelCounts)"
+                                                                     From="8" To="100" Duration="0:0:0.3" BeginTime="0:0:0.0"
+                                                                     />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </DataTemplate.Triggers>-->
+                                    <!--<DataTemplate.Triggers>
                                         <EventTrigger RoutedEvent="Control.Loaded">
                                             <BeginStoryboard>
                                                 <Storyboard>
@@ -53,12 +76,16 @@
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
-                                    </DataTemplate.Triggers>
+                                    </DataTemplate.Triggers>-->
                                     <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
+                                                                          Margin="7"
                                                                           RealName="{Binding name}" GroupName="{Binding groupname}"
                                                                           Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
                                                                           GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
                                                                           >
+                                        <!--<tlibborder:FaceTracingBorder.Effect>
+                                            <sdr:PixellatingEffect VerticalPixelCounts="8" HorizontalPixelCounts="8" />
+                                        </tlibborder:FaceTracingBorder.Effect>-->
                                     </tlibborder:FaceTracingBorder>
                                 </DataTemplate>
                             </Setter.Value>
@@ -101,6 +128,7 @@
                     Background="Transparent"
                     ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Faces}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.CanContentScroll="True"
                     ScrollContentMargin="0,0,0,5"
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
@@ -146,11 +174,9 @@
             <ImageBrush Viewbox="0,0 0.5,0.5"
                             Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
         </DockPanel.Background>
-        <Viewbox>
-            <Viewbox.CacheMode>
-                <BitmapCache RenderAtScale="3" />
-            </Viewbox.CacheMode>
-            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Width="932" Height="500" Title="Tracking Record" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
+        <!--<Viewbox>-->
+        <!--Width="932" Height="500"-->
+            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="Tracking Record" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
                 <tlibborder:MainBorder.Buttons>
                     <!-- Left Bottom Icon -->
                     <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">
@@ -220,10 +246,22 @@
                     <!-- Left Bottom Icon -->
                 </tlibborder:MainBorder.Buttons>
 
-                <ContentPresenter x:Name="ContentArea" Content="{StaticResource MainContent}" SnapsToDevicePixels="True" />
+            <!--<ContentPresenter x:Name="ContentArea" Content="{StaticResource MainContent}" SnapsToDevicePixels="True">-->
+            <ContentPresenter x:Name="ContentArea" SnapsToDevicePixels="True">
+                <ContentPresenter.Content>
+                    <Grid>
+                        <ContentPresenter Content="{StaticResource MainContent}" />
+                        <!--<ScrollViewer CanContentScroll="True">
+                            <pnl:AnnoyingPanel>
+                                <Button>Button</Button>
+                            </pnl:AnnoyingPanel>
+                        </ScrollViewer>-->
+                    </Grid>
+                </ContentPresenter.Content>
+            </ContentPresenter>
 
-            </tlibborder:MainBorder>
-        </Viewbox>
+        </tlibborder:MainBorder>
+        <!--</Viewbox>-->
     </DockPanel>
 
 </UserControl>

@@ -71,6 +71,7 @@
     <Compile Include="Helpers\Telekinesis.xaml.cs">
       <DependentUpon>Telekinesis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panels\AnnoyingPanel.cs" />
     <Compile Include="Panels\VirtualizingWrapPanel.cs" />
     <Compile Include="Windows\EmbedContainerWindow.cs" />
     <Compile Include="Windows\EmbedWindow.xaml.cs">
