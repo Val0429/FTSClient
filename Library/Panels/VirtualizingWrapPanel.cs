@@ -62,11 +62,13 @@ namespace Library.Panels {
             _offset.Y = offset;
             ScrollOwner?.InvalidateScrollInfo();
             _trans.Y = -offset;
+
+            InvalidateMeasure();
         }
 
         public void LineDown() {
+            Console.WriteLine("Set offset: {0}", this.VerticalOffset + _unitSize.Height);
             this.SetVerticalOffset(this.VerticalOffset + _unitSize.Height);
-            Console.WriteLine("Vertical: {0}", VerticalOffset);
         }
         public void LineUp() {
             this.SetVerticalOffset(this.VerticalOffset - _unitSize.Height);
@@ -145,13 +147,27 @@ namespace Library.Panels {
                 _unitSize.Height * RowsAndCols.Item1
                 );
 
-            var viewport = new Size(
-                availableSize.Width,
-                this.ActualHeight
-                );
+            var viewport = availableSize;
+
+            /// re-position after resize
+            SetVerticalOffset(VerticalOffset);
 
             _extent = extent;
             _viewport = viewport;
+        }
+
+        private void CleanUpItems(int startIndex, int endIndex) {
+            UIElementCollection children = this.InternalChildren;
+            IItemContainerGenerator generator = this.ItemContainerGenerator;
+
+            for (int i = children.Count -1; i >=0; --i) {
+                GeneratorPosition pos = new GeneratorPosition(i, 0);
+                var itemIndex = generator.IndexFromGeneratorPosition(pos);
+                if (itemIndex < startIndex || itemIndex > endIndex) {
+                    generator.Remove(pos, 1);
+                    RemoveInternalChildRange(i, 1);
+                }
+            }
         }
         #endregion "Helper Private Function"
 
@@ -184,34 +200,37 @@ namespace Library.Panels {
             /// After Auto Size Guarantee, Calculate extent / viewport
             CalculateExtents(availableSize);
 
+            /// Calculate start / end position
+            var row = Math.Floor(VerticalOffset / _unitSize.Height);
+            var RowsAndCols = MeasureRowsAndCols(availableSize);
+            var startIndex = (int)(RowsAndCols.Item2 * row);
+            var endIndex = (int)(Math.Ceiling(ViewportHeight / _unitSize.Height) * RowsAndCols.Item2 + startIndex - 1);
+
             /// Draw
-            using (generator.StartAt(generator.GeneratorPositionFromIndex(0), GeneratorDirection.Forward, true)) {
-                for (var i=0; i< itemsControl.Items.Count; ++i) {
+            using (generator.StartAt( generator.GeneratorPositionFromIndex(startIndex), GeneratorDirection.Forward, true )) {
+                for (var i = startIndex; i <= endIndex; ++i) {
                     bool newlyRealized;
                     UIElement child = generator.GenerateNext(out newlyRealized) as UIElement;
                     if (newlyRealized) {
                         base.AddInternalChild(child);
                         generator.PrepareItemContainer(child);
-                    } else {
-                        /// do nothing for now
                     }
-                    child.Measure(_unitSize);
+                    /// If null, out of bound
+                    if (child != null) child.Measure(_unitSize);
                 }
             }
 
             /// Clean Up Items
-
-            //foreach (UIElement child in this.InternalChildren) {
-            //    child.Measure( _unitSize );
-            //}
-
+            CleanUpItems(startIndex, endIndex);
+            
             return availableSize;
         }
 
         protected override Size ArrangeOverride(Size finalSize) {
+            IItemContainerGenerator generator = base.ItemContainerGenerator;
             for (int i = 0; i < this.InternalChildren.Count; ++i) {
-                //this.InternalChildren[i].Arrange(new Rect(0, _unitSize.Height * i, _unitSize.Width, _unitSize.Height));
-                this.InternalChildren[i].Arrange(GetRectFromItemIndex(i));
+                var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(i, 0));
+                this.InternalChildren[i].Arrange(GetRectFromItemIndex(itemIndex));
             }
 
             return finalSize;
