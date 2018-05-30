@@ -109,16 +109,43 @@ namespace Tencent.DataSources {
                 if (face.name == null) face.groupname = "No Match";
 
                 this.Dispatcher.BeginInvoke(new Action(() => {
-                    //for (var i=0; i<8; ++i) Faces.Add(face);
+                    //for (var i=0; i<300; ++i) Faces.Add(face);
                     Faces.Add(face);
-                    //Console.WriteLine("face count {0}", Faces.Count);
-                    while (Faces.Count > maximumFaces) {
-                        //Console.WriteLine("Try Remove");
-                        Faces.RemoveAt(0);
-                    }
                 }));
             };
             wsl.ConnectAsync();
+
+            ///// workaround, todo remove ///
+            //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
+            //List<string> images = new List<string>() {
+            //    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5THpTGLWqXyKH-PYVdAquMG3kdHGrymmBkmDnnAuSFVTw-YQQ",
+            //    "http://issue247.com/wp-content/uploads/2015/05/%E0%B8%AA%E0%B8%B4%E0%B9%88%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B9%86%E0%B8%84%E0%B8%A7%E0%B8%A3%E0%B8%97%E0%B8%B3%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B8%99%E0%B8%AD%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%94%E0%B8%B9%E0%B9%83%E0%B8%AA%E0%B9%81%E0%B8%9A%E0%B9%8A%E0%B8%A7.jpg",
+            //    "https://thumbs.dreamstime.com/z/jovem-mulher-que-mostra-o-produto-de-beleza-32942553.jpg",
+            //    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbK8CdyftAkdQVPcqp4StapckaxhizPGYDS1JcRfcMAMq-Yscx3A",
+            //    "https://obs.line-scdn.net/0hSUmtCMrhDHpQDSOgk85zLWpbDxVjYR95NDtdeQxjUk51bh5-OGNGFHMKBUstb0skOWpGHHQIF0t6akN7aGJG/w644",
+            //    "https://obs.line-scdn.net/0h0kAuWjeIb0R8DECev88QE0ZabCtPYHxHGDo-RyBiMXBZb31AFGIlKl8MYn1XbigaFWslIlgKdHVWayBFRGMl/w644",
+            //    "https://obs.line-scdn.net/0hFhYWCYxtGUdkLjadp-FmEF54GihXQgpEABhIRDhAR3NBTQtDDEBfKUcrRXdAG14ZDUlTIUQtAnZOSVZGXEFf/w644",
+            //    "https://farm9.staticflickr.com/8636/15785217080_bc766078cb_o.jpg",
+            //    "http://d3t543lkaz1xy.cloudfront.net/photo/5a0e39c9f03c80349d3114c9_m",
+            //    "https://obs.line-scdn.net/0h9qwZGv1kZl5KI0mdsyUZCXB1ZTF5T3VdLhU3XRZNOGpvQyRfc0Epa2ZzbWdgECEAI0QtOmshfW9gRyEIJUAp/w644",
+            //    "http://www.central.co.th/e-shopping/wp-content/uploads/2017/05/%E0%B8%84%E0%B8%A3%E0%B8%B5%E0%B8%A1%E0%B8%9A%E0%B8%B3%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%9C%E0%B8%B4%E0%B8%A7-%E0%B8%A1%E0%B8%AD%E0%B8%A2%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%84%E0%B8%A3%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C.jpg",
+            //};
+            ////"http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic2_1462587630.jpg",
+            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic3_1462587630.jpg",
+            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic4_1462587630.jpg",
+            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic5_1462587630.jpg",
+            //for (var i = 0; i < 10000; ++i) {
+            //    FaceItem face = new FaceItem() {
+            //        name = i.ToString(),
+            //        createtime = i * 1000,
+            //        groupname = "VIP",
+            //        image = images[i % images.Count],
+            //        quality = 1,
+            //        sourceid = "Camera01"
+            //    };
+            //    Faces.Add(face);
+            //}
+            ///// workaround, todo remove ///
 
             /// Start Server
             var ws = new WebSocket(string.Format("{0}/listen", Host));
@@ -142,7 +169,7 @@ namespace Tencent.DataSources {
                 Console.WriteLine("Do reconnect");
             };
             ws.OnOpen += (sender, e) => {
-                Console.WriteLine("connected. face listening");
+                Console.WriteLine("connected. face listening@{0}", string.Format("{0}/listen", Host));
             };
             ws.ConnectAsync();
         }

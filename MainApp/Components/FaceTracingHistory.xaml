@@ -41,10 +41,18 @@
             <Style TargetType="scv:CustomListView">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="0">
+                        <!--<Setter Property="ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>-->
                         <Setter Property="ItemsPanel">
                             <Setter.Value>
                                 <ItemsPanelTemplate>
-                                    <!--<pnl:VirtualizingWrapPanel Orientation="Horizontal" />-->
+                                    <!--<pnl:RefVirtualizingWrapPanel Orientation="Horizontal" />-->
                                     <pnl:VirtualizingWrapPanel />
                                 </ItemsPanelTemplate>
                             </Setter.Value>
@@ -77,6 +85,7 @@
                                             </BeginStoryboard>
                                         </EventTrigger>
                                     </DataTemplate.Triggers>-->
+                                    <!--<Label Content="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />-->
                                     <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                                                           Margin="7"
                                                                           RealName="{Binding name}" GroupName="{Binding groupname}"
@@ -92,6 +101,13 @@
                         </Setter>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="1">
+                        <Setter Property="ItemsPanel">
+                            <Setter.Value>
+                                <ItemsPanelTemplate>
+                                    <pnl:VirtualizingWrapPanel />
+                                </ItemsPanelTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="ItemTemplate">
                             <Setter.Value>
                                 <DataTemplate>
@@ -132,7 +148,7 @@
                     ScrollContentMargin="0,0,0,5"
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
-                />
+            />
 
             <Grid x:Key="FilterContent">
                 <Grid.ColumnDefinitions>
