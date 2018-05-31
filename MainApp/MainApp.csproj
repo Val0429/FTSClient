@@ -309,6 +309,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="AxiCMSViewerLib">
+      <Guid>{73556A5D-5DDB-4ACD-91F8-FEA49639F64C}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="AxNvrViewerLib">
       <Guid>{1D02BBEA-7A83-4141-8D0B-9722CBDFD94F}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -316,6 +324,15 @@
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="iCMSViewerLib">
+      <Guid>{73556A5D-5DDB-4ACD-91F8-FEA49639F64C}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="NvrViewerLib">
       <Guid>{1D02BBEA-7A83-4141-8D0B-9722CBDFD94F}</Guid>
