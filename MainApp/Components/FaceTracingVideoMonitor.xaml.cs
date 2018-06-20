@@ -73,13 +73,16 @@ namespace Tencent.Components {
                 Camera camera = null;
                 foreach (var trace in this.Traces) {
                     /// before time
-                    if (trace.starttime > timestamp) {
-                        timestamp = (long)trace.starttime;
+                    if (trace.starttime - 2000 /* workaround */ > timestamp) {
+                        timestamp = (long)trace.starttime - 2000 /* workaround */;
                         camera = trace.camera;
                         break;
                     }
+
+                    //File.AppendAllText(@"D:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
+
                     /// matches time
-                    if (trace.starttime <= timestamp && trace.endtime >= timestamp) {
+                    if (trace.starttime - 2000 /* workaround */ <= timestamp && trace.endtime >= timestamp) {
                         camera = trace.camera;
                         if (!force) {
                             source.DoPlayingCameraChange(camera);

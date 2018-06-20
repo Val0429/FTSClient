@@ -233,6 +233,7 @@ namespace Tencent.DataSources {
                             this.FaceDetail.Traces.Clear();
                             this.FaceDetail.PossibleContacts.Clear();
                             SearchItem match = null;
+                            List<SearchItem> matches = new List<SearchItem>();
                             List<SearchItem> notmatches = new List<SearchItem>();
 
                             foreach (SearchItem obj in allitem) {
@@ -240,8 +241,10 @@ namespace Tencent.DataSources {
                                     /// not match
                                     if (match == null || Math.Abs(match.createtime - obj.createtime) > comp_duration)
                                         notmatches.Add(obj);
-                                    else
+                                    else if (match.sourceid == obj.sourceid) {
                                         this.FaceDetail.PossibleContacts.Add(obj);
+                                    }
+                                    /// else ignore
 
                                 } else {
                                     /// matches
@@ -252,6 +255,7 @@ namespace Tencent.DataSources {
                                         match = obj;
                                         foreach (var notmatch in notmatches) {
                                             if (Math.Abs(obj.createtime - notmatch.createtime) <= comp_duration)
+                                                if (notmatch.sourceid == match.sourceid)
                                                 this.FaceDetail.PossibleContacts.Add(notmatch);
                                         }
                                         notmatches.Clear();
