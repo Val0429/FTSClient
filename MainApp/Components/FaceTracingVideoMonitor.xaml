@@ -51,7 +51,10 @@
 
         <!--<Slider x:Name="Slider" VerticalAlignment="Bottom" Grid.Row="1" Maximum="1" Minimum="0" Value="0" TickFrequency="1" Visibility="Collapsed" />-->
 
-        <tt:TimeTrack x:Name="TimeTrack" Traces="{Binding Traces}" BeginTime="{Binding begintime}" EndTime="{Binding endtime}" Grid.Row="1" />
+        <!--tt:TimeTrackUnit.ExportClicked="TimeTrack_ExportClicked"-->
+        <tt:TimeTrack x:Name="TimeTrack"
+                      tt:TimeTrackUnit.ExportClicked="TimeTrackUnit_ExportClicked"
+                      Traces="{Binding Traces}" BeginTime="{Binding begintime}" EndTime="{Binding endtime}" Grid.Row="1" />
 
     </Grid>
 </UserControl>

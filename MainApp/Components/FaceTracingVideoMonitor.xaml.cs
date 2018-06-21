@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows.Threading;
 using System.Threading;
+using AxiCMSUtilityLib;
 
 namespace Tencent.Components {
     /// <summary>
@@ -68,6 +69,12 @@ namespace Tencent.Components {
             videoctrl.StretchToFit = 0;
             videoctrl.AutoReconnect = 1;
             videoctrl.Mute = 1;
+
+            this.VideoUtility.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
+            this.VideoUtility.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
+            this.VideoUtility.ServerUsername = ConfigurationManager.AppSettings["nvr_account"];
+            this.VideoUtility.ServerPassword = ConfigurationManager.AppSettings["nvr_password"];
+            this.VideoUtility.ServerSSL = 0;
 
             ///// test code
             ////videoctrl.ServerIp = "172.16.10.90";
@@ -416,8 +423,16 @@ namespace Tencent.Components {
                 });
         }
 
+        List<_IiCMSUtilityEvents_OnExportStatusEventHandler> delegates2 = new List<_IiCMSUtilityEvents_OnExportStatusEventHandler>();
         public void export() {
+            /// Clean OnExportStatus Event
+            foreach (var eh in delegates2) {
+                this.VideoUtility.OnExportStatus -= eh;
+            }
+            delegates2.Clear();
+
             AxiCMSCtrl videoctrl = this.VideoCtrl;
+
             //videoctrl.SetPlayMode(1);
             //videoctrl.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
             //videoctrl.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
@@ -430,8 +445,8 @@ namespace Tencent.Components {
             //videoctrl.Mute = 1;
 
             string cross = _currentCross;
-            var startTime = (uint)begintime;  // seconds
-            var endTime = (uint)endtime;      // seconds
+            var startTime = Convert.ToUInt32(begintime/1000);  // seconds
+            var endTime = Convert.ToUInt32(endtime/1000);      // seconds
             var format = "video,audio1";
             var prefix = "";
             ulong maxFileSize = 500 * 1024 * 1024;    // bytes
@@ -444,14 +459,16 @@ namespace Tencent.Components {
             var fontSize = 12;
             var fontColor = 16777215;   // #FFFFFF white
             var watermarkText = "";
-            var path = "D:\temp\test.mp4";
+            var path = "D:\temp";
 
             this.VideoUtility.ExportFile2(startTime, endTime, _currentNvrId, _pbSessionId, _currentChannelId, format, path,
                 prefix, maxFileSize, encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);
 
-            this.VideoUtility.OnExportStatus += (object sender2, AxiCMSUtilityLib._IiCMSUtilityEvents_OnExportStatusEvent e) => {
+            _IiCMSUtilityEvents_OnExportStatusEventHandler evt = (object s, _IiCMSUtilityEvents_OnExportStatusEvent e) => {
                 Console.WriteLine("{0}, {1}", e.status, e.progress);
             };
+            this.VideoUtility.OnExportStatus += evt;
+            delegates2.Add(evt);
 
             //videoctrl.OnConnect += (object sender, AxiCMSViewerLib._IiCMSViewerEvents_OnConnectEvent e) => {
             //    var session = e.playback_sessionid;
@@ -516,5 +533,9 @@ namespace Tencent.Components {
             DependencyProperty.Register("endtime", typeof(long), typeof(FaceTracingVideoMonitor), new PropertyMetadata(0L));
 
         #endregion "Dependency Properties"
+
+        private void TimeTrackUnit_ExportClicked(object sender, RoutedEventArgs e) {
+            export();
+        }
     }
 }
