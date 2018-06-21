@@ -33,6 +33,11 @@ namespace Tencent.Components {
     public partial class FaceTracingVideoMonitor : UserControl {
         private IDisposable _subscription;
 
+        private string _currentCross;
+        private string _pbSessionId;
+        private int _currentNvrId;
+        private int _currentChannelId;
+
         public FaceTracingVideoMonitor() {
             InitializeComponent();
 
@@ -63,6 +68,45 @@ namespace Tencent.Components {
             videoctrl.StretchToFit = 0;
             videoctrl.AutoReconnect = 1;
             videoctrl.Mute = 1;
+
+            ///// test code
+            ////videoctrl.ServerIp = "172.16.10.90";
+            ////videoctrl.ServerPort = 8080;
+            ////videoctrl.ServerUsername = "Admin";
+            ////videoctrl.ServerPassword = "Aa123456";
+            //string cross = "1529494384,1529494484,2,1";
+            //string uri2 = string.Format("/airvideo/playback?nvr=nvr2&channel=channel1&track=video,audio1&wait=0&stream=1&cross={0}", cross);
+            //var startTime = (uint)(1529074020);  // seconds
+            //var endTime = (uint)(1529074120);      // seconds
+            //var format = "video,audio1";
+            //var prefix = "";
+            //ulong maxFileSize = 500 * 1024 * 1024;    // bytes
+            //var encoding = 3;           // 0:raw, 1:original, 2:mjpeg, 3:mp4
+            //var quality = 75;           // 1 ~ 100
+            //var scale = 0;              // 0:original 1:1/2,  2:1/4,  3:1/8  4:1/16
+            //var osdWatermark = 0;       // 0:disable 1:enable osd, 2:enable watermark, 3:enable osd and watermark
+            //var osdText = "";
+            //var font = "Arial";         // 
+            //var fontSize = 12;
+            //var fontColor = 16777215;   // #FFFFFF white
+            //var watermarkText = "";
+            //videoctrl.OnConnect += (object sender, AxiCMSViewerLib._IiCMSViewerEvents_OnConnectEvent e) => {
+            //    var session = e.playback_sessionid;
+
+            //    //this.VideoUtility.ExportFile2(startTime, endTime, 2, session, 1, format, "D:\temp\test.mp4", prefix, maxFileSize,
+            //    //                                encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);
+
+            //    //this.VideoUtility.OnExportStatus += (object sender2, AxiCMSUtilityLib._IiCMSUtilityEvents_OnExportStatusEvent e2) => {
+            //    //    Console.WriteLine("{0}, {1}", e2.status, e2.progress);
+            //    //};
+            //    //tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+
+            //    videoctrl.Goto(startTime, 2);
+            //    videoctrl.PlayEx(startTime, 1, "1x", 0, 0);
+
+            //};
+            //videoctrl.ServerUri = uri2;
+            //videoctrl.Connect();
 
             ///
             /// within OnTimeCode & OnDragSetCurrentTime, calculate goto next track.
@@ -187,6 +231,7 @@ namespace Tencent.Components {
                                 var trace = source.FaceDetail.Traces[i];
                                 var sourceid = trace.Camera.sourceid;
                                 Console.WriteLine("sourceid: {0}", sourceid);
+                                /* workaround, todo remove */
                                 if (sourceid == "ch1") sourceid = "Camera_03_07";
                                 Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
                                 if (match.Groups.Count != 3) continue;
@@ -199,6 +244,8 @@ namespace Tencent.Components {
                                 var et = sted.Item2;
                                 if (first) {
                                     uri = string.Format(uri, nvrid, channelid);
+                                    _currentNvrId = nvrid;
+                                    _currentChannelId = channelid;
                                     starttime = st;
                                     begintime = st;
                                     first = false;
@@ -250,7 +297,8 @@ namespace Tencent.Components {
                             }
 
                             /// endtime + 10 second
-                            uri = string.Format("{0}&cross={1}", uri, string.Join(";", tmp.ToArray()));
+                            _currentCross = string.Join(";", tmp.ToArray());
+                            uri = string.Format("{0}&cross={1}", uri, _currentCross);
                             //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
 
                             /// Clean Connect Event
@@ -263,6 +311,7 @@ namespace Tencent.Components {
                             videoctrl.ServerUri = uri;
                             videoctrl.Connect();
                             _IiCMSViewerEvents_OnConnectEventHandler evt = (object s2, _IiCMSViewerEvents_OnConnectEvent e2) => {
+                                _pbSessionId = e2.playback_sessionid;
                                 Console.WriteLine("On Connect Called");
                                 //videoctrl.Goto((ulong)starttime, 2);
                                 if (this.TimeTrack.CurrentTime == 0) this.TimeTrack.CurrentTime = (long)starttime;
@@ -365,6 +414,62 @@ namespace Tencent.Components {
                         })
                     , DispatcherPriority.ContextIdle);
                 });
+        }
+
+        public void export() {
+            AxiCMSCtrl videoctrl = this.VideoCtrl;
+            //videoctrl.SetPlayMode(1);
+            //videoctrl.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
+            //videoctrl.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
+            //videoctrl.ServerUsername = ConfigurationManager.AppSettings["nvr_account"];
+            //videoctrl.ServerPassword = ConfigurationManager.AppSettings["nvr_password"];
+            //videoctrl.ServerSSL = 0;
+            //videoctrl.DisplayTitleBar(1);
+            //videoctrl.StretchToFit = 0;
+            //videoctrl.AutoReconnect = 1;
+            //videoctrl.Mute = 1;
+
+            string cross = _currentCross;
+            var startTime = (uint)begintime;  // seconds
+            var endTime = (uint)endtime;      // seconds
+            var format = "video,audio1";
+            var prefix = "";
+            ulong maxFileSize = 500 * 1024 * 1024;    // bytes
+            var encoding = 3;           // 0:raw, 1:original, 2:mjpeg, 3:mp4
+            var quality = 75;           // 1 ~ 100
+            var scale = 0;              // 0:original 1:1/2,  2:1/4,  3:1/8  4:1/16
+            var osdWatermark = 0;       // 0:disable 1:enable osd, 2:enable watermark, 3:enable osd and watermark
+            var osdText = "";
+            var font = "Arial";         // 
+            var fontSize = 12;
+            var fontColor = 16777215;   // #FFFFFF white
+            var watermarkText = "";
+            var path = "D:\temp\test.mp4";
+
+            this.VideoUtility.ExportFile2(startTime, endTime, _currentNvrId, _pbSessionId, _currentChannelId, format, path,
+                prefix, maxFileSize, encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);
+
+            this.VideoUtility.OnExportStatus += (object sender2, AxiCMSUtilityLib._IiCMSUtilityEvents_OnExportStatusEvent e) => {
+                Console.WriteLine("{0}, {1}", e.status, e.progress);
+            };
+
+            //videoctrl.OnConnect += (object sender, AxiCMSViewerLib._IiCMSViewerEvents_OnConnectEvent e) => {
+            //    var session = e.playback_sessionid;
+
+            //    //this.VideoUtility.ExportFile2(startTime, endTime, 2, session, 1, format, "D:\temp\test.mp4", prefix, maxFileSize,
+            //    //                                encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);
+
+            //    //this.VideoUtility.OnExportStatus += (object sender2, AxiCMSUtilityLib._IiCMSUtilityEvents_OnExportStatusEvent e2) => {
+            //    //    Console.WriteLine("{0}, {1}", e2.status, e2.progress);
+            //    //};
+            //    //tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+
+            //    videoctrl.Goto(startTime, 2);
+            //    videoctrl.PlayEx(startTime, 1, "1x", 0, 0);
+
+            //};
+            //videoctrl.ServerUri = uri2;
+            //videoctrl.Connect();
         }
 
         public class Track : DependencyObject {

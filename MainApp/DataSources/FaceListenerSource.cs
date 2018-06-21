@@ -15,10 +15,12 @@ using System.Xml;
 using System.Xml.Serialization;
 using Tencent.Configurations;
 using WebSocketSharp;
+using System.Net.Http;
 
 namespace Tencent.DataSources {
     public class FaceListenerSource : DependencyObject {
-        private string Host { get; set; }
+        private string WsHost { get; set; }
+        private string HttpHost { get; set; }
 
         public FaceListenerSource() {
             Faces = new ObservableCollection<FaceItem>();
@@ -79,41 +81,45 @@ namespace Tencent.DataSources {
             this.OnMapCameraClicked?.Invoke(camera);
         }
 
-        public void StartServer() {
+        public string sessionId { get; set; }
+        public async void StartServer() {
             string ip = ConfigurationManager.AppSettings["ip"];
             string port = ConfigurationManager.AppSettings["port"];
+            string account = ConfigurationManager.AppSettings["account"];
+            string password = ConfigurationManager.AppSettings["password"];
+
             long maximumFaces = long.Parse(ConfigurationManager.AppSettings["maximum_keep_faces"]);
 
-            Host = string.Format("ws://{0}:{1}", ip, port);
-            /// Fetch Latest
-            var wsl = new WebSocket(string.Format("{0}/latestImages", Host));
-            wsl.OnMessage += (sender, e) => {
-                var jsonSerializer = new JavaScriptSerializer();
+            WsHost = string.Format("ws://{0}:{1}", ip, port);
+            HttpHost = string.Format("http://{0}:{1}", ip, port);
 
-                var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
+            /// do login
+            var client = new HttpClient();
+            var byteContent = new StringContent(string.Format("{{ \"username\": \"{0}\", \"password\": \"{1}\" }}", account, password));
+            byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var result = await client.PostAsync(string.Format("{0}/users/login", HttpHost), byteContent);
+            var resultStr = await result.Content.ReadAsStringAsync();
+            var jsonSerializerx = new JavaScriptSerializer();
+            var user = jsonSerializerx.Deserialize<OutputLogin>(resultStr);
+            var sessionId = user.sessionId;
+            this.sessionId = sessionId;
 
-                ///// workaround, todo remove
-                //var names = new List<string> { "VIP", "Blacklist", null, null, null, null, null, null, null };
-                //var random = new Random();
-                //int index = random.Next(names.Count);
-                //if (face.name == "Val") face.groupname = "VIP";
-                //else if (face.name == "") {
-                //    face.name = null;
-                //    face.groupname = "Stranger";
-                //} else {
-                //    face.groupname = names[index];
-                //}
-                ///// workaround, todo remove
+            ///// Fetch Latest
+            //var wsl = new WebSocket(string.Format("{0}/latestImages", WsHost));
+            //wsl.OnMessage += (sender, e) => {
+            //    var jsonSerializer = new JavaScriptSerializer();
 
-                // Unrecognized
-                if (face.name == null) face.groupname = "No Match";
+            //    var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
 
-                this.Dispatcher.BeginInvoke(new Action(() => {
-                    //for (var i=0; i<300; ++i) Faces.Add(face);
-                    Faces.Add(face);
-                }));
-            };
-            wsl.ConnectAsync();
+            //    // Unrecognized
+            //    if (face.name == null) face.groupname = "No Match";
+
+            //    this.Dispatcher.BeginInvoke(new Action(() => {
+            //        //for (var i=0; i<300; ++i) Faces.Add(face);
+            //        Faces.Add(face);
+            //    }));
+            //};
+            //wsl.ConnectAsync();
 
             ///// workaround, todo remove ///
             //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
@@ -148,12 +154,18 @@ namespace Tencent.DataSources {
             ///// workaround, todo remove ///
 
             /// Start Server
-            var ws = new WebSocket(string.Format("{0}/listen", Host));
+            var ws = new WebSocket(string.Format("{0}/listen?sessionId={1}", WsHost, sessionId));
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
-
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
-                if (face.name == null) face.groupname = "No Match";
+                /* workaround, to be fixed */
+                face.sourceid = "Camera_02_01";
+                face.name = face.person_info?.fullname;
+                face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
+                face.createtime = face.timestamp;
+                if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
+
+                if (face.type == "nonrecognized") face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     Faces.Add(face);
                 }));
@@ -169,7 +181,7 @@ namespace Tencent.DataSources {
                 Console.WriteLine("Do reconnect");
             };
             ws.OnOpen += (sender, e) => {
-                Console.WriteLine("connected. face listening@{0}", string.Format("{0}/listen", Host));
+                Console.WriteLine("connected. face listening@{0}", string.Format("{0}/listen", WsHost));
             };
             ws.ConnectAsync();
         }
@@ -190,8 +202,6 @@ namespace Tencent.DataSources {
             var starttime = face.createtime - duration;
             var endtime = face.createtime + duration;
 
-            ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
-
             long comp_duration = long.Parse(ConfigurationManager.AppSettings["possible_companion_duration_seconds"]) * 1000;
 
             foreach (var value in Cameras.Values) {
@@ -199,105 +209,284 @@ namespace Tencent.DataSources {
             }
 
             if (ws != null) ws.Close();
-            ws = new WebSocket( string.Format("{0}/search", Host) );
+            var jsonSerializerx = new JavaScriptSerializer();
+            ws = new WebSocket( string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
+                WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)) );
+
+            SearchItem lastMatch = null;
+            List<SearchItem> notmatches = new List<SearchItem>();
+            /// ordered algorithm ///////////////////////////////////
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
-                var obj_info = jsonSerializer.Deserialize<SearchInfo>(e.Data);
-                if (obj_item.image == null) {
-                    if (obj_item.status == "start") {
-                        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 0));
-                    }
-                    if (obj_item.status == "stop") {
-                        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 100));
-                        ws.CloseAsync();
-                    }
-                } else {
-                    const double rate = 0.8;
-                    allitem.Add(obj_item);
+                /* workaround, to be fixed */
+                obj_item.sourceid = "Camera_02_01";
+                obj_item.name = obj_item.person_info?.fullname;
+                obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
+                obj_item.createtime = obj_item.timestamp;
 
-                    double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
-                    this.FaceDetail.Dispatcher.BeginInvoke(
+                const double rate = 0.8;
+                /// calculate progress
+                double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
+                this.FaceDetail.Dispatcher.BeginInvoke(
                         new Action(() => {
                             this.FaceDetail.Progress = Math.Max(Math.Min(100.0, percent), this.FaceDetail.Progress);
                         })
                     );
 
-                    allitem = new ConcurrentBag<SearchItem>(allitem
-                        .OrderByDescending(x => x.createtime)
-                        .ThenBy(x => x.image)
-                        );
-
-                    this.FaceDetail.Dispatcher.BeginInvoke(
+                /// calculate match
+                this.FaceDetail.Dispatcher.BeginInvoke(
                         new Action(() => {
-                            this.FaceDetail.Traces.Clear();
-                            this.FaceDetail.PossibleContacts.Clear();
-                            SearchItem match = null;
-                            List<SearchItem> matches = new List<SearchItem>();
-                            List<SearchItem> notmatches = new List<SearchItem>();
+                            if (
+                                (face.type == "recognized" && obj_item.name != face.name) ||
+                                (face.type == "nonrecognized" && obj_item.type == "recognized") ||
+                                (face.type == "nonrecognized" && obj_item.score < rate)
+                                ) {
+                                /// not match
+                                //this.FaceDetail.PossibleContacts.Add(obj_item);
 
-                            foreach (SearchItem obj in allitem) {
-                                if (obj.score < rate) {
-                                    /// not match
-                                    if (match == null || Math.Abs(match.createtime - obj.createtime) > comp_duration)
-                                        notmatches.Add(obj);
-                                    else if (match.sourceid == obj.sourceid) {
-                                        this.FaceDetail.PossibleContacts.Add(obj);
+                                //if (lastMatch != null && (lastMatch.createtime - obj_item.createtime) > comp_duration) {
+                                //    this.FaceDetail.PossibleContacts.Add(obj_item);
+                                //}
+
+                                /// not match
+                                if (lastMatch == null || Math.Abs(lastMatch.createtime - obj_item.createtime) > comp_duration)
+                                    notmatches.Add(obj_item);
+                                else if (lastMatch.sourceid == obj_item.sourceid)
+                                    this.FaceDetail.PossibleContacts.Add(obj_item);
+                                /// else ignore
+
+                            } else {
+                                /// matches
+                                /// 1) get last traces, if camera match, add into it.
+                                /// 2) if not match, add new trace, then add into it.
+                                do {
+                                    lastMatch = obj_item;
+                                    // 1)
+                                    if (this.FaceDetail.Traces.Count > 0) {
+                                        var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
+                                        if (lasttrace.Camera.sourceid == obj_item.sourceid) {
+                                            lasttrace.Faces.Add(obj_item);
+                                            lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
+                                            lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
+                                            this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
+                                            this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
+                                            break;
+                                        }
                                     }
-                                    /// else ignore
 
-                                } else {
-                                    /// matches
-                                    /// 1) get last traces, if camera match, add into it.
-                                    /// 2) if not match, add new trace, then add into it.
-                                    do {
-                                        /// detect possible comps
-                                        match = obj;
-                                        foreach (var notmatch in notmatches) {
-                                            if (Math.Abs(obj.createtime - notmatch.createtime) <= comp_duration)
-                                                if (notmatch.sourceid == match.sourceid)
-                                                this.FaceDetail.PossibleContacts.Add(notmatch);
-                                        }
-                                        notmatches.Clear();
+                                    // 2)
+                                    // find camera
+                                    Camera camera = null;
+                                    Cameras.TryGetValue(obj_item.sourceid, out camera);
+                                    if (camera == null) break;
+                                    /// create trace
+                                    var traceitem = new TraceItem();
+                                    traceitem.Camera = camera;
+                                    traceitem.starttime = traceitem.endtime = obj_item.createtime;
+                                    traceitem.Faces.Add(obj_item);
+                                    this.FaceDetail.Traces.Add(traceitem);
+                                    this.FaceDetail.EntryTime = Math.Min(
+                                        this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+                                            obj_item.createtime);
+                                    this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
+                                    camera.Face = obj_item;
 
-                                        // 1)
-                                        if (this.FaceDetail.Traces.Count > 0) {
-                                            var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
-                                            if (lasttrace.Camera.sourceid == obj.sourceid) {
-                                                lasttrace.Faces.Add(obj);
-                                                lasttrace.starttime = Math.Min(obj.createtime, lasttrace.starttime);
-                                                lasttrace.endtime = Math.Max(obj.createtime, lasttrace.endtime);
-                                                this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj.createtime);
-                                                this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
-                                                break;
-                                            }
-                                        }
-
-                                        // 2)
-                                        // find camera
-                                        Camera camera = null;
-                                        Cameras.TryGetValue(obj.sourceid, out camera);
-                                        if (camera == null) break;
-                                        /// create trace
-                                        var traceitem = new TraceItem();
-                                        traceitem.Camera = camera;
-                                        traceitem.starttime = traceitem.endtime = obj.createtime;
-                                        traceitem.Faces.Add(obj);
-                                        this.FaceDetail.Traces.Add(traceitem);
-                                        this.FaceDetail.EntryTime = Math.Min(
-                                            this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
-                                                obj.createtime);
-                                        this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
-                                        camera.Face = obj;
-
-                                    } while (false);
-                                }
+                                } while (false);
                             }
                             TrackChanged.OnNext(true);
                         })
                     );
-                }
-                return;
+            /////////////////////////////////////////////////////////////
+
+            ///// disordered algorithm ////////////////////////////////
+            //ConcurrentBag<SearchItem> allitem = new ConcurrentBag<SearchItem>();
+            //ws.OnMessage += (sender, e) => {
+            //    var jsonSerializer = new JavaScriptSerializer();
+            //    var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
+            //    /* workaround, to be fixed */
+            //    obj_item.sourceid = "Camera_02_01";
+            //    obj_item.name = obj_item.person_info?.fullname;
+            //    obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
+            //    obj_item.createtime = obj_item.timestamp;
+
+            //    const double rate = 0.8;
+            //    allitem.Add(obj_item);
+
+            //    double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
+            //    this.FaceDetail.Dispatcher.BeginInvoke(
+            //        new Action(() => {
+            //            this.FaceDetail.Progress = Math.Max(Math.Min(100.0, percent), this.FaceDetail.Progress);
+            //        })
+            //    );
+
+            //    this.FaceDetail.Dispatcher.BeginInvoke(
+            //        new Action(() => {
+            //            this.FaceDetail.Traces.Clear();
+            //            this.FaceDetail.PossibleContacts.Clear();
+            //            SearchItem match = null;
+            //            List<SearchItem> matches = new List<SearchItem>();
+            //            List<SearchItem> notmatches = new List<SearchItem>();
+
+            //            foreach (SearchItem obj in allitem) {
+            //                if (
+            //                    (face.type == "recognized" && obj.name != face.name) ||
+            //                    (face.type == "nonrecognized" && obj.score < rate)
+            //                ) {
+            //                    /// not match
+            //                    if (match == null || Math.Abs(match.createtime - obj.createtime) > comp_duration)
+            //                        notmatches.Add(obj);
+            //                    else if (match.sourceid == obj.sourceid) {
+            //                        this.FaceDetail.PossibleContacts.Add(obj);
+            //                    }
+            //                    /// else ignore
+
+            //                } else {
+            //                    /// matches
+            //                    /// 1) get last traces, if camera match, add into it.
+            //                    /// 2) if not match, add new trace, then add into it.
+            //                    do {
+            //                        /// detect possible comps
+            //                        match = obj;
+            //                        foreach (var notmatch in notmatches) {
+            //                            if (Math.Abs(obj.createtime - notmatch.createtime) <= comp_duration)
+            //                                if (notmatch.sourceid == match.sourceid)
+            //                                    this.FaceDetail.PossibleContacts.Add(notmatch);
+            //                        }
+            //                        notmatches.Clear();
+
+            //                        // 1)
+            //                        if (this.FaceDetail.Traces.Count > 0) {
+            //                            var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
+            //                            if (lasttrace.Camera.sourceid == obj.sourceid) {
+            //                                lasttrace.Faces.Add(obj);
+            //                                lasttrace.starttime = Math.Min(obj.createtime, lasttrace.starttime);
+            //                                lasttrace.endtime = Math.Max(obj.createtime, lasttrace.endtime);
+            //                                this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj.createtime);
+            //                                this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+            //                                break;
+            //                            }
+            //                        }
+
+            //                        // 2)
+            //                        // find camera
+            //                        Camera camera = null;
+            //                        Cameras.TryGetValue(obj.sourceid, out camera);
+            //                        if (camera == null) break;
+            //                        /// create trace
+            //                        var traceitem = new TraceItem();
+            //                        traceitem.Camera = camera;
+            //                        traceitem.starttime = traceitem.endtime = obj.createtime;
+            //                        traceitem.Faces.Add(obj);
+            //                        this.FaceDetail.Traces.Add(traceitem);
+            //                        this.FaceDetail.EntryTime = Math.Min(
+            //                            this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+            //                                obj.createtime);
+            //                        this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+            //                        camera.Face = obj;
+
+            //                    } while (false);
+            //                }
+            //            }
+            //            TrackChanged.OnNext(true);
+            //        })
+            //    );
+            //    /////////////////////////////////////////////////////////////
+
+            //if (obj_item.image == null) {
+            //    if (obj_item.status == "start") {
+            //        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 0));
+            //    }
+            //    if (obj_item.status == "stop") {
+            //        this.FaceDetail.Dispatcher.BeginInvoke(new Action(() => this.FaceDetail.Progress = 100));
+            //        ws.CloseAsync();
+            //    }
+            //} else {
+            //    const double rate = 0.8;
+            //    allitem.Add(obj_item);
+
+            //    double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
+            //    this.FaceDetail.Dispatcher.BeginInvoke(
+            //        new Action(() => {
+            //            this.FaceDetail.Progress = Math.Max(Math.Min(100.0, percent), this.FaceDetail.Progress);
+            //        })
+            //    );
+
+            //    allitem = new ConcurrentBag<SearchItem>(allitem
+            //        .OrderByDescending(x => x.createtime)
+            //        .ThenBy(x => x.image)
+            //        );
+
+            //    this.FaceDetail.Dispatcher.BeginInvoke(
+            //        new Action(() => {
+            //            this.FaceDetail.Traces.Clear();
+            //            this.FaceDetail.PossibleContacts.Clear();
+            //            SearchItem match = null;
+            //            List<SearchItem> matches = new List<SearchItem>();
+            //            List<SearchItem> notmatches = new List<SearchItem>();
+
+            //            foreach (SearchItem obj in allitem) {
+            //                if (obj.score < rate) {
+            //                    /// not match
+            //                    if (match == null || Math.Abs(match.createtime - obj.createtime) > comp_duration)
+            //                        notmatches.Add(obj);
+            //                    else if (match.sourceid == obj.sourceid) {
+            //                        this.FaceDetail.PossibleContacts.Add(obj);
+            //                    }
+            //                    /// else ignore
+
+            //                } else {
+            //                    /// matches
+            //                    /// 1) get last traces, if camera match, add into it.
+            //                    /// 2) if not match, add new trace, then add into it.
+            //                    do {
+            //                        /// detect possible comps
+            //                        match = obj;
+            //                        foreach (var notmatch in notmatches) {
+            //                            if (Math.Abs(obj.createtime - notmatch.createtime) <= comp_duration)
+            //                                if (notmatch.sourceid == match.sourceid)
+            //                                this.FaceDetail.PossibleContacts.Add(notmatch);
+            //                        }
+            //                        notmatches.Clear();
+
+            //                        // 1)
+            //                        if (this.FaceDetail.Traces.Count > 0) {
+            //                            var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
+            //                            if (lasttrace.Camera.sourceid == obj.sourceid) {
+            //                                lasttrace.Faces.Add(obj);
+            //                                lasttrace.starttime = Math.Min(obj.createtime, lasttrace.starttime);
+            //                                lasttrace.endtime = Math.Max(obj.createtime, lasttrace.endtime);
+            //                                this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj.createtime);
+            //                                this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+            //                                break;
+            //                            }
+            //                        }
+
+            //                        // 2)
+            //                        // find camera
+            //                        Camera camera = null;
+            //                        Cameras.TryGetValue(obj.sourceid, out camera);
+            //                        if (camera == null) break;
+            //                        /// create trace
+            //                        var traceitem = new TraceItem();
+            //                        traceitem.Camera = camera;
+            //                        traceitem.starttime = traceitem.endtime = obj.createtime;
+            //                        traceitem.Faces.Add(obj);
+            //                        this.FaceDetail.Traces.Add(traceitem);
+            //                        this.FaceDetail.EntryTime = Math.Min(
+            //                            this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
+            //                                obj.createtime);
+            //                        this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj.createtime);
+            //                        camera.Face = obj;
+
+            //                    } while (false);
+            //                }
+            //            }
+            //            TrackChanged.OnNext(true);
+            //        })
+            //    );
+            //}
+            return;
             };
             ws.OnOpen += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();

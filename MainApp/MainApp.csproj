@@ -309,6 +309,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="AxiCMSUtilityLib">
+      <Guid>{51249F92-F624-4D21-B486-8E58FA735388}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="AxiCMSViewerLib">
       <Guid>{73556A5D-5DDB-4ACD-91F8-FEA49639F64C}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -324,6 +332,15 @@
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="iCMSUtilityLib">
+      <Guid>{51249F92-F624-4D21-B486-8E58FA735388}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="iCMSViewerLib">
       <Guid>{73556A5D-5DDB-4ACD-91F8-FEA49639F64C}</Guid>

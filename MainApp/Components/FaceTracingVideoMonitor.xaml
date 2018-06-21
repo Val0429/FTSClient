@@ -7,6 +7,7 @@
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              xmlns:fc="clr-namespace:AxNvrViewerLib;assembly=AxInterop.NvrViewerLib"
              xmlns:fcc="clr-namespace:AxiCMSViewerLib;assembly=AxInterop.iCMSViewerLib"
+             xmlns:fcu="clr-namespace:AxiCMSUtilityLib;assembly=AxInterop.iCMSUtilityLib"
              xmlns:pl="clr-namespace:Tencent.Panels"
              xmlns:tt="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
              mc:Ignorable="d" 
@@ -27,6 +28,10 @@
         </Grid.RowDefinitions>
 
         <Grid>
+            <WindowsFormsHost HorizontalAlignment="Center" VerticalAlignment="Center" Width="0" Height="0">
+                <fcu:AxiCMSUtility x:Name="VideoUtility" />
+            </WindowsFormsHost>
+            
             <WindowsFormsHost HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8">
                 <!--<fc:AxNvrCtrl x:Name="VideoCtrl" Dock="Fill" />-->
                 <fcc:AxiCMSCtrl x:Name="VideoCtrl" Dock="Fill" />
