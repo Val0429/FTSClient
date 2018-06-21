@@ -23,7 +23,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <map:FloorPlanMapUnit x:Name="MainMap" MapSource="Resources/map.png " Margin="10,0" ClipToBounds="True">
+        <map:FloorPlanMapUnit x:Name="MainMap" MapSource="Resources/map.png" Margin="10,0" ClipToBounds="True">
             <!--<map:FloorPlanMapUnit.Objects>
                 <device:CameraDevice X="200" Y="267" Angle="-75" Size="0.7" />
                 <device:CameraDevice X="785" Y="367" Angle="150" Size="0.7" />

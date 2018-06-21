@@ -258,6 +258,14 @@ namespace Tencent.DataSources {
 
                             } else {
                                 /// matches
+                                /// detect possible comps
+                                foreach (var notmatch in notmatches) {
+                                    if (Math.Abs(obj_item.createtime - notmatch.createtime) <= comp_duration)
+                                        if (notmatch.sourceid == obj_item.sourceid)
+                                            this.FaceDetail.PossibleContacts.Add(notmatch);
+                                }
+                                notmatches.Clear();
+
                                 /// 1) get last traces, if camera match, add into it.
                                 /// 2) if not match, add new trace, then add into it.
                                 do {
