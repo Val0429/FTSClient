@@ -191,8 +191,8 @@
                             Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
         </DockPanel.Background>
         <!--<Viewbox>-->
-        <!--Width="932" Height="500"-->
-            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="Tracking Record" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
+        <!--Width="932" Height="500"--><!-- Tracking Record -->
+            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="人脸追踪纪录" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
                 <tlibborder:MainBorder.Buttons>
                     <!-- Left Bottom Icon -->
                     <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">

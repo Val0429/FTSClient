@@ -153,9 +153,7 @@ namespace Tencent.DataSources {
             //}
             ///// workaround, todo remove ///
 
-            /// Start Server
-            var ws = new WebSocket(string.Format("{0}/listen?sessionId={1}", WsHost, sessionId));
-            ws.OnMessage += (sender, e) => {
+            var callback = new EventHandler<MessageEventArgs>((sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
                 /* workaround, to be fixed */
@@ -170,9 +168,25 @@ namespace Tencent.DataSources {
 
                 if (face.type == "nonrecognized") face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
+                    /// ignore face with same name
+                    FaceItem prevFace = null;
+                    if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
+                    if (prevFace != null && prevFace.name != null && prevFace.name == face.name) {
+                        Faces.RemoveAt(Faces.Count - 1);
+                    }
                     Faces.Add(face);
                 }));
-            };
+            });
+
+            /// last images
+            var lws = new WebSocket(string.Format("{0}/lastImages?sessionId={1}", WsHost, sessionId));
+            lws.OnMessage += callback;
+            lws.Connect();
+
+            /// Start Server
+            var ws = new WebSocket(string.Format("{0}/listen?sessionId={1}", WsHost, sessionId));
+            ws.OnMessage += callback;
+
             ws.OnClose += (sender, e) => {
                 Console.WriteLine("Close reason {0} {1}", e.Code, e.Reason);
                 ws.ConnectAsync();
