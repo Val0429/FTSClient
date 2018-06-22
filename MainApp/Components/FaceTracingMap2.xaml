@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingMap2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components"
+             xmlns:map="clr-namespace:FloorPlanMap;assembly=FloorPlanMap"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+             xmlns:ftm="clr-namespace:Tencent.Components.FaceTracingMaps"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+                <ResourceDictionary Source="/FaceTrackingSystem;component/Themes/FRCameraModel.xaml" />
+                <ResourceDictionary Source="/FaceTrackingSystem;component/Themes/NormalCameraModel.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Canvas>
+        <Grid x:Name="Main">
+        </Grid>
+
+        <ftm:FloorSwitch x:Name="FloorSwitch" Canvas.Right="20" Canvas.Top="20" Width="30" FloorChanged="FloorSwitch_FloorChanged" />
+    </Canvas>
+
+
+</UserControl>

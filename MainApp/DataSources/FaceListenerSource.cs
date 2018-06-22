@@ -159,7 +159,10 @@ namespace Tencent.DataSources {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
                 /* workaround, to be fixed */
-                face.sourceid = "Camera_02_01";
+                Random random = new Random();
+                var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
+                face.sourceid = seed[random.Next(0, seed.Length)];
+                Console.Write(face.sourceid);
                 face.name = face.person_info?.fullname;
                 face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
                 face.createtime = face.timestamp;
@@ -220,7 +223,9 @@ namespace Tencent.DataSources {
                 var jsonSerializer = new JavaScriptSerializer();
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
                 /* workaround, to be fixed */
-                obj_item.sourceid = "Camera_02_01";
+                Random random = new Random();
+                var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
+                obj_item.sourceid = seed[random.Next(0, seed.Length)];
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
                 obj_item.createtime = obj_item.timestamp;

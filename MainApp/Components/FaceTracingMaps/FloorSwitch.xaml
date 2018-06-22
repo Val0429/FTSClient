@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingMaps.FloorSwitch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components.FaceTracingMaps"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FloorSwitch}}}">
+        <Grid.Resources>
+            <CollectionViewSource x:Key="floors" Source="{Binding Floors}">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription Direction="Ascending" PropertyName="." />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </Grid.Resources>
+
+        <ItemsControl ItemsSource="{Binding Source={StaticResource floors}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Height="100" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding}" Tag="{Binding}" PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </Grid>
+
+</UserControl>

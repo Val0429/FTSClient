@@ -459,7 +459,7 @@ namespace Tencent.Components {
             var fontSize = 12;
             var fontColor = 16777215;   // #FFFFFF white
             var watermarkText = "";
-            var path = "D:\temp";
+            var path = "D:\\temp";
 
             this.VideoUtility.ExportFile2(startTime, endTime, _currentNvrId, _pbSessionId, _currentChannelId, format, path,
                 prefix, maxFileSize, encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);

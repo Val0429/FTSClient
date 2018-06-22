@@ -54,12 +54,15 @@
                 </comps:FaceTracingDetail.RightPanel>-->
             </comps:FaceTracingDetail>
 
-            <comps:FaceTracingMap x:Key="Panel3">
+            <comps:FaceTracingMap2 x:Key="Panel3">
+            </comps:FaceTracingMap2>
+
+            <!--<comps:FaceTracingMap x:Key="Panel3">
                 <comps:FaceTracingMap.Background>
                     <ImageBrush Viewbox="0,0.5 0.5,0.5"
                     Stretch="Fill" ImageSource="{StaticResource BackgroundImage}" />
                 </comps:FaceTracingMap.Background>
-            </comps:FaceTracingMap>
+            </comps:FaceTracingMap>-->
 
             <!--<Grid x:Key="Panel4">
                 <Grid.Background>
