@@ -26,7 +26,12 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding}" Tag="{Binding}" PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown" />
+                    <DataTemplate.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="0,1" />
+                        </Style>
+                    </DataTemplate.Resources>
+                    <Button Content="{Binding}" Tag="{Binding}" Height="30" FontSize="16" PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
