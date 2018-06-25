@@ -176,14 +176,14 @@ namespace Tencent.DataSources {
 
                 if (face.type == "nonrecognized") face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
-                    ///// ignore duplicate face with same name
-                    //FaceItem prevFace = null;
-                    //if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
-                    //if (prevFace != null && prevFace.name != null &&
-                    //    prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
-                    //    (face.timestamp - prevFace.timestamp) <= 3000 ) {
-                    //    Faces.RemoveAt(Faces.Count - 1);
-                    //}
+                    /// ignore duplicate face with same name
+                    FaceItem prevFace = null;
+                    if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
+                    if (prevFace != null && prevFace.name != null &&
+                        prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
+                        (face.timestamp - prevFace.timestamp) <= 3000) {
+                        Faces.RemoveAt(Faces.Count - 1);
+                    }
                     Faces.Add(face);
                 }));
             });
@@ -306,12 +306,12 @@ namespace Tencent.DataSources {
                                     if (this.FaceDetail.Traces.Count > 0) {
                                         var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
                                         if (lasttrace.Camera.sourceid == obj_item.sourceid) {
-                                            ///// remove duplicate face
-                                            //var lastface = lasttrace.Faces[lasttrace.Faces.Count - 1];
-                                            //if (lastface.name != null && lastface.name == obj_item.name &&
-                                            //    (lastface.timestamp - obj_item.timestamp) <= 3000) {
-                                            //    lasttrace.Faces.RemoveAt(lasttrace.Faces.Count - 1);
-                                            //}
+                                            /// remove duplicate face
+                                            var lastface = lasttrace.Faces[lasttrace.Faces.Count - 1];
+                                            if (lastface.name != null && lastface.name == obj_item.name &&
+                                                (lastface.timestamp - obj_item.timestamp) <= 3000) {
+                                                lasttrace.Faces.RemoveAt(lasttrace.Faces.Count - 1);
+                                            }
                                             lasttrace.Faces.Add(obj_item);
                                             lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
                                             lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
@@ -324,6 +324,7 @@ namespace Tencent.DataSources {
                                     // 2)
                                     // find camera
                                     Camera camera = null;
+                                    if (obj_item.sourceid == null) break;
                                     Cameras.TryGetValue(obj_item.sourceid, out camera);
                                     if (camera == null) break;
                                     /// create trace

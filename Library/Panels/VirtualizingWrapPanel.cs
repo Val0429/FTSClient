@@ -100,6 +100,7 @@ namespace Library.Panels {
         private int _mracLastItemsCount = 0;
         private Size _mracAvailableSize = Size.Empty;
         private Tuple<long, long> _mracRowsAndCols = new Tuple<long, long>(0, 1);
+        /// Measure how many rows & cols available in current space
         private Tuple<long, long> MeasureRowsAndCols(Size availableSize = default(Size)) {
             int totalItemsCount = _itemsControl.Items.Count;
             if (availableSize == default(Size)) availableSize = _mracAvailableSize;
@@ -119,6 +120,7 @@ namespace Library.Panels {
             return _mracRowsAndCols;
         }
 
+        /// get Rect from index number
         private Rect GetRectFromItemIndex(int index) {
             var RowsAndCols = MeasureRowsAndCols();
             var rows = RowsAndCols.Item1;
@@ -135,6 +137,7 @@ namespace Library.Panels {
 
         private Size _ceAvailableSize = Size.Empty;
         private int _ceTotalItemsCount = 0;
+        /// Resize
         private void CalculateExtents(Size availableSize) {
             int totalItemsCount = _itemsControl.Items.Count;
             if (_ceAvailableSize == availableSize && _ceTotalItemsCount == totalItemsCount) return;
@@ -160,6 +163,7 @@ namespace Library.Panels {
         private int _cuiStartIndex = 0;
         private int _cuiEndIndex = 0;
         private int ccount = 0;
+        /// Remove item instance out of range
         private void CleanUpItems(int startIndex, int endIndex) {
             if (_cuiStartIndex == startIndex && _cuiEndIndex == endIndex) return;
             _cuiStartIndex = startIndex; _cuiEndIndex = endIndex;
@@ -174,19 +178,24 @@ namespace Library.Panels {
                 GeneratorPosition pos = new GeneratorPosition(i, 0);
                 var itemIndex = generator.IndexFromGeneratorPosition(pos);
                 if (itemIndex < startIndex || itemIndex > endIndex) {
-                    if (efinal == null) sfinal = efinal = i;
-                    else sfinal = i;
-                    spos = pos;
+                    if (itemIndex == -1) {
+                        continue;
+                    }
+                    generator.Remove(pos, 1);
+                    RemoveInternalChildRange(i, 1);
+                    //if (efinal == null) sfinal = efinal = i;
+                    //else sfinal = i;
+                    //spos = pos;
                 } else {
                     if (efinal != null) break;
                 }
             }
-            if (spos != null && efinal != null) {
-                var range = (int)efinal - (int)sfinal + 1;
-                ccount += range;
-                generator.Remove((GeneratorPosition)spos, range);
-                RemoveInternalChildRange((int)sfinal, range);
-            }
+            //if (spos != null && efinal != null) {
+            //    var range = (int)efinal - (int)sfinal + 1;
+            //    ccount += range;
+            //    generator.Remove((GeneratorPosition)spos, range);
+            //    RemoveInternalChildRange((int)sfinal, range);
+            //}
         }
 
         protected override void BringIndexIntoView(int index) {
@@ -239,13 +248,14 @@ namespace Library.Panels {
             //var endIndex = (int)(Math.Ceiling(ViewportHeight / _unitSize.Height) * RowsAndCols.Item2 + startIndex - 1 - RowsAndCols.Item2 * 2);
             //var startIndex = (int)(RowsAndCols.Item2 * row);
             //var endIndex = (int)(Math.Ceiling(ViewportHeight / _unitSize.Height) * RowsAndCols.Item2 + startIndex - 1);
+
             var startIndex = (int)(RowsAndCols.Item2 * row - RowsAndCols.Item2);
             var endIndex = (int)(Math.Ceiling(ViewportHeight / _unitSize.Height) * RowsAndCols.Item2 + startIndex - 1 + RowsAndCols.Item2);
             if (startIndex < 0) startIndex = 0;
-            var startPos = generator.GeneratorPositionFromIndex(startIndex);
 
             /// Clean Up Items
             CleanUpItems(startIndex, endIndex);
+            var startPos = generator.GeneratorPositionFromIndex(startIndex);
 
             /// Draw
             using (generator.StartAt( startPos, GeneratorDirection.Forward, true )) {
