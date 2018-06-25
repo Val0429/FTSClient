@@ -182,7 +182,11 @@ namespace Tencent.Components {
                 if (this.Main.Children.Count > 0) this.Main.Children.RemoveAt(0);
                 this.Main.Children.Add(target);
             }
-
+            /// floor label
+            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+            this.FloorLabel.Content = source.Floors.ContainsKey(floor) ?
+                    source.Floors[floor].name :
+                    string.Format("{0}F", floor);
         }
 
         private void FloorSwitch_FloorChanged(object sender, RoutedEventArgs e) {

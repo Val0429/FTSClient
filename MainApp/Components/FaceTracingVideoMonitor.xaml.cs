@@ -196,7 +196,7 @@ namespace Tencent.Components {
                     }
                 }
 
-                for (var t = i; t < i+this.Traces.Count; ++t) {
+                for (var t = i; t < i + this.Traces.Count; ++t) {
                     var trace = this.Traces[t % this.Traces.Count];
                     if (trace.camera.sourceid != camera.sourceid) continue;
                     gotoTime((long)trace.starttime, true);
@@ -234,13 +234,19 @@ namespace Tencent.Components {
 
                             /// step one, prepare video
                             //foreach (var trace in source.FaceDetail.Traces) {
+                            for (var i = 0; i < source.FaceDetail.Traces.Count; ++i) {
+                                var trace = source.FaceDetail.Traces[i];
+                                var sourceid = trace.Camera.sourceid;
+                                Console.WriteLine("sourceid: {0}", sourceid);
+                                Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
+                                if (match.Groups.Count != 3) continue;
+                                var nvrid = int.Parse(match.Groups[1].ToString());
+                                var channelid = int.Parse(match.Groups[2].ToString());
 
-                            var stedresults = calculateTracks();
-                            foreach (var data in stedresults) {
-                                var st = data.Item1;
-                                var et = data.Item2;
-                                var nvrid = data.Item3;
-                                var channelid = data.Item4;
+                                /// for first, starttime - 5 seconds
+                                var sted = calStEd(trace);
+                                var st = sted.Item1;
+                                var et = sted.Item2;
                                 if (first) {
                                     uri = string.Format(uri, nvrid, channelid);
                                     _currentNvrId = nvrid;
@@ -249,44 +255,17 @@ namespace Tencent.Components {
                                     begintime = st;
                                     first = false;
                                 }
+                                /// don't overlap with next trace
+                                if ((i + 1) < source.FaceDetail.Traces.Count) {
+                                    et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
+                                }
+                                /// for every, add into uri
                                 tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
                                 /// Add into local Traces
                                 begintime = Math.Min(begintime, st);
                                 endtime = Math.Max(endtime, (long)et);
                             }
                             if (starttime == null) return;
-
-                            //for (var i=0; i<source.FaceDetail.Traces.Count; ++i) {
-                            //    var trace = source.FaceDetail.Traces[i];
-                            //    var sourceid = trace.Camera.sourceid;
-                            //    Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
-                            //    if (match.Groups.Count != 3) continue;
-                            //    var nvrid = int.Parse(match.Groups[1].ToString());
-                            //    var channelid = int.Parse(match.Groups[2].ToString());
-
-                            //    /// for first, starttime - 5 seconds
-                            //    var sted = calStEd(trace);
-                            //    var st = sted.Item1;
-                            //    var et = sted.Item2;
-                            //    if (first) {
-                            //        uri = string.Format(uri, nvrid, channelid);
-                            //        _currentNvrId = nvrid;
-                            //        _currentChannelId = channelid;
-                            //        starttime = st;
-                            //        begintime = st;
-                            //        first = false;
-                            //    }
-                            //    /// don't overlap with next trace
-                            //    if ((i+1) < source.FaceDetail.Traces.Count) {
-                            //        et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
-                            //    }
-                            //    /// for every, add into uri
-                            //    tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
-                            //    /// Add into local Traces
-                            //    begintime = Math.Min(begintime, st);
-                            //    endtime = Math.Max(endtime, (long)et);
-                            //}
-                            //if (starttime == null) return;
 
                             /// step two, prepare track
                             foreach (var trace in source.FaceDetail.Traces) {
@@ -441,9 +420,9 @@ namespace Tencent.Components {
                     , DispatcherPriority.ContextIdle);
                 });
         }
-        
+
         static public List<Tuple<long, long, int, int>> calculateTracks() {
-            var result = new List<Tuple<long, long, int, int>> ();
+            var result = new List<Tuple<long, long, int, int>>();
 
             /// return: starttime, endtime, nvrid, channelid
             FaceListenerSource source = (FaceListenerSource)Application.Current.FindResource("FaceListenerSource");
@@ -455,7 +434,7 @@ namespace Tencent.Components {
                 );
             };
 
-            for (var i=0; i<source.FaceDetail.Traces.Count; ++i) {
+            for (var i = 0; i < source.FaceDetail.Traces.Count; ++i) {
                 var trace = source.FaceDetail.Traces[i];
                 var sourceid = trace.Camera.sourceid;
                 Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
@@ -466,7 +445,7 @@ namespace Tencent.Components {
                 var sted = calStEd(trace);
                 var st = sted.Item1;
                 var et = sted.Item2;
-                
+
                 /// don't overlap with next trace
                 if ((i + 1) < source.FaceDetail.Traces.Count) {
                     et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
@@ -500,8 +479,8 @@ namespace Tencent.Components {
             //videoctrl.Mute = 1;
 
             string cross = _currentCross;
-            var startTime = Convert.ToUInt32(begintime/1000);  // seconds
-            var endTime = Convert.ToUInt32(endtime/1000);      // seconds
+            var startTime = Convert.ToUInt32(begintime / 1000);  // seconds
+            var endTime = Convert.ToUInt32(endtime / 1000);      // seconds
             var format = "video,audio1";
             var prefix = "";
             ulong maxFileSize = 500 * 1024 * 1024;    // bytes

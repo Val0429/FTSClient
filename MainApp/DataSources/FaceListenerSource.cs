@@ -25,10 +25,16 @@ namespace Tencent.DataSources {
         public FaceListenerSource() {
             Faces = new ObservableCollection<FaceItem>();
             FaceDetail = new FaceDetail();
+            Floors = new Dictionary<int, Floor>();
             Cameras = new Dictionary<string, Camera>();
             PeopleGroups = new Dictionary<string, PeopleGroup>();
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+
+            List<Floor> fconfig = (List<Floor>)ConfigurationManager.GetSection("FloorInfo");
+            foreach (var floor in fconfig) {
+                Floors[floor.number] = floor;
+            }
 
             List<Camera> config = (List<Camera>)ConfigurationManager.GetSection("CameraInfo");
             foreach (var camera in config)
@@ -48,6 +54,8 @@ namespace Tencent.DataSources {
         public ObservableCollection<FaceItem> Faces { get; private set; }
 
         public FaceDetail FaceDetail { get; private set; }
+
+        public Dictionary<int, Floor> Floors { get; private set; }
 
         public Dictionary<string, Camera> Cameras { get; private set; }
 
@@ -157,10 +165,10 @@ namespace Tencent.DataSources {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
                 /* workaround, to be fixed */
-                Random random = new Random();
-                var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
-                face.sourceid = seed[random.Next(0, seed.Length)];
-                Console.Write(face.sourceid);
+                //Random random = new Random();
+                //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
+                //face.sourceid = seed[random.Next(0, seed.Length)];
+                //Console.Write(face.sourceid);
                 face.name = face.person_info?.fullname;
                 face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
                 face.createtime = face.timestamp;
@@ -168,12 +176,14 @@ namespace Tencent.DataSources {
 
                 if (face.type == "nonrecognized") face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
-                    /// ignore face with same name
-                    FaceItem prevFace = null;
-                    if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
-                    if (prevFace != null && prevFace.name != null && prevFace.name == face.name) {
-                        Faces.RemoveAt(Faces.Count - 1);
-                    }
+                    ///// ignore duplicate face with same name
+                    //FaceItem prevFace = null;
+                    //if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
+                    //if (prevFace != null && prevFace.name != null &&
+                    //    prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
+                    //    (face.timestamp - prevFace.timestamp) <= 3000 ) {
+                    //    Faces.RemoveAt(Faces.Count - 1);
+                    //}
                     Faces.Add(face);
                 }));
             });
@@ -230,16 +240,19 @@ namespace Tencent.DataSources {
             ws = new WebSocket( string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
                 WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)) );
 
+            Console.Write(string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
+                WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)));
+
             SearchItem lastMatch = null;
             List<SearchItem> notmatches = new List<SearchItem>();
             /// ordered algorithm ///////////////////////////////////
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
-                /* workaround, to be fixed */
-                Random random = new Random();
-                var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
-                obj_item.sourceid = seed[random.Next(0, seed.Length)];
+                ///* workaround, to be fixed */
+                //Random random = new Random();
+                //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
+                //obj_item.sourceid = seed[random.Next(0, seed.Length)];
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
                 obj_item.createtime = obj_item.timestamp;
@@ -293,6 +306,12 @@ namespace Tencent.DataSources {
                                     if (this.FaceDetail.Traces.Count > 0) {
                                         var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
                                         if (lasttrace.Camera.sourceid == obj_item.sourceid) {
+                                            ///// remove duplicate face
+                                            //var lastface = lasttrace.Faces[lasttrace.Faces.Count - 1];
+                                            //if (lastface.name != null && lastface.name == obj_item.name &&
+                                            //    (lastface.timestamp - obj_item.timestamp) <= 3000) {
+                                            //    lasttrace.Faces.RemoveAt(lasttrace.Faces.Count - 1);
+                                            //}
                                             lasttrace.Faces.Add(obj_item);
                                             lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
                                             lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);

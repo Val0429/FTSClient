@@ -27,6 +27,19 @@
         </Grid>
 
         <ftm:FloorSwitch x:Name="FloorSwitch" Canvas.Right="20" Canvas.Top="20" Width="40" FloorChanged="FloorSwitch_FloorChanged" />
+
+        <Label x:Name="FloorLabel" Canvas.Right="80" Canvas.Top="30" Content="" Padding="0" FontSize="22" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0">
+            <Label.Style>
+                <Style TargetType="Label" BasedOn="{StaticResource DefaultFont}">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="5" Color="LemonChiffon" ShadowDepth="0" />
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Label.Style>
+        </Label>
+
     </Canvas>
 
 

@@ -114,6 +114,13 @@ namespace Tencent.DataSources {
         public string glowcolor { get; set; }
     }
 
+    public class Floor : DependencyObject {
+        [XmlAttribute("number")]
+        public int number { get; set; }
+        [XmlAttribute("name")]
+        public string name { get; set; }
+    }
+
     public class Camera : DependencyObject {
         [XmlAttribute("floor")]
         public int floor { get; set; }

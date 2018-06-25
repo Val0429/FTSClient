@@ -232,6 +232,7 @@
     </Compile>
     <Compile Include="Components\FaceTracingVideoMonitors\TimeTrackUnit.cs" />
     <Compile Include="Configurations\CameraInfoConfiguration.cs" />
+    <Compile Include="Configurations\FloorInfoConfiguration.cs" />
     <Compile Include="Configurations\PeopleGroupInfoConfiguration.cs" />
     <Compile Include="Converters\GroupNameToColorConverter.cs" />
     <Compile Include="Converters\SourceIdToCameraNameConverter.cs" />
