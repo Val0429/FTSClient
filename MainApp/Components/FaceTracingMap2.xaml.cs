@@ -84,8 +84,9 @@ namespace Tencent.Components {
                     /// Change icon
                     foreach (var camera in Cameras.Values) {
                         camera.Style = nm_camera_template;
-                        if (playingcamera == null) continue;
-                        if (playingcamera.sourceid == camera.sourceid) {
+                        if (playingcamera == null || (playingcamera.sourceid != camera.sourceid)) {
+                            camera.Style = nm_camera_template;
+                        } else if (playingcamera.sourceid == camera.sourceid) {
                             camera.Style = fr_camera_template;
                         }
                     }

@@ -56,5 +56,17 @@
                       tt:TimeTrackUnit.ExportClicked="TimeTrackUnit_ExportClicked"
                       Traces="{Binding Traces}" BeginTime="{Binding begintime}" EndTime="{Binding endtime}" Grid.Row="1" />
 
+        <Label x:Name="DownloadLabel" Visibility="Hidden" Grid.Row="1" Content="正在下载..." Padding="0" FontSize="22" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,22">
+            <Label.Style>
+                <Style TargetType="Label" BasedOn="{StaticResource DefaultFont}">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="5" Color="LemonChiffon" ShadowDepth="0" />
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Label.Style>
+        </Label>
+
     </Grid>
 </UserControl>

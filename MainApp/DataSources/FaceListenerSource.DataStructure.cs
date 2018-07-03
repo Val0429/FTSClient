@@ -46,6 +46,8 @@ namespace Tencent.DataSources {
         public long timestamp { get; set; }
         // new. groups ==> groupname
         public FaceItemGroupInfo[] groups { get; set; }
+        // new. channel ==> sourceid
+        public string channel { get; set; }
 
         // *keep* reference
         public string name { get; set; }
@@ -92,6 +94,8 @@ namespace Tencent.DataSources {
         public string snapshot { get; set; }
         // new. timestamp ==> createtime
         public long timestamp { get; set; }
+        // new. channel ==> sourceid
+        public string channel { get; set; }
 
         // *keep* reference
         public string name { get; set; }

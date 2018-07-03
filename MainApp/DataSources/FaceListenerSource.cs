@@ -20,7 +20,7 @@ using System.Net.Http;
 namespace Tencent.DataSources {
     public class FaceListenerSource : DependencyObject {
         private string WsHost { get; set; }
-        private string HttpHost { get; set; }
+        public string HttpHost { get; set; }
 
         public FaceListenerSource() {
             Faces = new ObservableCollection<FaceItem>();
@@ -169,6 +169,7 @@ namespace Tencent.DataSources {
                 //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
                 //face.sourceid = seed[random.Next(0, seed.Length)];
                 //Console.Write(face.sourceid);
+                face.sourceid = face.channel;
                 face.name = face.person_info?.fullname;
                 face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
                 face.createtime = face.timestamp;
@@ -253,6 +254,7 @@ namespace Tencent.DataSources {
                 //Random random = new Random();
                 //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
                 //obj_item.sourceid = seed[random.Next(0, seed.Length)];
+                obj_item.sourceid = obj_item.channel;
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
                 obj_item.createtime = obj_item.timestamp;

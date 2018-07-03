@@ -26,6 +26,8 @@ using System.Reactive.Linq;
 using System.Windows.Threading;
 using System.Threading;
 using AxiCMSUtilityLib;
+using System.Xml;
+using System.Net.Http;
 
 namespace Tencent.Components {
     /// <summary>
@@ -166,7 +168,7 @@ namespace Tencent.Components {
                     this.TimeTrack.CurrentTime = time;
                 }
                 /// if end then stop
-                if (time >= this.TimeTrack.EndTime) {
+                if (time > this.TimeTrack.EndTime) {
                     videoctrl.Goto((ulong)time, 1);
                     return;
                 }
@@ -221,6 +223,9 @@ namespace Tencent.Components {
                             long? starttime = null;
                             List<string> tmp = new List<string>();
 
+                            /// Show start download
+                            this.DownloadLabel.Visibility = Visibility.Visible;
+
                             Traces.Clear();
                             begintime = 0;
                             endtime = 0;
@@ -232,40 +237,67 @@ namespace Tencent.Components {
                                 );
                             };
 
-                            /// step one, prepare video
-                            //foreach (var trace in source.FaceDetail.Traces) {
-                            for (var i = 0; i < source.FaceDetail.Traces.Count; ++i) {
-                                var trace = source.FaceDetail.Traces[i];
-                                var sourceid = trace.Camera.sourceid;
-                                Console.WriteLine("sourceid: {0}", sourceid);
-                                Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
-                                if (match.Groups.Count != 3) continue;
-                                var nvrid = int.Parse(match.Groups[1].ToString());
-                                var channelid = int.Parse(match.Groups[2].ToString());
+                            ///// step one, prepare video
+                            //for (var i = 0; i < this.Traces.Count; ++i) {
+                            //    var trace = this.Traces[i];
+                            //    var sourceid = trace.camera.sourceid;
+                            //    Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
+                            //    if (match.Groups.Count != 3) continue;
+                            //    var nvrid = int.Parse(match.Groups[1].ToString());
+                            //    var channelid = int.Parse(match.Groups[2].ToString());
 
-                                /// for first, starttime - 5 seconds
-                                var sted = calStEd(trace);
-                                var st = sted.Item1;
-                                var et = sted.Item2;
-                                if (first) {
-                                    uri = string.Format(uri, nvrid, channelid);
-                                    _currentNvrId = nvrid;
-                                    _currentChannelId = channelid;
-                                    starttime = st;
-                                    begintime = st;
-                                    first = false;
-                                }
-                                /// don't overlap with next trace
-                                if ((i + 1) < source.FaceDetail.Traces.Count) {
-                                    et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
-                                }
-                                /// for every, add into uri
-                                tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
-                                /// Add into local Traces
-                                begintime = Math.Min(begintime, st);
-                                endtime = Math.Max(endtime, (long)et);
-                            }
-                            if (starttime == null) return;
+                            //    var st = long.Parse(trace.starttime.ToString());
+                            //    var et = long.Parse(trace.endtime.ToString());
+                            //    if (first) {
+                            //        uri = string.Format(uri, nvrid, channelid);
+                            //        _currentNvrId = nvrid;
+                            //        _currentChannelId = channelid;
+                            //        starttime = begintime = st;
+                            //        first = false;
+                            //    }
+                            //    /// don't overlap with next trace
+                            //    if ((i + 1) < this.Traces.Count) {
+                            //        et = Math.Min(et, long.Parse(this.Traces[i + 1].starttime.ToString()));
+                            //    }
+                            //    /// for every, add into uri
+                            //    tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+                            //    /// Add into local Traces
+                            //    begintime = Math.Min(begintime, st);
+                            //    endtime = Math.Max(endtime, et);
+                            //}
+                            ////foreach (var trace in source.FaceDetail.Traces) {
+                            ////for (var i = 0; i < source.FaceDetail.Traces.Count; ++i) {
+                            ////    var trace = source.FaceDetail.Traces[i];
+                            ////    var sourceid = trace.Camera.sourceid;
+                            ////    Console.WriteLine("sourceid: {0}", sourceid);
+                            ////    Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
+                            ////    if (match.Groups.Count != 3) continue;
+                            ////    var nvrid = int.Parse(match.Groups[1].ToString());
+                            ////    var channelid = int.Parse(match.Groups[2].ToString());
+
+                            ////    /// for first, starttime - 5 seconds
+                            ////    var sted = calStEd(trace);
+                            ////    var st = sted.Item1;
+                            ////    var et = sted.Item2;
+                            ////    if (first) {
+                            ////        uri = string.Format(uri, nvrid, channelid);
+                            ////        _currentNvrId = nvrid;
+                            ////        _currentChannelId = channelid;
+                            ////        starttime = st;
+                            ////        begintime = st;
+                            ////        first = false;
+                            ////    }
+                            ////    /// don't overlap with next trace
+                            ////    if ((i + 1) < source.FaceDetail.Traces.Count) {
+                            ////        et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
+                            ////    }
+                            ////    /// for every, add into uri
+                            ////    tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+                            ////    /// Add into local Traces
+                            ////    begintime = Math.Min(begintime, st);
+                            ////    endtime = Math.Max(endtime, (long)et);
+                            ////}
+                            //if (starttime == null) return;
 
                             /// step two, prepare track
                             foreach (var trace in source.FaceDetail.Traces) {
@@ -301,9 +333,73 @@ namespace Tencent.Components {
                                 }
                             }
 
+                            /// step one, prepare video
+                            for (var i = 0; i < this.Traces.Count; ++i) {
+                                var trace = this.Traces[i];
+                                var sourceid = trace.camera.sourceid;
+                                Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
+                                if (match.Groups.Count != 3) continue;
+                                var nvrid = int.Parse(match.Groups[1].ToString());
+                                var channelid = int.Parse(match.Groups[2].ToString());
+
+                                var st = long.Parse(trace.starttime.ToString());
+                                var et = long.Parse(trace.endtime.ToString());
+                                if (first) {
+                                    uri = string.Format(uri, nvrid, channelid);
+                                    _currentNvrId = nvrid;
+                                    _currentChannelId = channelid;
+                                    starttime = begintime = st;
+                                    first = false;
+                                }
+                                /// don't overlap with next trace
+                                if ((i + 1) < this.Traces.Count) {
+                                    et = Math.Min(et, long.Parse(this.Traces[i + 1].starttime.ToString()));
+                                }
+                                /// for every, add into uri
+                                tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+                                /// Add into local Traces
+                                begintime = Math.Min(begintime, st);
+                                endtime = Math.Max(endtime, et);
+                            }
+                            //foreach (var trace in source.FaceDetail.Traces) {
+                            //for (var i = 0; i < source.FaceDetail.Traces.Count; ++i) {
+                            //    var trace = source.FaceDetail.Traces[i];
+                            //    var sourceid = trace.Camera.sourceid;
+                            //    Console.WriteLine("sourceid: {0}", sourceid);
+                            //    Match match = Regex.Match(sourceid, @"(\d+)_(\d+)");
+                            //    if (match.Groups.Count != 3) continue;
+                            //    var nvrid = int.Parse(match.Groups[1].ToString());
+                            //    var channelid = int.Parse(match.Groups[2].ToString());
+
+                            //    /// for first, starttime - 5 seconds
+                            //    var sted = calStEd(trace);
+                            //    var st = sted.Item1;
+                            //    var et = sted.Item2;
+                            //    if (first) {
+                            //        uri = string.Format(uri, nvrid, channelid);
+                            //        _currentNvrId = nvrid;
+                            //        _currentChannelId = channelid;
+                            //        starttime = st;
+                            //        begintime = st;
+                            //        first = false;
+                            //    }
+                            //    /// don't overlap with next trace
+                            //    if ((i + 1) < source.FaceDetail.Traces.Count) {
+                            //        et = Math.Min(et, calStEd(source.FaceDetail.Traces[i + 1]).Item1);
+                            //    }
+                            //    /// for every, add into uri
+                            //    tmp.Add(string.Format("{0},{1},{2},{3}", st / 1000, et / 1000, nvrid, channelid));
+                            //    /// Add into local Traces
+                            //    begintime = Math.Min(begintime, st);
+                            //    endtime = Math.Max(endtime, (long)et);
+                            //}
+                            if (starttime == null) return;
+
                             /// endtime + 10 second
                             _currentCross = string.Join(";", tmp.ToArray());
                             uri = string.Format("{0}&cross={1}", uri, _currentCross);
+                            //MessageBox.Show(string.Format("debug playback uri: {0}", uri));
+
                             //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
 
                             /// Clean Connect Event
@@ -320,7 +416,8 @@ namespace Tencent.Components {
                                 Console.WriteLine("On Connect Called");
                                 //videoctrl.Goto((ulong)starttime, 2);
                                 if (this.TimeTrack.CurrentTime == 0) this.TimeTrack.CurrentTime = (long)starttime;
-                                gotoTime(this.TimeTrack.CurrentTime, true);
+                                /* workaround: wait for playbackdone, to start play */
+                                //gotoTime(this.TimeTrack.CurrentTime, true);
                                 Console.WriteLine("start? {0} max? {1} min? {2}", starttime, this.begintime, this.endtime);
                             };
                             videoctrl.OnConnect += evt;
@@ -419,6 +516,29 @@ namespace Tencent.Components {
                         })
                     , DispatcherPriority.ContextIdle);
                 });
+
+            /// Wait playback download complete
+            this.VideoUtility.OnServerEventReceive += (object sender, _IiCMSUtilityEvents_OnServerEventReceiveEvent e) => {
+                string message = e.msg;
+
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(message);
+                var rootNode = doc.FirstChild;
+
+                if (rootNode == null) return;
+                if (rootNode.Name == "Event") {
+                    var node = rootNode.SelectSingleNode("Type");
+                    if (node.InnerText != "PlaybackDownloadDone") return;
+                    node = rootNode.SelectSingleNode("SessionID");
+                    if (node.InnerText == _pbSessionId) {
+                        gotoTime(this.TimeTrack.BeginTime, true);
+                        /// Show download complete
+                        this.DownloadLabel.Visibility = Visibility.Hidden;
+                    }
+                }
+            };
+            this.VideoUtility.StartEventReceive();
+
         }
 
         static public List<Tuple<long, long, int, int>> calculateTracks() {
@@ -493,13 +613,66 @@ namespace Tencent.Components {
             var fontSize = 12;
             var fontColor = 16777215;   // #FFFFFF white
             var watermarkText = "";
-            var path = "D:\\temp";
+            var path = "C:\\FTSExport";
 
             this.VideoUtility.ExportFile2(startTime, endTime, _currentNvrId, _pbSessionId, _currentChannelId, format, path,
                 prefix, maxFileSize, encoding, quality, scale, osdWatermark, osdText, font, fontSize, fontColor, watermarkText, cross);
 
-            _IiCMSUtilityEvents_OnExportStatusEventHandler evt = (object s, _IiCMSUtilityEvents_OnExportStatusEvent e) => {
+            _IiCMSUtilityEvents_OnExportStatusEventHandler evt = async (object s, _IiCMSUtilityEvents_OnExportStatusEvent e) => {
+                /// ExportFinished: 4
+                /// UserAborted: 5
+                /// ExportFailed: 6
                 Console.WriteLine("{0}, {1}", e.status, e.progress);
+                if (e.status == 6) {
+                    MessageBox.Show("导出失败");
+                } else if (e.status == 4) {
+                    MessageBox.Show("导出成功");
+                    /// send evis
+                    var cmsIp = ConfigurationManager.AppSettings["nvr_ip"];
+                    var cmsPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
+                    var cmsAccount = ConfigurationManager.AppSettings["nvr_account"];
+                    var cmsPassword = ConfigurationManager.AppSettings["nvr_password"];
+                    var starttime = this.Traces[0].starttime;
+                    FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+
+                    var HttpHost = string.Format("http://{0}:{1}/cgi-bin/snapshot?nvr=nvr{2}&channel=channel{3}&timestamp={4}&width=640&height=360", cmsIp, cmsPort, this._currentNvrId, this._currentChannelId, starttime);
+
+                    /// take snapshot
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", "c2FuemhpbmlhbzpqaWppamlhbw==");
+                    var result = await client.GetAsync(HttpHost);
+                    var bytes = await result.Content.ReadAsByteArrayAsync();
+                    var snapshot_b64str = Convert.ToBase64String(bytes);
+
+                    /// get mp4
+                    bytes = File.ReadAllBytes("C:\\FTSExport.mp4");
+                    var mp4_b64str = Convert.ToBase64String(bytes);
+                    //Console.WriteLine(mp4_b64str.Length);
+
+                    /// send evis
+                    var clientevis = new HttpClient();
+                    var byteContent = new StringContent(string.Format("{{ \"time\": {0}, \"cameraName\": \"{1}\", \"mp4\": \"{2}\", \"snapshot\": \"{3}\" }}",
+                        starttime,
+                        this.Traces[0].camera.name,
+                        mp4_b64str,
+                        snapshot_b64str
+                        ));
+                    byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    result = await clientevis.PostAsync(string.Format("{0}/report", source.HttpHost), byteContent);
+                    var resultStr = await result.Content.ReadAsStringAsync();
+
+                    ///// do login
+                    //var client = new HttpClient();
+                    //var byteContent = new StringContent(string.Format("{{ \"username\": \"{0}\", \"password\": \"{1}\" }}", account, password));
+                    //byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    //var result = await client.PostAsync(string.Format("{0}/users/login", HttpHost), byteContent);
+                    //var resultStr = await result.Content.ReadAsStringAsync();
+                    //var jsonSerializerx = new JavaScriptSerializer();
+                    //var user = jsonSerializerx.Deserialize<OutputLogin>(resultStr);
+                    //var sessionId = user.sessionId;
+                    //this.sessionId = sessionId;
+
+                }
             };
             this.VideoUtility.OnExportStatus += evt;
             delegates2.Add(evt);
