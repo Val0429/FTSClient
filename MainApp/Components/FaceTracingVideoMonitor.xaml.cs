@@ -50,6 +50,7 @@ namespace Tencent.Components {
             FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
 
             this.Traces = new ObservableCollection<Track>();
+            this.Crosses = new ObservableCollection<Track>();
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
 
@@ -124,18 +125,17 @@ namespace Tencent.Components {
 
             Action<long, bool> gotoTime = (long timestamp, bool force) => {
                 Camera camera = null;
-                foreach (var trace in this.Traces) {
+
+                foreach (var trace in this.Crosses) {
                     /// before time
-                    if (trace.starttime - 2000 /* workaround */ > timestamp) {
-                        timestamp = (long)trace.starttime - 2000 /* workaround */;
+                    if (trace.starttime > timestamp) {
+                        timestamp = (long)trace.starttime;
                         camera = trace.camera;
                         break;
                     }
 
-                    //File.AppendAllText(@"D:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
-
-                    /// matches time
-                    if (trace.starttime - 2000 /* workaround */ <= timestamp && trace.endtime >= timestamp) {
+                    /// match time
+                    if (trace.starttime <= timestamp && trace.endtime >= timestamp) {
                         camera = trace.camera;
                         if (!force) {
                             source.DoPlayingCameraChange(camera);
@@ -144,7 +144,29 @@ namespace Tencent.Components {
                         break;
                     }
                 }
+
+                //foreach (var trace in this.Traces) {
+                //    /// before time
+                //    if (trace.starttime - 2000 /* workaround */ > timestamp) {
+                //        timestamp = (long)trace.starttime - 2000 /* workaround */;
+                //        camera = trace.camera;
+                //        break;
+                //    }
+
+                //    //File.AppendAllText(@"D:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
+
+                //    /// matches time
+                //    if (trace.starttime - 2000 /* workaround */ <= timestamp && trace.endtime >= timestamp) {
+                //        camera = trace.camera;
+                //        if (!force) {
+                //            source.DoPlayingCameraChange(camera);
+                //            return;
+                //        }
+                //        break;
+                //    }
+                //}
                 mre_cancelcurrent.Set();
+                File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(1): {0}\n", timestamp));
                 videoctrl.Goto((ulong)timestamp, 1);
                 mre_cancelcurrent.Reset();
 
@@ -154,6 +176,7 @@ namespace Tencent.Components {
                     }
                     //System.Threading.Thread.Sleep(1000);
                     this.Dispatcher.BeginInvoke(new Action(() => {
+                        File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(2): {0}\n", timestamp));
                         videoctrl.Goto((ulong)timestamp, 2);
                         videoctrl.PlayEx((ulong)timestamp, 1, "1x", 0, 0);
 
@@ -164,11 +187,13 @@ namespace Tencent.Components {
 
             videoctrl.OnTimeCode += (object sender, _IiCMSViewerEvents_OnTimeCodeEvent e) => {
                 var time = long.Parse(e.t);
+                File.AppendAllText(@"C:\log.txt", string.Format("OnTimeCode: {0}", time));
                 if (!this.TimeTrack.IsDragging) {
                     this.TimeTrack.CurrentTime = time;
                 }
                 /// if end then stop
-                if (time > this.TimeTrack.EndTime) {
+                //if (time > this.TimeTrack.EndTime) {
+                if (time > this.Crosses[this.Crosses.Count - 1].endtime) {
                     videoctrl.Goto((ulong)time, 1);
                     return;
                 }
@@ -188,8 +213,8 @@ namespace Tencent.Components {
             /// Hook Map Click event
             source.OnMapCameraClicked += (Camera camera) => {
                 var i = 0;
-                for (; i < this.Traces.Count; ++i) {
-                    var trace = this.Traces[i];
+                for (; i < this.Crosses.Count; ++i) {
+                    var trace = this.Crosses[i];
                     if (trace.camera.sourceid != camera.sourceid) continue;
                     /// matches time
                     if (trace.starttime <= this.TimeTrack.CurrentTime && trace.endtime >= this.TimeTrack.CurrentTime) {
@@ -198,12 +223,30 @@ namespace Tencent.Components {
                     }
                 }
 
-                for (var t = i; t < i + this.Traces.Count; ++t) {
-                    var trace = this.Traces[t % this.Traces.Count];
+                for (var t = i; t < i + this.Crosses.Count; ++t) {
+                    var trace = this.Crosses[t % this.Crosses.Count];
                     if (trace.camera.sourceid != camera.sourceid) continue;
                     gotoTime((long)trace.starttime, true);
                     break;
                 }
+
+                //var i = 0;
+                //for (; i < this.Traces.Count; ++i) {
+                //    var trace = this.Traces[i];
+                //    if (trace.camera.sourceid != camera.sourceid) continue;
+                //    /// matches time
+                //    if (trace.starttime <= this.TimeTrack.CurrentTime && trace.endtime >= this.TimeTrack.CurrentTime) {
+                //        i++;
+                //        break;
+                //    }
+                //}
+
+                //for (var t = i; t < i + this.Traces.Count; ++t) {
+                //    var trace = this.Traces[t % this.Traces.Count];
+                //    if (trace.camera.sourceid != camera.sourceid) continue;
+                //    gotoTime((long)trace.starttime, true);
+                //    break;
+                //}
             };
 
             /// Initial Resource
@@ -398,6 +441,8 @@ namespace Tencent.Components {
                             /// endtime + 10 second
                             _currentCross = string.Join(";", tmp.ToArray());
                             uri = string.Format("{0}&cross={1}", uri, _currentCross);
+                            //MessageBox.Show(_currentCross);
+                            File.AppendAllText(@"C:\log.txt", _currentCross);
                             //MessageBox.Show(string.Format("debug playback uri: {0}", uri));
 
                             //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
@@ -418,6 +463,7 @@ namespace Tencent.Components {
                                 if (this.TimeTrack.CurrentTime == 0) this.TimeTrack.CurrentTime = (long)starttime;
                                 /* workaround: wait for playbackdone, to start play */
                                 //gotoTime(this.TimeTrack.CurrentTime, true);
+                                //videoctrl.Goto((ulong)starttime, 1);
                                 Console.WriteLine("start? {0} max? {1} min? {2}", starttime, this.begintime, this.endtime);
                             };
                             videoctrl.OnConnect += evt;
@@ -531,14 +577,45 @@ namespace Tencent.Components {
                     if (node.InnerText != "PlaybackDownloadDone") return;
                     node = rootNode.SelectSingleNode("SessionID");
                     if (node.InnerText == _pbSessionId) {
-                        gotoTime(this.TimeTrack.BeginTime, true);
                         /// Show download complete
                         this.DownloadLabel.Visibility = Visibility.Hidden;
+                        /// get Cross
+                        node = rootNode.SelectSingleNode("Cross");
+                        var cross = node.InnerText;
+                        File.AppendAllText(@"C:\log.txt", cross);
+                        this.Crosses.Clear();
+                        foreach (var unit in cross.Split(';')) {
+                            var data = unit.Split(',');
+                            this.Crosses.Add(
+                                    new Track() {
+                                        starttime = double.Parse(data[0]) * 1000,
+                                        endtime = double.Parse(data[1]) * 1000,
+                                        camera = getCameraByNvrChannelId(int.Parse(data[2]), int.Parse(data[3]))
+                                    }
+                                );
+                        }
+                        /// goto
+                        gotoTime(this.TimeTrack.BeginTime, true);
                     }
                 }
             };
             this.VideoUtility.StartEventReceive();
 
+        }
+
+        private Camera getCameraByNvrChannelId(int nvrid, int channelid) {
+            FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+
+            foreach (var camera in source.Cameras) {
+                Match match = Regex.Match(camera.Value.sourceid, @"(\d+)_(\d+)");
+                if (match.Groups.Count != 3) continue;
+                var pnvrid = int.Parse(match.Groups[1].ToString());
+                var pchannelid = int.Parse(match.Groups[2].ToString());
+                if (nvrid == pnvrid && channelid == pchannelid)
+                    return camera.Value;
+            }
+
+            return null;
         }
 
         static public List<Tuple<long, long, int, int>> calculateTracks() {
@@ -721,6 +798,7 @@ namespace Tencent.Components {
 
         #region "Dependency Properties"
         public ObservableCollection<Track> Traces { get; private set; }
+        public ObservableCollection<Track> Crosses { get; private set; }
 
         public long begintime {
             get { return (long)GetValue(begintimeProperty); }

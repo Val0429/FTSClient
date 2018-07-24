@@ -311,7 +311,8 @@ namespace Tencent.DataSources {
                                             /// remove duplicate face
                                             var lastface = lasttrace.Faces[lasttrace.Faces.Count - 1];
                                             if (lastface.name != null && lastface.name == obj_item.name &&
-                                                (lastface.timestamp - obj_item.timestamp) <= 3000) {
+                                                (obj_item.timestamp - lastface.timestamp) <= 3000) {
+                                                //MessageBox.Show(string.Format("RemoveAt {0} {1}", lastface.timestamp, obj_item.timestamp));
                                                 lasttrace.Faces.RemoveAt(lasttrace.Faces.Count - 1);
                                             }
                                             lasttrace.Faces.Add(obj_item);
