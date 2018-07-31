@@ -14,6 +14,9 @@ namespace Tencent.DataSources {
         public Floors[] floors { get; private set; }
         public Cameras[] cameras { get; private set; }
 
+        public string ip { get; private set; }
+        public string port { get; private set; }
+
         private string Host { get; set; }
 
         public class OutputLogin {
@@ -21,6 +24,8 @@ namespace Tencent.DataSources {
         }
 
         public async Task Login(string ip, string port, string account, string password) {
+            this.ip = ip;
+            this.port = port;
             Host = string.Format("http://{0}:{1}", ip, port);
             /// do login
             var uri = string.Format("{0}/users/login", Host);

@@ -48,6 +48,11 @@ namespace Tencent.Components {
             InitializeComponent();
 
             FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
+            FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
+            string cmsIp = FTSServer.config.cms.ip;
+            int cmsPort = FTSServer.config.cms.port;
+            string cmsAccount = FTSServer.config.cms.account;
+            string cmsPassword = FTSServer.config.cms.password;
 
             this.Traces = new ObservableCollection<Track>();
             this.Crosses = new ObservableCollection<Track>();
@@ -63,20 +68,20 @@ namespace Tencent.Components {
             //AxNvrCtrl videoctrl = this.VideoCtrl;
             AxiCMSCtrl videoctrl = this.VideoCtrl;
             videoctrl.SetPlayMode(1);
-            videoctrl.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
-            videoctrl.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
-            videoctrl.ServerUsername = ConfigurationManager.AppSettings["nvr_account"];
-            videoctrl.ServerPassword = ConfigurationManager.AppSettings["nvr_password"];
+            videoctrl.ServerIp = cmsIp;
+            videoctrl.ServerPort = cmsPort;
+            videoctrl.ServerUsername = cmsAccount;
+            videoctrl.ServerPassword = cmsPassword;
             videoctrl.ServerSSL = 0;
             videoctrl.DisplayTitleBar(1);
             videoctrl.StretchToFit = 0;
             videoctrl.AutoReconnect = 1;
             videoctrl.Mute = 1;
 
-            this.VideoUtility.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
-            this.VideoUtility.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
-            this.VideoUtility.ServerUsername = ConfigurationManager.AppSettings["nvr_account"];
-            this.VideoUtility.ServerPassword = ConfigurationManager.AppSettings["nvr_password"];
+            this.VideoUtility.ServerIp = cmsIp;
+            this.VideoUtility.ServerPort = cmsPort;
+            this.VideoUtility.ServerUsername = cmsAccount;
+            this.VideoUtility.ServerPassword = cmsPassword;
             this.VideoUtility.ServerSSL = 0;
 
             ///// test code
@@ -656,6 +661,12 @@ namespace Tencent.Components {
 
         List<_IiCMSUtilityEvents_OnExportStatusEventHandler> delegates2 = new List<_IiCMSUtilityEvents_OnExportStatusEventHandler>();
         public void export() {
+            FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
+            string cmsIp = FTSServer.config.cms.ip;
+            int cmsPort = FTSServer.config.cms.port;
+            string cmsAccount = FTSServer.config.cms.account;
+            string cmsPassword = FTSServer.config.cms.password;
+
             /// Clean OnExportStatus Event
             foreach (var eh in delegates2) {
                 this.VideoUtility.OnExportStatus -= eh;
@@ -663,17 +674,6 @@ namespace Tencent.Components {
             delegates2.Clear();
 
             AxiCMSCtrl videoctrl = this.VideoCtrl;
-
-            //videoctrl.SetPlayMode(1);
-            //videoctrl.ServerIp = ConfigurationManager.AppSettings["nvr_ip"];
-            //videoctrl.ServerPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
-            //videoctrl.ServerUsername = ConfigurationManager.AppSettings["nvr_account"];
-            //videoctrl.ServerPassword = ConfigurationManager.AppSettings["nvr_password"];
-            //videoctrl.ServerSSL = 0;
-            //videoctrl.DisplayTitleBar(1);
-            //videoctrl.StretchToFit = 0;
-            //videoctrl.AutoReconnect = 1;
-            //videoctrl.Mute = 1;
 
             string cross = _currentCross;
             var startTime = Convert.ToUInt32(begintime / 1000);  // seconds
@@ -705,10 +705,6 @@ namespace Tencent.Components {
                 } else if (e.status == 4) {
                     MessageBox.Show("导出成功");
                     /// send evis
-                    var cmsIp = ConfigurationManager.AppSettings["nvr_ip"];
-                    var cmsPort = int.Parse(ConfigurationManager.AppSettings["nvr_port"]);
-                    var cmsAccount = ConfigurationManager.AppSettings["nvr_account"];
-                    var cmsPassword = ConfigurationManager.AppSettings["nvr_password"];
                     var starttime = this.Traces[0].starttime;
                     FaceListenerSource source = (FaceListenerSource)this.FindResource("FaceListenerSource");
 

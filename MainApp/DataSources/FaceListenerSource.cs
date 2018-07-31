@@ -29,22 +29,22 @@ namespace Tencent.DataSources {
             Cameras = new Dictionary<string, Camera>();
             PeopleGroups = new Dictionary<string, PeopleGroup>();
 
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+            //if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
 
-            List<Floor> fconfig = (List<Floor>)ConfigurationManager.GetSection("FloorInfo");
-            foreach (var floor in fconfig) {
-                Floors[floor.number] = floor;
-            }
+            //List<Floor> fconfig = (List<Floor>)c.GetSection("FloorInfo");
+            //foreach (var floor in fconfig) {
+            //    Floors[floor.number] = floor;
+            //}
 
-            List<Camera> config = (List<Camera>)ConfigurationManager.GetSection("CameraInfo");
-            foreach (var camera in config)
-                Cameras[camera.sourceid] = camera;
+            //List<Camera> config = (List<Camera>)c.GetSection("CameraInfo");
+            //foreach (var camera in config)
+            //    Cameras[camera.sourceid] = camera;
 
-            List<PeopleGroup> pg = (List<PeopleGroup>)ConfigurationManager.GetSection("PeopleGroupInfo");
-            foreach (var peoplegroup in pg) {
-                if (peoplegroup.glowcolor == null) peoplegroup.glowcolor = peoplegroup.color;
-                PeopleGroups[peoplegroup.name] = peoplegroup;
-            }
+            //List<PeopleGroup> pg = (List<PeopleGroup>)c.GetSection("PeopleGroupInfo");
+            //foreach (var peoplegroup in pg) {
+            //    if (peoplegroup.glowcolor == null) peoplegroup.glowcolor = peoplegroup.color;
+            //    PeopleGroups[peoplegroup.name] = peoplegroup;
+            //}
 
             //StartServer();
         }
@@ -120,85 +120,20 @@ namespace Tencent.DataSources {
         }
 
         public string sessionId { get; set; }
-        public async void StartServer() {
-            string ip = ConfigurationManager.AppSettings["ip"];
-            string port = ConfigurationManager.AppSettings["port"];
-            string account = ConfigurationManager.AppSettings["account"];
-            string password = ConfigurationManager.AppSettings["password"];
+        public void StartServer() {
+            FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
 
-            long maximumFaces = long.Parse(ConfigurationManager.AppSettings["maximum_keep_faces"]);
-
+            /// bridge back to FaceListener
+            this.sessionId = FTSServer.sessionId;
+            string ip = FTSServer.ip;
+            string port = FTSServer.port;
             WsHost = string.Format("ws://{0}:{1}", ip, port);
             HttpHost = string.Format("http://{0}:{1}", ip, port);
 
-            /// do login
-            var client = new HttpClient();
-            var byteContent = new StringContent(string.Format("{{ \"username\": \"{0}\", \"password\": \"{1}\" }}", account, password));
-            byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            var result = await client.PostAsync(string.Format("{0}/users/login", HttpHost), byteContent);
-            var resultStr = await result.Content.ReadAsStringAsync();
-            var jsonSerializerx = new JavaScriptSerializer();
-            var user = jsonSerializerx.Deserialize<OutputLogin>(resultStr);
-            var sessionId = user.sessionId;
-            this.sessionId = sessionId;
-
-            ///// Fetch Latest
-            //var wsl = new WebSocket(string.Format("{0}/latestImages", WsHost));
-            //wsl.OnMessage += (sender, e) => {
-            //    var jsonSerializer = new JavaScriptSerializer();
-
-            //    var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
-
-            //    // Unrecognized
-            //    if (face.name == null) face.groupname = "No Match";
-
-            //    this.Dispatcher.BeginInvoke(new Action(() => {
-            //        //for (var i=0; i<300; ++i) Faces.Add(face);
-            //        Faces.Add(face);
-            //    }));
-            //};
-            //wsl.ConnectAsync();
-
-            ///// workaround, todo remove ///
-            //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
-            //List<string> images = new List<string>() {
-            //    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5THpTGLWqXyKH-PYVdAquMG3kdHGrymmBkmDnnAuSFVTw-YQQ",
-            //    "http://issue247.com/wp-content/uploads/2015/05/%E0%B8%AA%E0%B8%B4%E0%B9%88%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B9%86%E0%B8%84%E0%B8%A7%E0%B8%A3%E0%B8%97%E0%B8%B3%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B8%99%E0%B8%AD%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%94%E0%B8%B9%E0%B9%83%E0%B8%AA%E0%B9%81%E0%B8%9A%E0%B9%8A%E0%B8%A7.jpg",
-            //    "https://thumbs.dreamstime.com/z/jovem-mulher-que-mostra-o-produto-de-beleza-32942553.jpg",
-            //    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbK8CdyftAkdQVPcqp4StapckaxhizPGYDS1JcRfcMAMq-Yscx3A",
-            //    "https://obs.line-scdn.net/0hSUmtCMrhDHpQDSOgk85zLWpbDxVjYR95NDtdeQxjUk51bh5-OGNGFHMKBUstb0skOWpGHHQIF0t6akN7aGJG/w644",
-            //    "https://obs.line-scdn.net/0h0kAuWjeIb0R8DECev88QE0ZabCtPYHxHGDo-RyBiMXBZb31AFGIlKl8MYn1XbigaFWslIlgKdHVWayBFRGMl/w644",
-            //    "https://obs.line-scdn.net/0hFhYWCYxtGUdkLjadp-FmEF54GihXQgpEABhIRDhAR3NBTQtDDEBfKUcrRXdAG14ZDUlTIUQtAnZOSVZGXEFf/w644",
-            //    "https://farm9.staticflickr.com/8636/15785217080_bc766078cb_o.jpg",
-            //    "http://d3t543lkaz1xy.cloudfront.net/photo/5a0e39c9f03c80349d3114c9_m",
-            //    "https://obs.line-scdn.net/0h9qwZGv1kZl5KI0mdsyUZCXB1ZTF5T3VdLhU3XRZNOGpvQyRfc0Epa2ZzbWdgECEAI0QtOmshfW9gRyEIJUAp/w644",
-            //    "http://www.central.co.th/e-shopping/wp-content/uploads/2017/05/%E0%B8%84%E0%B8%A3%E0%B8%B5%E0%B8%A1%E0%B8%9A%E0%B8%B3%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%9C%E0%B8%B4%E0%B8%A7-%E0%B8%A1%E0%B8%AD%E0%B8%A2%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%84%E0%B8%A3%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C.jpg",
-            //};
-            ////"http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic2_1462587630.jpg",
-            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic3_1462587630.jpg",
-            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic4_1462587630.jpg",
-            ////    "http://www.xn--r3cd1ab3b.com/upload/sexy/sexyupPic5_1462587630.jpg",
-            //for (var i = 0; i < 10000; ++i) {
-            //    FaceItem face = new FaceItem() {
-            //        name = i.ToString(),
-            //        createtime = i * 1000,
-            //        groupname = "VIP",
-            //        image = images[i % images.Count],
-            //        quality = 1,
-            //        sourceid = "Camera01"
-            //    };
-            //    Faces.Add(face);
-            //}
-            ///// workaround, todo remove ///
-
+            /// handle lastImages & search
             var callback = new EventHandler<MessageEventArgs>((sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
-                /* workaround, to be fixed */
-                //Random random = new Random();
-                //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
-                //face.sourceid = seed[random.Next(0, seed.Length)];
-                //Console.Write(face.sourceid);
                 face.sourceid = face.channel;
                 face.name = face.person_info?.fullname;
                 face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
@@ -246,6 +181,10 @@ namespace Tencent.DataSources {
 
         WebSocket ws = null;
         public void StartSearch(dynamic face) {
+            FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
+            long searchDurationSeconds = FTSServer.config.fts.searchDurationSeconds;
+            long possibleCompanionDurationSeconds = FTSServer.config.fts.possibleCompanionDurationSeconds;
+
             this.FaceDetail.CurrentFace = face;
             this.FaceDetail.DoCurrentFaceChange(face);
             this.FaceDetail.EntryTime = 0;
@@ -256,11 +195,11 @@ namespace Tencent.DataSources {
             this.DoPlayingCameraChange(null);
             PlayingCamera = null;
 
-            long duration = long.Parse(ConfigurationManager.AppSettings["search_duration_seconds"]) * 1000;
+            long duration = searchDurationSeconds * 1000;
             var starttime = face.createtime - duration;
             var endtime = face.createtime + duration;
 
-            long comp_duration = long.Parse(ConfigurationManager.AppSettings["possible_companion_duration_seconds"]) * 1000;
+            long comp_duration = possibleCompanionDurationSeconds * 1000;
 
             foreach (var value in Cameras.Values) {
                 ((Camera)value).Face = null;
