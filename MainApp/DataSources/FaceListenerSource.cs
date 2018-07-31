@@ -46,7 +46,37 @@ namespace Tencent.DataSources {
                 PeopleGroups[peoplegroup.name] = peoplegroup;
             }
 
-            StartServer();
+            //StartServer();
+        }
+
+        public void InitConfig(FTSServerSource FTSServer) {
+            /// init floors
+            foreach (var floor in FTSServer.floors) {
+                Floors[floor.floor] = new Floor {
+                    name = floor.name,
+                    number = floor.floor
+                };
+            }
+            /// init cameras
+            foreach (var camera in FTSServer.cameras) {
+                Cameras[camera.sourceId] = new Camera {
+                    name = camera.name,
+                    floor = camera.floor.floor,
+                    Angle = camera.angle,
+                    sourceid = camera.sourceId,
+                    type = 0,
+                    X = camera.x,
+                    Y = camera.y,
+                };
+            }
+            /// init groups
+            foreach (var group in FTSServer.config.fts.groupInfo) {
+                PeopleGroups[group.name] = new PeopleGroup {
+                    name = group.name,
+                    color = group.color,
+                    glowcolor = group.glowcolor
+                };
+            }
         }
 
         public Subject<bool> TrackChanged = new Subject<bool>();

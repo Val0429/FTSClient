@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Tencent.Components.FaceTracingMaps"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             VerticalContentAlignment="Top">
 
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FloorSwitch}}}">
         <Grid.Resources>
@@ -17,10 +18,14 @@
             </CollectionViewSource>
         </Grid.Resources>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
         <ItemsControl ItemsSource="{Binding Source={StaticResource floors}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Height="100" />
+                    <StackPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 

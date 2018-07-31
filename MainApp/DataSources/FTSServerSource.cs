@@ -83,7 +83,7 @@ namespace Tencent.DataSources {
         public class Floors {
             public string objectId { get; set; }
             public string name { get; set; }
-            public double floor { get; set; }
+            public int floor { get; set; }
             public string image { get; set; }
         }
         public class OutputReadFloors {

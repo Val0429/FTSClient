@@ -25,6 +25,8 @@ namespace Tencent {
         private async void Button_Click(object sender, RoutedEventArgs e) {
             this.btn_Login.IsEnabled = false;
             FTSServerSource FTSServer = this.FindResource("FTSServerSource") as FTSServerSource;
+            FaceListenerSource FaceListener = this.FindResource("FaceListenerSource") as FaceListenerSource;
+
 
             var ip = this.txt_IP.Text;
             var port = this.txt_Port.Text;
@@ -37,6 +39,11 @@ namespace Tencent {
                 this.btn_Login.IsEnabled = true;
                 return;
             }
+
+            /// Init config map back to old one.
+            FaceListener.InitConfig(FTSServer);
+            /// And then start FRS server.
+            FaceListener.StartServer();
 
             var main = new MainWindow();
             main.Show();

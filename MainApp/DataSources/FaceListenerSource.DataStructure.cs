@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace Tencent.DataSources {
     public class OutputLogin {
         public string sessionId { get; set; }
-        public long serverTime { get; set; }
+        public string serverTime { get; set; }
     }
 
     //public class FaceItem {
