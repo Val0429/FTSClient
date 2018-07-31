@@ -1,0 +1,185 @@
+﻿<Window x:Class="Tencent.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tencent"
+        mc:Ignorable="d"
+        xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="LoginWindow" Height="459.974" Width="721.382">
+
+    <Window.Resources>
+        <cvt:NullVisibilityConverter x:Key="NullVisibility" />
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Left Block -->
+        <Grid Background="#403152">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            
+            <!-- Login -->
+            <StackPanel Margin="30,0,0,0" VerticalAlignment="Center">
+                <Label Foreground="White" FontSize="36" Content="FTS Login">
+                    <Label.Effect>
+                        <DropShadowEffect Color="LemonChiffon" ShadowDepth="0" BlurRadius="15" />
+                    </Label.Effect>
+                </Label>
+
+                <Label FontSize="16" Content="Face Tracking New Generation">
+                    <Label.Foreground>
+                        <LinearGradientBrush>
+                            <GradientStop Color="Aqua" Offset="0" />
+                            <GradientStop Color="Pink" Offset="1" />
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                    <Label.Effect>
+                        <BlurEffect Radius="1" />
+                    </Label.Effect>
+                </Label>
+            </StackPanel>
+            
+            <!-- Version -->
+            <Label Grid.Row="1" Margin="40,0,0,0" FontSize="16" FontFamily="Arial" VerticalContentAlignment="Center" Foreground="White">Version: v1.00.00</Label>
+        </Grid>
+        
+        <!-- Right Block -->
+        <Grid Grid.Column="1" Background="#517F59">
+
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.Resources>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Margin" Value="0,5" />
+                        <Setter Property="Width" Value="220" />
+                        <Setter Property="Height" Value="36" />
+                    </Style>
+                    
+                    <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBoxBase}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                                    <Grid>
+                                        <Border CornerRadius="0,3,3,0" Padding="2" Background="#19212F" BorderBrush="Purple" BorderThickness="0,1,1,1">
+                                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" VerticalAlignment="Center" ClipToBounds="True" />
+                                        </Border>
+
+                                        <TextBlock VerticalAlignment="Center" Margin="5,2" FontSize="14" Text="{TemplateBinding Tag}" Foreground="Gray" FontFamily="Arial"
+                                            Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TextBox}, Path=Text, Converter={StaticResource NullVisibility}, ConverterParameter=reverse}"
+                                        />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="CaretBrush" Value="White" />
+                    </Style>
+
+                    <Style x:Key="PasswordBoxStyle" TargetType="{x:Type TextBoxBase}" BasedOn="{StaticResource TextBoxStyle}">
+                        <Setter Property="FontFamily" Value="/FaceTrackingSystem;component/Resources/#Password Dots" />
+                    </Style>
+
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,5" />
+                        <Setter Property="Height" Value="38" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#77A5F7" />
+                                    <GradientStop Offset="0.5" Color="#77A5F7" />
+                                    <GradientStop Offset="0.5" Color="#548EF5" /> 
+                                    <GradientStop Offset="1" Color="#548EF5" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0">
+                    <Rectangle Width="50" Fill="Red" />
+                    <TextBox x:Name="txt_IP" Tag="IP..." Style="{StaticResource TextBoxStyle}" Text="localhost" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="1">
+                    <Rectangle Width="50" Fill="Red" />
+                    <TextBox x:Name="txt_Port" Tag="Port..." Style="{StaticResource TextBoxStyle}" Text="6060" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="2">
+                    <Rectangle Width="46" Margin="0,0,-1,0" Stroke="Purple">
+                        <Rectangle.Fill>
+                            <DrawingBrush>
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <!-- Basement -->
+                                        <GeometryDrawing Brush="#19212F">
+                                            <GeometryDrawing.Geometry>
+                                                <RectangleGeometry Rect="0,0 46,32" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <!-- Basement -->
+
+                                        <GeometryDrawing Brush="Violet">
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 39,6 L 39,26 L 38,26 L 38,6 Z" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+
+                                        <GeometryDrawing Brush="#99EEEEFF">
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <EllipseGeometry Center="19,13" RadiusX="6" RadiusY="5.5" />
+                                                    <EllipseGeometry Center="19,13" RadiusX="4.5" RadiusY="4" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+
+                                        <GeometryDrawing Brush="#99EEEEFF">
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <PathGeometry Figures="M 10,22 A 12,10 0 0,1 16,18 Z" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBox x:Name="txt_Account" Tag="Account..." Style="{StaticResource TextBoxStyle}" Text="Admin" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="3">
+                    <Rectangle Width="50" Fill="Red" />
+                    <TextBox x:Name="txt_Password" Tag="Password..." Style="{StaticResource PasswordBoxStyle}" Text="123456" />
+                </DockPanel>
+
+                <Button Grid.Row="4" x:Name="btn_Login" Content="Login" Click="Button_Click" />
+            </Grid>
+            
+            <!--<StackPanel VerticalAlignment="Center">
+                <TextBox Width="200" />
+            </StackPanel>-->
+            
+        </Grid>
+    </Grid>
+</Window>

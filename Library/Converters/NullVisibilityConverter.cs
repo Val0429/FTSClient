@@ -10,7 +10,9 @@ using System.Windows.Data;
 namespace Library.Converters {
     public class NullVisibilityConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            return value == null ? Visibility.Hidden : Visibility.Visible;
+            var test = (value == null || (value as bool?) == false || (value as string) == "" || (value as int?) == 0);
+            if (parameter as string == "reverse") test = !test;
+            return test ? Visibility.Hidden : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
