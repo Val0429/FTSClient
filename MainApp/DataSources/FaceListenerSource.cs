@@ -54,7 +54,8 @@ namespace Tencent.DataSources {
             foreach (var floor in FTSServer.floors) {
                 Floors[floor.floor] = new Floor {
                     name = floor.name,
-                    number = floor.floor
+                    number = floor.floor,
+                    image = floor.image
                 };
             }
             /// init cameras

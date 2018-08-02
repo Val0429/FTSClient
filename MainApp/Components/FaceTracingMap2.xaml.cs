@@ -49,7 +49,12 @@ namespace Tencent.Components {
                 /// initial map
                 if (map == null) {
                     map = new FloorPlanMapUnit();
-                    map.MapSource = string.Format("Resources/floor{0}.png", floor);
+
+                    /// get http image
+                    var image = source.Floors[floor].image;
+                    map.MapSource = image;
+                    //map.MapSource = string.Format("Resources/floor{0}.png", floor);
+
                     map.Margin = new Thickness(10, 0, 10, 0);
                     map.ClipToBounds = true;
                     Maps[floor] = map;

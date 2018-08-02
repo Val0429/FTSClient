@@ -125,6 +125,8 @@ namespace Tencent.DataSources {
         public int number { get; set; }
         [XmlAttribute("name")]
         public string name { get; set; }
+        [XmlAttribute("image")]
+        public string image { get; set; }
     }
 
     public class Camera : DependencyObject {
