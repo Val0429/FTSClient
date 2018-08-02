@@ -85,16 +85,12 @@
                                             </BeginStoryboard>
                                         </EventTrigger>
                                     </DataTemplate.Triggers>-->
-                                    <!--<Label Content="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />-->
                                     <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                                                           Margin="7"
                                                                           RealName="{Binding name}" GroupName="{Binding groupname}"
                                                                           Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
                                                                           GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
                                                                           >
-                                        <!--<tlibborder:FaceTracingBorder.Effect>
-                                            <sdr:PixellatingEffect VerticalPixelCounts="8" HorizontalPixelCounts="8" />
-                                        </tlibborder:FaceTracingBorder.Effect>-->
                                     </tlibborder:FaceTracingBorder>
                                 </DataTemplate>
                             </Setter.Value>
@@ -113,7 +109,10 @@
                                 <DataTemplate>
                                     <dtl:EntryUnitBorder
                                                 Image="{Binding image}"
-                                                Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}" />
+                                                Title="{Binding Path=createtime, Converter={StaticResource UnixTimestampToDateString}}"
+                                                Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
+                                        />
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>

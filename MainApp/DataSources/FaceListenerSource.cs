@@ -227,6 +227,7 @@ namespace Tencent.DataSources {
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
                 obj_item.createtime = obj_item.timestamp;
+                if (obj_item.groups != null && obj_item.groups?.Length > 0) obj_item.groupname = obj_item.groups[0].name;
 
                 const double rate = 0.8;
                 /// calculate progress

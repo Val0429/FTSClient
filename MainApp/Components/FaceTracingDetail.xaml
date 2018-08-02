@@ -117,6 +117,8 @@
                                                 <DataTemplate>
                                                     <ftd:EntryUnitBorder
                                                             Image="{Binding image}"
+                                                            Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                            GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
                                                             Title="{Binding createtime, Converter={StaticResource UnixTimestampToDateString}}"
                                                             MouseDown="EntryUnitFace_MouseDown"
                                                             />

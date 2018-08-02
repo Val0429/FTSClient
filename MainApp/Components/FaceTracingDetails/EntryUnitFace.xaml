@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tencent.Components.FaceTracingDetails"
              xmlns:tlibborder="clr-namespace:TencentLibrary.Borders;assembly=TencentLibrary"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="70">
@@ -13,6 +14,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <cvt:OpacityColorConverter x:Key="OpacityColor" />
 
             <Style TargetType="{x:Type tlibborder:FaceTracingBorder}">
                 <Setter Property="Width" Value="46.6" />
@@ -26,6 +29,17 @@
                                         <ScaleTransform ScaleX="0.33" ScaleY="0.33" />
                                     </tlibborder:SubBorder.LayoutTransform>
                                 </tlibborder:SubBorder>
+
+                                <!-- Border -->
+                                <Path Data="M 0,0 L 41,0 L 46,5 L 46,47 L 20,47 L 16,43 L 6,43 L 0,38 Z"
+                                      >
+                                    <Path.Stroke>
+                                        <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </Path.Stroke>
+                                    <Path.Fill>
+                                        <SolidColorBrush Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource OpacityColor}, ConverterParameter=0.18}" />
+                                    </Path.Fill>
+                                </Path>
 
                                 <Grid>
                                     <!-- Picture -->
@@ -56,7 +70,7 @@
                                         </Grid>
                                     </Border>
                                     <!-- Picture -->
-
+                                    
                                     <Label Style="{StaticResource DefaultFont}" Content="{TemplateBinding Title}" HorizontalContentAlignment="{TemplateBinding TitleAlignment}" HorizontalAlignment="Right" Padding="0" Margin="0,0,12,2" VerticalAlignment="Bottom" Width="23.4" Height="6" VerticalContentAlignment="Center" FontSize="5" />
                                 </Grid>
                             </Grid>
@@ -67,7 +81,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <tlibborder:FaceTracingBorder Image="{Binding Image}">
+    <tlibborder:FaceTracingBorder Image="{Binding Image}" Color="{Binding Color}" GlowColor="{Binding GlowColor}">
         <!--<tlibborder:FaceTracingBorder.LayoutTransform>
             <ScaleTransform ScaleX="0.32" ScaleY="0.32" />
         </tlibborder:FaceTracingBorder.LayoutTransform>-->

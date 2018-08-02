@@ -39,7 +39,7 @@ namespace Tencent.Components.FaceTracingDetails {
         // Using a DependencyProperty as the backing store for CustomContent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CustomContentProperty =
             DependencyProperty.Register("CustomContent", typeof(ObservableCollection<UIElement>), typeof(EntryUnit), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender
+                new ObservableCollection<UIElement>(), FrameworkPropertyMetadataOptions.AffectsRender
                 ));
 
         public string Title {

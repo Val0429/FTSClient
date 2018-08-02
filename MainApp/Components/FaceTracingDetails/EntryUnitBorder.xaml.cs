@@ -50,6 +50,22 @@ namespace Tencent.Components.FaceTracingDetails {
         public static readonly DependencyProperty ImageProperty =
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(EntryUnitBorder), new PropertyMetadata(null));
 
+        public Color Color {
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof(Color), typeof(EntryUnitBorder), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
+
+        public Color GlowColor {
+            get { return (Color)GetValue(GlowColorProperty); }
+            set { SetValue(GlowColorProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GlowColorProperty =
+            DependencyProperty.Register("GlowColor", typeof(Color), typeof(EntryUnitBorder), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
+
         #endregion "Dependency Properties"
 
         #region "Routed Events"
