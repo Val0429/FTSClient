@@ -15,7 +15,9 @@
              xmlns:sdr="clr-namespace:Binarymission.WPF.Shaders.Library.CustomEffects;assembly=Binarymission.WPF.Shaders.Library"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             d:DesignHeight="480" d:DesignWidth="640">
+             d:DesignHeight="480" d:DesignWidth="640"
+             ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"             
+             >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -192,7 +194,7 @@
         <!--<Viewbox>-->
         <!--Width="932" Height="500"-->
             <!-- lang: Tracking Record 人脸追踪纪录 -->
-            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="Tracking Record" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
+            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="{Resx w_TrackingRecord}" SnapsToDevicePixels="True" RTMaximumClicked="MainBorder_RTMaximumClicked">
                 <tlibborder:MainBorder.Buttons>
                     <!-- Left Bottom Icon -->
                     <Rectangle Width="115" Height="30" MouseDown="LBIcon_MouseDown">

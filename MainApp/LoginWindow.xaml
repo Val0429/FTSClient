@@ -8,7 +8,11 @@
         xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="LoginWindow" Height="459.974" Width="721.382">
+        Height="459.974" Width="721.382"
+        ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"
+        Icon="Resources/icon.png"
+        Title="{Resx w_Login}"
+        >
 
     <Window.Resources>
         <cvt:NullVisibilityConverter x:Key="NullVisibility" />
@@ -111,6 +115,7 @@
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
                 <DockPanel Grid.Row="0">
@@ -173,7 +178,15 @@
                     <TextBox x:Name="txt_Password" Tag="Password..." Style="{StaticResource PasswordBoxStyle}" Text="123456" />
                 </DockPanel>
 
-                <Button Grid.Row="4" x:Name="btn_Login" Content="Login" Click="Button_Click" />
+                <ComboBox x:Name="LanguageBox" Grid.Row="4" Height="32" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                    SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBoxItem Tag="en" IsSelected="True">English</ComboBoxItem>
+                    <ComboBoxItem Tag="zh-CN">简体中文</ComboBoxItem>
+                </ComboBox>
+                
+                <Button Grid.Row="5" FontSize="16" x:Name="btn_Login" Content="{Resx w_Login}" Click="Button_Click" />
+
+                <!--<Button Grid.Row="4" x:Name="btn_Login" Content="{Resx ResxName=Tencent.Resources.i18n.lang, Key=w_AssociatedFaces}" Click="Button_Click" />-->
             </Grid>
             
             <!--<StackPanel VerticalAlignment="Center">

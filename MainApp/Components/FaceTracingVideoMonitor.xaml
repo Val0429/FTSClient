@@ -11,7 +11,9 @@
              xmlns:pl="clr-namespace:Tencent.Panels"
              xmlns:tt="clr-namespace:Tencent.Components.FaceTracingVideoMonitors"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"             
+             >
     <Grid Margin="50,20,50,50" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingVideoMonitor}}}">
         <Grid.Resources>
             <ResourceDictionary>
@@ -57,7 +59,7 @@
                       Traces="{Binding Traces}" BeginTime="{Binding begintime}" EndTime="{Binding endtime}" Grid.Row="1" />
 
         <!-- lang: Downloading... 正在下载... -->
-        <Label x:Name="DownloadLabel" Visibility="Hidden" Grid.Row="1" Content="Downloading..." Padding="0" FontSize="22" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,22">
+        <Label x:Name="DownloadLabel" Visibility="Hidden" Grid.Row="1" Content="{Resx w_Downloading}" Padding="0" FontSize="22" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,22">
             <Label.Style>
                 <Style TargetType="Label" BasedOn="{StaticResource DefaultFont}">
                     <Setter Property="Effect">

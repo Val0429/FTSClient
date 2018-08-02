@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infralution.Localization.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,9 @@ namespace Tencent {
     public partial class LoginWindow : Window {
         public LoginWindow() {
             InitializeComponent();
+
+            /// make default
+            CultureManager.UICulture = new System.Globalization.CultureInfo("en");
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e) {
@@ -46,8 +50,13 @@ namespace Tencent {
             FaceListener.StartServer();
 
             var main = new MainWindow();
+            ResxExtension.SetDefaultResxName(main, "Tencent.Resources.i18n.lang");
             main.Show();
             this.Close();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            CultureManager.UICulture = new System.Globalization.CultureInfo((this.LanguageBox.SelectedItem as FrameworkElement).Tag as string);
         }
     }
 }

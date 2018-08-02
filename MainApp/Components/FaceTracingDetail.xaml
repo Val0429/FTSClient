@@ -14,7 +14,9 @@
              xmlns:ds="clr-namespace:Tencent.DataSources"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             d:DesignHeight="480" d:DesignWidth="640">
+             d:DesignHeight="480" d:DesignWidth="640"
+             ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"             
+             >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -35,7 +37,7 @@
         <!--<Viewbox>-->
         <!--Width="960" Height="509"--><!-- Tracking Detail -->
             <!-- lang: Tracking Detail  人脸追踪详情 -->
-            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="Tracking Detail" RTMaximumClicked="MainBorder_RTMaximumClicked">
+            <tlibborder:MainBorder x:Name="MainBorder" Padding="15" Title="{Resx w_TrackingDetail}" RTMaximumClicked="MainBorder_RTMaximumClicked">
 
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
@@ -49,7 +51,7 @@
                     <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
                         <ContentPresenter.ContentTemplate>
                             <DataTemplate>
-                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="Target"
+                                <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Resx w_Target}"
                                                               RealName="{Binding name}" GroupName="{Binding groupname}"
                                                               Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
                                                               GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
@@ -76,7 +78,7 @@
 
                                 <!-- Check-In Time -->
                             <!-- lang: Check-In Time 今日入场时间 -->
-                            <Label Style="{StaticResource DefaultFont}" Content="Check-In Time" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
+                            <Label Style="{StaticResource DefaultFont}" Content="{Resx w_CheckInTime}" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" Margin="2,2,4,0" />
                                 <!--<Label Grid.Row="1" Style="{StaticResource DefaultFont}" Content="{Binding EntryTime}" Padding="0" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="2,2,4,0" VerticalContentAlignment="Top">-->
                                 <Label Grid.Row="1" Style="{StaticResource DefaultFont}"
                                        Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.EntryTime, Converter={StaticResource UnixTimestampToDateString}, TargetNullValue=''}"
@@ -197,7 +199,7 @@
 
                         <tlibborder:SubBorder Width="135" Height="67" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <!-- lang: Associated Faces 可能接触人群 -->
-                            <Label Style="{StaticResource DefaultFont}" Content="Associated Faces" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
+                            <Label Style="{StaticResource DefaultFont}" Content="{Resx w_AssociatedFaces}" Padding="0" FontSize="17" FontWeight="Regular" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="4,2,4,14" />
                         </tlibborder:SubBorder>
 
                         <scv:CustomListView Grid.Row="1"
@@ -230,6 +232,8 @@
                                     <ftd:EntryUnitBorder
                                         Image="{Binding image}"
                                         Title="{Binding createtime, Converter={StaticResource UnixTimestampToDateString}}"
+                                        Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                        GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
                                         MouseDown="EntryUnitFace_MouseDown"
                                         />
                                 </DataTemplate>

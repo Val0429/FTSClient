@@ -70,10 +70,17 @@ namespace Tencent {
             if (e.OriginalSource.GetType() == typeof(SearchItem)) {
                 var searchitem = (SearchItem)e.OriginalSource;
                 faceitem = new FaceItem() {
+                    channel = searchitem.channel,
                     createtime = searchitem.createtime,
-                    name = searchitem.name,
+                    groups = searchitem.groups,
+                    groupname = searchitem.groupname,
                     image = searchitem.image,
-                    sourceid = searchitem.sourceid
+                    name = searchitem.name,
+                    person_info = searchitem.person_info,
+                    snapshot = searchitem.snapshot,
+                    sourceid = searchitem.sourceid,
+                    timestamp = searchitem.timestamp,
+                    type = searchitem.type
                 };
             } else {
                 faceitem = (FaceItem)e.OriginalSource;
