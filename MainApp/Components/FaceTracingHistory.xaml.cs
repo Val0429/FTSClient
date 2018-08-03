@@ -38,11 +38,16 @@ namespace Tencent.Components {
                     return false;
                 }
 
-                if (FilterGroupAll == true) return true;
-                if (FilterGroupVIP == true && face.groupname == "VIP") return true;
-                if (FilterGroupBlacklist == true && face.groupname == "Blacklist") return true;
-                if (FilterGroupStranger == true && face.groupname == "No Match") return true;
-
+                var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
+                var selected = 0;
+                foreach (var cb in checkboxes) {
+                    if (cb.IsChecked == true) selected++;
+                }
+                if (selected == 0 || selected == checkboxes.Count()) return true;
+                foreach (var cb in checkboxes) {
+                    if (cb.IsChecked == false) continue;
+                    if (cb.Content as string == face.groupname) return true;
+                }
                 return false;
             };
         }
@@ -82,51 +87,7 @@ namespace Tencent.Components {
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
                 null
-                ///// workaround, todo remove
-                //"Val"
-                ///// workaround, todo remove
                 ));
-
-        public bool FilterGroupAll {
-            get { return (bool)GetValue(FilterGroupAllProperty); }
-            set { SetValue(FilterGroupAllProperty, value); }
-        }
-        // Using a DependencyProperty as the backing store for FilterGroupAll.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FilterGroupAllProperty =
-            DependencyProperty.Register("FilterGroupAll", typeof(bool), typeof(FaceTracingHistory), new PropertyMetadata(true));
-
-        public bool FilterGroupVIP {
-            get { return (bool)GetValue(FilterGroupVIPProperty); }
-            set { SetValue(FilterGroupVIPProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for FilterGroupVIP.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FilterGroupVIPProperty =
-            DependencyProperty.Register("FilterGroupVIP", typeof(bool), typeof(FaceTracingHistory), new PropertyMetadata(false));
-
-
-
-        public bool FilterGroupBlacklist {
-            get { return (bool)GetValue(FilterGroupBlacklistProperty); }
-            set { SetValue(FilterGroupBlacklistProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for FilterGroupBlacklist.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FilterGroupBlacklistProperty =
-            DependencyProperty.Register("FilterGroupBlacklist", typeof(bool), typeof(FaceTracingHistory), new PropertyMetadata(false));
-
-
-
-        public bool FilterGroupStranger {
-            get { return (bool)GetValue(FilterGroupStrangerProperty); }
-            set { SetValue(FilterGroupStrangerProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for FilterGroupStranger.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FilterGroupStrangerProperty =
-            DependencyProperty.Register("FilterGroupStranger", typeof(bool), typeof(FaceTracingHistory), new PropertyMetadata(false));
-
-
 
         #endregion "Dependency Properties"
 
@@ -168,13 +129,12 @@ namespace Tencent.Components {
         private void apply_button_Click(object sender, RoutedEventArgs e) {
             FilterType = 0;
 
-            //var test = (this.FindResource("FilterContent") as FrameworkElement).FindResource("chb_GroupFilters");
-            //var test = (this.FindResource("FilterContent") as DependencyObject).FindChild("chb_GroupFilters", typeof(CheckBox));
-            //var test = (this.FindResource("FilterContent") as FrameworkElement).FindName("chb_GroupFilters");
-            //var test = DependencyObjectHelper.FindVisualChildren<CheckBox>(this.FindResource("FilterContent") as DependencyObject, "chb_GroupFilters");
-            var test = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
+            var MainContent = this.FindResource("MainContent") as FrameworkElement;
+            var FilterContent = this.FindResource("FilterContent") as FrameworkElement;
+            var txtFilterName = FilterContent.FindVisualChildren<TextBox>("txt_FilterName").First();
+            FilterName = txtFilterName.Text;
 
-            this.ContentArea.Content = this.FindResource("MainContent");
+            this.ContentArea.Content = MainContent;
             (CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView).Refresh();
         }
 
@@ -183,29 +143,14 @@ namespace Tencent.Components {
         }
 
         private void btn_FilterSelectAll_Click(object sender, RoutedEventArgs e) {
-            var siblings = ((e.OriginalSource as FrameworkElement).Parent as Panel).Children;
-            foreach (FrameworkElement child in siblings) {
-                if (child.GetType() == typeof(ItemsControl)) {
-                    /// get all checkboxes
-                    var target = child as ItemsControl;
-                    List<CheckBox> checkboxes = new List<CheckBox>();
-                    for (var i=0; i<target.Items.Count; ++i) {
-                        var cp = (target.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter);
-                        var check = VisualTreeHelper.GetChild(cp, 0) as CheckBox;
-                        checkboxes.Add(check);
-                    }
-                    /// count selected
-                    var selected = 0;
-                    foreach (var cb in checkboxes) {
-                        if (cb.IsChecked == true) selected++;
-                    }
-                    foreach (var cb in checkboxes) {
-                        cb.IsChecked = selected == 0 ? true : false;
-                    }
-                    break;
-                }
+            var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
+            var selected = 0;
+            foreach (var cb in checkboxes) {
+                if (cb.IsChecked == true) selected++;
             }
-            return;
+            foreach (var cb in checkboxes) {
+                cb.IsChecked = selected == 0 ? true : false;
+            }
         }
     }
 }

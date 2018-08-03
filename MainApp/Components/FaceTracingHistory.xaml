@@ -149,7 +149,14 @@
                     ScrollContentMargin="0,0,0,5"
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
-            />
+            >
+                <!--<scv:CustomListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </scv:CustomListView.ItemContainerStyle>-->
+            </scv:CustomListView>
 
             <Grid x:Key="FilterContent">
                 <Grid.ColumnDefinitions>
@@ -159,7 +166,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Style="{StaticResource DefaultLabel}" Content="Name" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" Text="{Binding Path=FilterName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}, Mode=TwoWay}" VerticalAlignment="Top" Width="181" />
+                <TextBox x:Name="txt_FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" />
                 <Label Style="{StaticResource DefaultLabel}" Content="Time Range" HorizontalAlignment="Left" Margin="23,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
                 <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,154,0,0" TextWrapping="Wrap" Text="00:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="75"/>
                 <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
