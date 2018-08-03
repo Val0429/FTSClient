@@ -88,6 +88,15 @@ namespace Tencent.Resources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to xxx.
+        /// </summary>
+        public static string w_Groups {
+            get {
+                return ResourceManager.GetString("w_Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tracking Detail.
         /// </summary>
         public static string w_TrackingDetail {

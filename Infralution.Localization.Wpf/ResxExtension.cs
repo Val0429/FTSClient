@@ -182,7 +182,7 @@ namespace Infralution.Localization.Wpf
                 return result; 
             }
             set 
-            { 
+            {
                 _resxName = value; 
             }
         }

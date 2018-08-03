@@ -245,6 +245,7 @@
       <DependentUpon>FaceListenerSource.cs</DependentUpon>
     </Compile>
     <Compile Include="DataSources\FTSServerSource.cs" />
+    <Compile Include="Helpers\DependencyObjectHelper.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

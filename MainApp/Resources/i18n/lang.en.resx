@@ -126,6 +126,9 @@
   <data name="w_Downloading" xml:space="preserve">
     <value>Downloading...</value>
   </data>
+  <data name="w_Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
   <data name="w_Login" xml:space="preserve">
     <value>Login</value>
   </data>

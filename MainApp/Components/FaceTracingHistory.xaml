@@ -165,11 +165,25 @@
                 <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
                 <Label Style="{StaticResource DefaultLabel}" Content="To" HorizontalAlignment="Left" Margin="107,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
 
-                <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                <CheckBox x:Name="Filter_Group_All" Click="Filter_Group_All_Click" IsChecked="{Binding FilterGroupAll}" FontSize="20" Foreground="White" Padding="15,0" Content="All" Grid.Column="1" HorizontalAlignment="Left" Margin="57,66,0,0" VerticalAlignment="Top" />
-                <CheckBox x:Name="Filter_Group_VIP" IsChecked="{Binding FilterGroupVIP}" FontSize="20" Foreground="White" Padding="15,0" Content="VIP" Grid.Column="1" HorizontalAlignment="Left" Margin="57,103,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="Filter_Group_Blacklist" IsChecked="{Binding FilterGroupBlacklist}" FontSize="20" Foreground="White" Padding="15,0" Content="Blacklist" Grid.Column="1" HorizontalAlignment="Left" Margin="57,138,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="Filter_Group_Stranger" IsChecked="{Binding FilterGroupStranger}" FontSize="20" Foreground="White" Padding="15,0" Content="No Match" Grid.Column="1" HorizontalAlignment="Left" Margin="57,174,0,0" VerticalAlignment="Top"/>
+                <!-- Column 1: Filter Groups -->
+                <StackPanel Grid.Column="1">
+                    <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Button x:Name="btn_FilterSelectAll" Content="Select All" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
+
+                    <ItemsControl Grid.Column="1" Margin="50,6" ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=PeopleGroups.Keys}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding}" FontSize="20" Foreground="White" Margin="0,5" Padding="15,0" VerticalAlignment="Top" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
 
                 <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                 <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
@@ -179,7 +193,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" Click="button_Click" />
+                <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />
             </Grid>
 
         </ResourceDictionary>
@@ -280,6 +294,7 @@
 
         </tlibborder:MainBorder>
         <!--</Viewbox>-->
+
     </DockPanel>
 
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infralution.Localization.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Windows.Shapes;
 using Tencent.Components.FaceTracingDetails;
 using Tencent.DataSources;
 using TencentLibrary.Borders;
+using Tencent.Helpers;
 
 namespace Tencent.Components {
     /// <summary>
@@ -163,24 +165,47 @@ namespace Tencent.Components {
             this.ContentArea.Content = FilterType == 0 ? this.FindResource("MainContent") : this.FindResource("FilterContent");
         }
 
-        private void button_Click(object sender, RoutedEventArgs e) {
+        private void apply_button_Click(object sender, RoutedEventArgs e) {
             FilterType = 0;
+
+            //var test = (this.FindResource("FilterContent") as FrameworkElement).FindResource("chb_GroupFilters");
+            //var test = (this.FindResource("FilterContent") as DependencyObject).FindChild("chb_GroupFilters", typeof(CheckBox));
+            //var test = (this.FindResource("FilterContent") as FrameworkElement).FindName("chb_GroupFilters");
+            //var test = DependencyObjectHelper.FindVisualChildren<CheckBox>(this.FindResource("FilterContent") as DependencyObject, "chb_GroupFilters");
+            var test = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
+
             this.ContentArea.Content = this.FindResource("MainContent");
             (CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView).Refresh();
         }
 
-        private void Filter_Group_All_Click(object sender, RoutedEventArgs e) {
-            //CheckBox cb = (CheckBox)sender;
-
-            //((this.FindResource("FilterContent") as FrameworkElement).FindName("Filter_Group_VIP") as CheckBox).IsChecked = cb.IsChecked;
-
-            //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_VIP") as CheckBox).IsChecked = cb.IsChecked;
-            //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_Blacklist") as CheckBox).IsChecked = cb.IsChecked;
-            //(LogicalTreeHelper.FindLogicalNode(this, "Filter_Group_Stranger") as CheckBox).IsChecked = cb.IsChecked;
-        }
-
         private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {
             this.MainBorder.IsMaximum = !this.MainBorder.IsMaximum;
+        }
+
+        private void btn_FilterSelectAll_Click(object sender, RoutedEventArgs e) {
+            var siblings = ((e.OriginalSource as FrameworkElement).Parent as Panel).Children;
+            foreach (FrameworkElement child in siblings) {
+                if (child.GetType() == typeof(ItemsControl)) {
+                    /// get all checkboxes
+                    var target = child as ItemsControl;
+                    List<CheckBox> checkboxes = new List<CheckBox>();
+                    for (var i=0; i<target.Items.Count; ++i) {
+                        var cp = (target.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter);
+                        var check = VisualTreeHelper.GetChild(cp, 0) as CheckBox;
+                        checkboxes.Add(check);
+                    }
+                    /// count selected
+                    var selected = 0;
+                    foreach (var cb in checkboxes) {
+                        if (cb.IsChecked == true) selected++;
+                    }
+                    foreach (var cb in checkboxes) {
+                        cb.IsChecked = selected == 0 ? true : false;
+                    }
+                    break;
+                }
+            }
+            return;
         }
     }
 }
