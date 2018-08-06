@@ -31,6 +31,8 @@ namespace Tencent.Components {
 
             SetValue(PanelProperty, new ObservableCollection<FaceTracingBorder>());
 
+            FilterGroups filterGroup = null;
+
             CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
             view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
@@ -39,7 +41,7 @@ namespace Tencent.Components {
                     return false;
                 }
 
-                var filterGroup = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<FilterGroups>().First();
+                if (filterGroup == null) filterGroup = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<FilterGroups>().First();
                 return filterGroup.CheckGroupValid(face.groupname);
 
                 //var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();

@@ -19,10 +19,15 @@ namespace Tencent.Components.FaceTracingHistorys {
     /// Interaction logic for FilterGroups.xaml
     /// </summary>
     public partial class FilterGroups : UserControl {
+        private Dictionary<string, bool> permission;
+
         public FilterGroups() {
             InitializeComponent();
+
+            reloadPermission();
         }
 
+        private void reloadPermission() { permission = getPermission(); }
         private Dictionary<string, bool> getPermission() {
             var checkboxes = this.FindVisualChildren<CheckBox>();
             var dict = new Dictionary<string, bool>();
@@ -37,8 +42,8 @@ namespace Tencent.Components.FaceTracingHistorys {
         }
 
         public bool CheckGroupValid(string name) {
-            var permission = getPermission();
             try {
+                if (permission["__all__"] == true) return true;
                 return permission[name];
             } catch (Exception) {
                 return permission["__all__"] ? true : false;
@@ -56,5 +61,8 @@ namespace Tencent.Components.FaceTracingHistorys {
             }
         }
 
+        private void CheckBox_Checked(object sender, RoutedEventArgs e) {
+            reloadPermission();
+        }
     }
 }

@@ -227,7 +227,7 @@
 
                 <!-- Column 1: Filter Groups -->
                 <fth:FilterGroups Grid.Column="1" />
-                <!-- Column 1 end ***********-->
+                <!-- Column 1 end ********** -->
 
                 <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                 <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
