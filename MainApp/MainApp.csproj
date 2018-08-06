@@ -170,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\FaceTracingHistorys\FilterGroups.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\FaceTracingMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +220,9 @@
     </Compile>
     <Compile Include="Components\FaceTracingHistory.xaml.cs">
       <DependentUpon>FaceTracingHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingHistorys\FilterGroups.xaml.cs">
+      <DependentUpon>FilterGroups.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\FaceTracingMap.xaml.cs">
       <DependentUpon>FaceTracingMap.xaml</DependentUpon>
@@ -445,6 +452,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

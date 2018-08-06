@@ -19,6 +19,7 @@ using Tencent.Components.FaceTracingDetails;
 using Tencent.DataSources;
 using TencentLibrary.Borders;
 using Tencent.Helpers;
+using Tencent.Components.FaceTracingHistorys;
 
 namespace Tencent.Components {
     /// <summary>
@@ -38,17 +39,20 @@ namespace Tencent.Components {
                     return false;
                 }
 
-                var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
-                var selected = 0;
-                foreach (var cb in checkboxes) {
-                    if (cb.IsChecked == true) selected++;
-                }
-                if (selected == 0 || selected == checkboxes.Count()) return true;
-                foreach (var cb in checkboxes) {
-                    if (cb.IsChecked == false) continue;
-                    if (cb.Content as string == face.groupname) return true;
-                }
-                return false;
+                var filterGroup = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<FilterGroups>().First();
+                return filterGroup.CheckGroupValid(face.groupname);
+
+                //var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
+                //var selected = 0;
+                //foreach (var cb in checkboxes) {
+                //    if (cb.IsChecked == true) selected++;
+                //}
+                //if (selected == 0 || selected == checkboxes.Count()) return true;
+                //foreach (var cb in checkboxes) {
+                //    if (cb.IsChecked == false) continue;
+                //    if (cb.Content as string == face.groupname) return true;
+                //}
+                //return false;
             };
         }
 
@@ -140,17 +144,6 @@ namespace Tencent.Components {
 
         private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {
             this.MainBorder.IsMaximum = !this.MainBorder.IsMaximum;
-        }
-
-        private void btn_FilterSelectAll_Click(object sender, RoutedEventArgs e) {
-            var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
-            var selected = 0;
-            foreach (var cb in checkboxes) {
-                if (cb.IsChecked == true) selected++;
-            }
-            foreach (var cb in checkboxes) {
-                cb.IsChecked = selected == 0 ? true : false;
-            }
         }
     }
 }

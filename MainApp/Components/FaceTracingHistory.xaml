@@ -13,6 +13,7 @@
              xmlns:pnl="clr-namespace:Library.Panels;assembly=Library"
              xmlns:bvw="clr-namespace:Binarymission.WPF.Controls.ExtendedPanelControls.VirtualizingWrapPanel.Constants;assembly=Binarymission.WPF.Controls.VirtualizingWrapPanel"
              xmlns:sdr="clr-namespace:Binarymission.WPF.Shaders.Library.CustomEffects;assembly=Binarymission.WPF.Shaders.Library"
+             xmlns:fth="clr-namespace:Tencent.Components.FaceTracingHistorys"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640"
@@ -225,24 +226,8 @@
                 </Popup>-->
 
                 <!-- Column 1: Filter Groups -->
-                <StackPanel Grid.Column="1">
-                    <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-
-                    <Button x:Name="btn_FilterSelectAll" Content="Select All" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
-
-                    <ItemsControl Grid.Column="1" Margin="50,6" ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=PeopleGroups.Keys}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Content="{Binding}" FontSize="20" Foreground="White" Margin="0,5" Padding="15,0" VerticalAlignment="Top" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                <fth:FilterGroups Grid.Column="1" />
+                <!-- Column 1 end ***********-->
 
                 <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                 <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
