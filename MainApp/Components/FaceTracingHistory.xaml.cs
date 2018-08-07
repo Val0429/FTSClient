@@ -26,21 +26,22 @@ namespace Tencent.Components {
     /// Interaction logic for FaceTracingHistory.xaml
     /// </summary>
     public partial class FaceTracingHistory : UserControl {
+        private DependencyObject filterContent;
+        private FilterGroups filterGroup;
+        private NameAndTimeRange filterNameTime;
+        private TextBox filterName;
+
         public FaceTracingHistory() {
             InitializeComponent();
 
-            DependencyObject filterContent = this.FindResource("FilterContent") as DependencyObject;
-            FilterGroups filterGroup = null;
-            NameAndTimeRange filterNameTime = null;
-            TextBox filterName = null;
+            filterContent = this.FindResource("FilterContent") as DependencyObject;
+            filterGroup = filterContent.FindVisualChildren<FilterGroups>().First();
+            filterNameTime = filterContent.FindVisualChildren<NameAndTimeRange>().First();
+            filterName = filterNameTime.getNameTextBox();
 
             CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
             view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
-
-                if (filterNameTime == null) filterNameTime = filterContent.FindVisualChildren<NameAndTimeRange>().First();
-                if (filterName == null) filterName = filterNameTime.getNameTextBox();
-                if (filterGroup == null) filterGroup = filterContent.FindVisualChildren<FilterGroups>().First();
 
                 /// validate name
                 if ( (filterName != null && filterName.Text != "") &&
