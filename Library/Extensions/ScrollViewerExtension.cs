@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Library.Extensions {
     static class ChildHelper {
@@ -29,6 +30,8 @@ namespace Library.Extensions {
         private static bool _autoScroll;
 
         private static void AlwaysScrollToEndChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            Dictionary<int, DispatcherOperation> stored = new Dictionary<int, DispatcherOperation>();
+
             do {
                 bool alwaysScrollToEnd = (e.NewValue != null) && (bool)e.NewValue;
                 ///// try ScrollViewer
@@ -57,9 +60,15 @@ namespace Library.Extensions {
                             if (e2.NewItems == null || scroll.Items.Count == 0) return;
 
                             if (atBottom == true) {
-                                scroll.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() => {
+                                var hash = scroll.GetHashCode();
+                                DispatcherOperation op;
+                                stored.TryGetValue(hash, out op);
+                                if (op != null && op.Status != DispatcherOperationStatus.Completed) return;
+
+                                var dispatcher = scroll.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() => {
                                     scroll.ScrollIntoView(scroll.Items[scroll.Items.Count - 1]);
                                 }));
+                                stored[hash] = dispatcher;
                             }
                         };
 

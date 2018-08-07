@@ -28,7 +28,6 @@ namespace Tencent.Components {
     public partial class FaceTracingHistory : UserControl {
         private DependencyObject filterContent;
         private FilterGroups filterGroup;
-        private NameAndTimeRange filterNameTime;
         private TextBox filterName;
 
         public FaceTracingHistory() {
@@ -39,13 +38,17 @@ namespace Tencent.Components {
             filterNameTime = filterContent.FindVisualChildren<NameAndTimeRange>().First();
             filterName = filterNameTime.getNameTextBox();
 
+            applyFilterToView();
+        }
+
+        private void applyFilterToView() {
             CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
-            view.Filter = (object item) => {
+            if (view.Filter == null) view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
 
                 /// validate name
-                if ( (filterName != null && filterName.Text != "") &&
-                    ( face.name == null || (face.name != null) && face.name.IndexOf(filterName.Text) < 0)
+                if ((filterName != null && filterName.Text != "") &&
+                    (face.name == null || (face.name != null) && face.name.IndexOf(filterName.Text) < 0)
                     ) return false;
 
                 /// validate groups
@@ -79,6 +82,17 @@ namespace Tencent.Components {
         // Using a DependencyProperty as the backing store for FilterName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(FaceTracingHistory), new PropertyMetadata(
+                null
+                ));
+
+        public NameAndTimeRange filterNameTime {
+            get { return (NameAndTimeRange)GetValue(filterNameTimeProperty); }
+            set { SetValue(filterNameTimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for filterNameTime.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty filterNameTimeProperty =
+            DependencyProperty.Register("filterNameTime", typeof(NameAndTimeRange), typeof(FaceTracingHistory), new PropertyMetadata(
                 null
                 ));
 
@@ -122,13 +136,28 @@ namespace Tencent.Components {
         private void apply_button_Click(object sender, RoutedEventArgs e) {
             FilterType = 0;
 
-            var MainContent = this.FindResource("MainContent") as FrameworkElement;
+            FaceListenerSource FaceListener = this.FindResource("FaceListenerSource") as FaceListenerSource;
+            var MainContent = this.FindResource("MainContent") as ListView;
             var FilterContent = this.FindResource("FilterContent") as FrameworkElement;
             var txtFilterName = FilterContent.FindVisualChildren<TextBox>("txt_FilterName").First();
             FilterName = txtFilterName.Text;
 
+            /// determine ItemsSource
+            if (filterNameTime.rb_realtime.IsChecked == true) {
+                MainContent.ItemsSource = FaceListener.Faces;
+                applyFilterToView();
+
+            } else {
+                MainContent.ItemsSource = FaceListener.TimeRangeFaces;
+                applyFilterToView();
+                FaceListener.HistoryWithDuration(
+                    DateTime.Parse(filterNameTime.calendar.Text),
+                    long.Parse(filterNameTime.txt_duration.Text) * 60
+                    );
+            }
+
             this.ContentArea.Content = MainContent;
-            (CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView).Refresh();
+            (CollectionViewSource.GetDefaultView(MainContent.ItemsSource) as CollectionView).Refresh();
         }
 
         private void MainBorder_RTMaximumClicked(object sender, RoutedEventArgs e) {

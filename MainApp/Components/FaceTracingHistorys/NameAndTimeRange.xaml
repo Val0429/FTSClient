@@ -72,7 +72,7 @@
             <Label Content="Mins" Width="50" Foreground="White" FontSize="14" HorizontalContentAlignment="Right" VerticalAlignment="Center" />
         </StackPanel>
 
-        <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="600" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
+        <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="4320" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
 
     </StackPanel>
 </UserControl>

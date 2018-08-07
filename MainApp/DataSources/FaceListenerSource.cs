@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 using Tencent.Configurations;
 using WebSocketSharp;
 using System.Net.Http;
+using System.Reflection;
 
 namespace Tencent.DataSources {
     public class FaceListenerSource : DependencyObject {
@@ -327,7 +328,7 @@ namespace Tencent.DataSources {
         }
 
         WebSocket lastWs = null;
-        public void HistoryWithDuration(DateTime start, int durationSeconds) {
+        public void HistoryWithDuration(DateTime start, long durationSeconds) {
             var callback = new EventHandler<MessageEventArgs>((sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
@@ -341,7 +342,7 @@ namespace Tencent.DataSources {
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     /// ignore duplicate face with same name
                     FaceItem prevFace = null;
-                    if (TimeRangeFaces.Count > 0) prevFace = TimeRangeFaces[Faces.Count - 1];
+                    if (TimeRangeFaces.Count > 0) prevFace = TimeRangeFaces[TimeRangeFaces.Count - 1];
                     if (prevFace != null && prevFace.name != null &&
                         prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
                         (face.timestamp - prevFace.timestamp) <= 3000) {
@@ -357,7 +358,9 @@ namespace Tencent.DataSources {
             }
             TimeRangeFaces.Clear();
 
+            var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
             long startms = (long)start.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+            startms -= (long)offset.TotalMilliseconds;
             long endms = startms + durationSeconds * 1000;
             /// last images
             var lws = new WebSocket(string.Format("{0}/lastImages?sessionId={1}&start={2}&end={3}", WsHost, sessionId, startms, endms));
