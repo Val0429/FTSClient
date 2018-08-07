@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tencent.Components.FaceTracingHistorys"
              mc:Ignorable="d"
+             xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              xmlns:localcvt="clr-namespace:Tencent.Converters"
              xmlns:xcd="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -15,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
+            <cvt:MinutesToReadableConverter x:Key="MinutesToReadable" />
             <SolidColorBrush x:Key="LbIconBkBrush" Color="#AA105F62" />
             <SolidColorBrush x:Key="LbIconBrush" Color="#FF3CD8BB" />
 
@@ -68,8 +70,9 @@
 
         <StackPanel Orientation="Horizontal" Margin="20,3">
             <Label Content="Duration" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
-            <TextBox x:Name="txt_duration" x:FieldModifier="public" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="70" Text="{Binding Source={x:Reference sld_duration}, Path=Value}" HorizontalContentAlignment="Center" />
-            <Label Content="Mins" Width="50" Foreground="White" FontSize="14" HorizontalContentAlignment="Right" VerticalAlignment="Center" />
+            <TextBox x:Name="txt_duration" x:FieldModifier="public" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="130"
+                     Text="{Binding Source={x:Reference sld_duration}, Path=Value, Converter={StaticResource MinutesToReadable}}"
+                     Tag="{Binding Source={x:Reference sld_duration}, Path=Value}" HorizontalContentAlignment="Center" />
         </StackPanel>
 
         <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="4320" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />

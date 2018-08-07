@@ -59,6 +59,7 @@
     <Compile Include="Converters\ContractColorConverter.cs" />
     <Compile Include="Converters\DrawingBitmapToWpfConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Converters\MinutesToReadableConverter.cs" />
     <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Converters\OpacityColorConverter.cs" />
     <Compile Include="Converters\RatioToActualScreenHeightConverter.cs" />
