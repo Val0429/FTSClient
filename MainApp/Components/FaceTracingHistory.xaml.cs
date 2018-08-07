@@ -29,44 +29,30 @@ namespace Tencent.Components {
         public FaceTracingHistory() {
             InitializeComponent();
 
-            SetValue(PanelProperty, new ObservableCollection<FaceTracingBorder>());
-
+            DependencyObject filterContent = this.FindResource("FilterContent") as DependencyObject;
             FilterGroups filterGroup = null;
+            NameAndTimeRange filterNameTime = null;
+            TextBox filterName = null;
 
             CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
             view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
-                if (FilterName != null && FilterName.Length > 0) {
-                    if (face.name != null && face.name.IndexOf(FilterName) >= 0) return true;
-                    return false;
-                }
 
-                if (filterGroup == null) filterGroup = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<FilterGroups>().First();
+                if (filterNameTime == null) filterNameTime = filterContent.FindVisualChildren<NameAndTimeRange>().First();
+                if (filterName == null) filterName = filterNameTime.getNameTextBox();
+                if (filterGroup == null) filterGroup = filterContent.FindVisualChildren<FilterGroups>().First();
+
+                /// validate name
+                if ( (filterName != null && filterName.Text != "") &&
+                    ( face.name == null || (face.name != null) && face.name.IndexOf(filterName.Text) < 0)
+                    ) return false;
+
+                /// validate groups
                 return filterGroup.CheckGroupValid(face.groupname);
-
-                //var checkboxes = (this.FindResource("FilterContent") as DependencyObject).FindVisualChildren<CheckBox>();
-                //var selected = 0;
-                //foreach (var cb in checkboxes) {
-                //    if (cb.IsChecked == true) selected++;
-                //}
-                //if (selected == 0 || selected == checkboxes.Count()) return true;
-                //foreach (var cb in checkboxes) {
-                //    if (cb.IsChecked == false) continue;
-                //    if (cb.Content as string == face.groupname) return true;
-                //}
-                //return false;
             };
         }
 
         #region "Dependency Properties"
-
-        public ObservableCollection<FaceTracingBorder> Panel {
-            get { return (ObservableCollection<FaceTracingBorder>)GetValue(PanelProperty); }
-            set { SetValue(PanelProperty, value); }
-        }
-        // Using a DependencyProperty as the backing store for Panel.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PanelProperty =
-            DependencyProperty.Register("Panel", typeof(ObservableCollection<FaceTracingBorder>), typeof(FaceTracingHistory), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public int IconType {
             get { return (int)GetValue(IconTypeProperty); }

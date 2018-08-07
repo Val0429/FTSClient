@@ -44,14 +44,6 @@
             <Style TargetType="scv:CustomListView">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IconType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FaceTracingHistory}}}" Value="0">
-                        <!--<Setter Property="ItemContainerStyle">
-                            <Setter.Value>
-                                <Style TargetType="{x:Type ListViewItem}">
-                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style>
-                            </Setter.Value>
-                        </Setter>-->
                         <Setter Property="ItemsPanel">
                             <Setter.Value>
                                 <ItemsPanelTemplate>
@@ -150,14 +142,7 @@
                     ScrollContentMargin="0,0,0,5"
                     ScrollBarMargin="0,30,0,5"
                     ext:ScrollViewerExtension.AlwaysScrollToEnd="True"
-            >
-                <!--<scv:CustomListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                    </Style>
-                </scv:CustomListView.ItemContainerStyle>-->
-            </scv:CustomListView>
+            />
 
             <Grid x:Key="FilterContent">
                 <Grid.ColumnDefinitions>
@@ -166,58 +151,9 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Margin="20,0">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type RadioButton}">
-                            <Style.Resources>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Margin" Value="10,0" />
-                                </Style>
-                            </Style.Resources>
-                            <Setter Property="Foreground" Value="White" />
-                            <Setter Property="FontSize" Value="18" />
-                            <Setter Property="Margin" Value="10,4" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <Label Style="{StaticResource DefaultLabel}" Content="Name" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txt_FilterName" Style="{StaticResource DefaultTextBox}" Margin="10,6" HorizontalAlignment="Left" Height="34" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" />
-                    <Label Style="{StaticResource DefaultLabel}" Content="Time Range" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
-
-                    <RadioButton IsChecked="True">
-                        <RadioButton.Content>
-                            <TextBlock>Real-Time</TextBlock>
-                        </RadioButton.Content>
-                    </RadioButton>
-                    <RadioButton>
-                        <RadioButton.Content>
-                            <TextBlock>Range</TextBlock>
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                    <StackPanel Orientation="Horizontal" Margin="20,3">
-                        <Label Content="Time" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
-                        <TextBox x:Name="txt_DurationTime" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="120" />
-                        <Popup IsOpen="{Binding Source={x:Reference txt_DurationTime}, Path=IsSelectionActive, Mode=OneWay}" PlacementTarget="{Binding Source={x:Reference txt_DurationTime}}" Placement="Right" Panel.ZIndex="100">
-                            <Calendar Focusable="False" />
-                        </Popup>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="20,3">
-                        <Label Content="Duration" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
-                        <TextBox Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="70" Text="{Binding Source={x:Reference sld_Duration}, Path=Value}" />
-                        <Label Content="Mins" Width="50" Foreground="White" FontSize="14" HorizontalContentAlignment="Right" VerticalAlignment="Center" />
-                    </StackPanel>
-
-                    <Slider x:Name="sld_Duration" Margin="30,0" Minimum="10" Maximum="600" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
-
-                </StackPanel>
-                
-                <!--<Label Style="{StaticResource DefaultLabel}" Content="Name" HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="txt_FilterName" Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" />
-                <Label Style="{StaticResource DefaultLabel}" Content="Time Range" HorizontalAlignment="Left" Margin="23,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
-                <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="31,154,0,0" TextWrapping="Wrap" Text="00:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="75"/>
-                <TextBox Style="{StaticResource DefaultTextBox}" HorizontalAlignment="Left" Height="34" Margin="136,154,0,0" TextWrapping="Wrap" Text="24:00" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="76"/>
-                <Label Style="{StaticResource DefaultLabel}" Content="To" HorizontalAlignment="Left" Margin="107,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>-->
+                <!-- Column 0: Name and Time Range -->
+                <fth:NameAndTimeRange Margin="20,0" />
+                <!-- Column 0 end **************** -->
 
                 <!--<ToggleButton x:Name="tglbutton" Height="30">
                 </ToggleButton>

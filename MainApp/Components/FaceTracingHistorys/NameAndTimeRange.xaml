@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingHistorys.NameAndTimeRange"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components.FaceTracingHistorys"
+             mc:Ignorable="d"
+             xmlns:localcvt="clr-namespace:Tencent.Converters"
+             xmlns:xcd="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
+            <SolidColorBrush x:Key="LbIconBkBrush" Color="#AA105F62" />
+            <SolidColorBrush x:Key="LbIconBrush" Color="#FF3CD8BB" />
+
+            <Style x:Key="DefaultTextBox" TargetType="TextBox">
+                <Setter Property="Background" Value="#FF10221F" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+
+            <Style x:Key="DefaultLabel" TargetType="Label" BasedOn="{StaticResource DefaultFont}">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type RadioButton}">
+                <Style.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Margin" Value="10,0" />
+                    </Style>
+                </Style.Resources>
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="10,4" />
+            </Style>
+        </StackPanel.Resources>
+        
+        <Label Style="{StaticResource DefaultLabel}" Content="Name" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txt_FilterName" Style="{StaticResource DefaultTextBox}" Margin="10,6" HorizontalAlignment="Left" Height="34" TextWrapping="Wrap" VerticalAlignment="Top" Width="181" />
+
+        <Label Style="{StaticResource DefaultLabel}" Content="Time Range" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.121,4.07"/>
+
+        <RadioButton x:Name="rb_realtime" x:FieldModifier="public" IsChecked="True">
+            <RadioButton.Content>
+                <TextBlock>Real-Time</TextBlock>
+            </RadioButton.Content>
+        </RadioButton>
+        <RadioButton x:Name="rb_range" x:FieldModifier="public">
+            <RadioButton.Content>
+                <TextBlock>Range</TextBlock>
+            </RadioButton.Content>
+        </RadioButton>
+
+        <StackPanel Orientation="Horizontal" Margin="20,3">
+            <Label Content="Time" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
+            <xcd:DateTimePicker x:Name="calendar" x:FieldModifier="public" Format="Custom" FormatString="yyyy/MM/dd HH:mm" Width="140" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="20,3">
+            <Label Content="Duration" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
+            <TextBox x:Name="txt_duration" x:FieldModifier="public" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="70" Text="{Binding Source={x:Reference sld_duration}, Path=Value}" HorizontalContentAlignment="Center" />
+            <Label Content="Mins" Width="50" Foreground="White" FontSize="14" HorizontalContentAlignment="Right" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="600" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
+
+    </StackPanel>
+</UserControl>
