@@ -151,8 +151,8 @@ namespace Tencent.Components {
                 MainContent.ItemsSource = FaceListener.TimeRangeFaces;
                 applyFilterToView();
                 FaceListener.HistoryWithDuration(
-                    DateTime.Parse(filterNameTime.calendar.Text),
-                    long.Parse(filterNameTime.txt_duration.Text) * 60
+                    DateTime.Parse((string)filterNameTime.calendar.Text),
+                    long.Parse(filterNameTime.txt_duration.Tag.ToString()) * 60
                     );
             }
 
