@@ -328,7 +328,13 @@ namespace Tencent.DataSources {
         }
 
         WebSocket lastWs = null;
+        DateTime lastStart;
+        long lastDurationSeconds = 0;
         public void HistoryWithDuration(DateTime start, long durationSeconds) {
+            if (lastStart == start && lastDurationSeconds == durationSeconds) return;
+            lastStart = start;
+            lastDurationSeconds = durationSeconds;
+
             var callback = new EventHandler<MessageEventArgs>((sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var face = jsonSerializer.Deserialize<FaceItem>(e.Data);

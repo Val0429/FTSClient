@@ -28,6 +28,7 @@ namespace Tencent.Components {
     public partial class FaceTracingHistory : UserControl {
         private DependencyObject filterContent;
         private FilterGroups filterGroup;
+        private FilterCameras filterCamera;
         private TextBox filterName;
 
         public FaceTracingHistory() {
@@ -35,6 +36,7 @@ namespace Tencent.Components {
 
             filterContent = this.FindResource("FilterContent") as DependencyObject;
             filterGroup = filterContent.FindVisualChildren<FilterGroups>().First();
+            filterCamera = filterContent.FindVisualChildren<FilterCameras>().First();
             filterNameTime = filterContent.FindVisualChildren<NameAndTimeRange>().First();
             filterName = filterNameTime.getNameTextBox();
 
@@ -43,6 +45,7 @@ namespace Tencent.Components {
 
         private void applyFilterToView() {
             CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
+
             if (view.Filter == null) view.Filter = (object item) => {
                 FaceItem face = (FaceItem)item;
 
@@ -52,7 +55,11 @@ namespace Tencent.Components {
                     ) return false;
 
                 /// validate groups
-                return filterGroup.CheckGroupValid(face.groupname);
+                //return filterGroup.CheckGroupValid(face.groupname);
+                if (filterGroup.CheckGroupValid(face.groupname) == false) return false;
+
+                /// validate cameras
+                return filterCamera.CheckCameraValid(face.sourceid);
             };
         }
 

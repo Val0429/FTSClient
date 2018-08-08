@@ -13,17 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tencent.Helpers;
+using Tencent.DataSources;
 
 namespace Tencent.Components.FaceTracingHistorys {
     /// <summary>
-    /// Interaction logic for FilterGroups.xaml
+    /// Interaction logic for FilterCameras.xaml
     /// </summary>
-    public partial class FilterGroups : UserControl {
+    public partial class FilterCameras : UserControl {
         private Dictionary<string, bool> permission;
 
-        public FilterGroups() {
+        public FilterCameras() {
             InitializeComponent();
-
             reloadPermission();
         }
 
@@ -34,17 +34,17 @@ namespace Tencent.Components.FaceTracingHistorys {
             var selected = 0;
             foreach (var cb in checkboxes) {
                 if (cb.IsChecked == true) selected++;
-                dict[cb.Content as string] = (bool)cb.IsChecked;
+                dict[(cb.Tag as Camera).sourceid] = (bool)cb.IsChecked;
             }
             if (selected == 0 || selected == checkboxes.Count()) dict["__all__"] = true;
             else dict["__all__"] = false;
             return dict;
         }
 
-        public bool CheckGroupValid(string name) {
+        public bool CheckCameraValid(string sourceid) {
             if (permission["__all__"] == true) return true;
             bool result;
-            if (name == null || permission.TryGetValue(name, out result) == false)
+            if (sourceid == null || permission.TryGetValue(sourceid, out result) == false)
                 return false;
             return result;
         }
@@ -63,5 +63,7 @@ namespace Tencent.Components.FaceTracingHistorys {
         private void CheckBox_Checked(object sender, RoutedEventArgs e) {
             reloadPermission();
         }
+
     }
+
 }

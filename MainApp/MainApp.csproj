@@ -194,6 +194,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\FaceTracingHistorys\FilterCameras.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\FaceTracingHistorys\FilterGroups.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -248,6 +252,9 @@
     </Compile>
     <Compile Include="Components\FaceTracingHistory.xaml.cs">
       <DependentUpon>FaceTracingHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FaceTracingHistorys\FilterCameras.xaml.cs">
+      <DependentUpon>FilterCameras.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\FaceTracingHistorys\FilterGroups.xaml.cs">
       <DependentUpon>FilterGroups.xaml</DependentUpon>

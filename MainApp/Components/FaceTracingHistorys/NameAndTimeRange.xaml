@@ -70,7 +70,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="20,3">
             <Label Content="Duration" Width="80" Foreground="White" FontSize="14" VerticalAlignment="Center" />
-            <TextBox x:Name="txt_duration" x:FieldModifier="public" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="130"
+            <TextBox x:Name="txt_duration" x:FieldModifier="public" Style="{StaticResource DefaultTextBox}" IsReadOnly="True" Width="140"
                      Text="{Binding Source={x:Reference sld_duration}, Path=Value, Converter={StaticResource MinutesToReadable}}"
                      Tag="{Binding Source={x:Reference sld_duration}, Path=Value}" HorizontalContentAlignment="Center" />
         </StackPanel>

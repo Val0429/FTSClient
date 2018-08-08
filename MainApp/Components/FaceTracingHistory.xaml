@@ -155,25 +155,31 @@
                 <fth:NameAndTimeRange Margin="20,0" />
                 <!-- Column 0 end **************** -->
 
-                <!--<ToggleButton x:Name="tglbutton" Height="30">
-                </ToggleButton>
-                <Popup IsOpen="{Binding Source={x:Reference tglbutton}, Path=IsChecked}" PlacementTarget="{Binding Source={x:Reference tglbutton}}" Placement="Right" StaysOpen="True" Panel.ZIndex="100">
-                    <Calendar />
-                </Popup>-->
-
                 <!-- Column 1: Filter Groups -->
                 <fth:FilterGroups Grid.Column="1" />
                 <!-- Column 1 end ********** -->
 
-                <Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <!--<Label Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                 <ListBox x:Name="listBox" Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="243" Margin="44,66,0,0" VerticalAlignment="Top" Width="212" ItemsSource="{Binding Path=Cameras, Source={StaticResource FaceListenerSource}}" Background="#FF10211D">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label Style="{StaticResource DefaultLabel}" FontSize="20" Content="{Binding Value.name}" HorizontalContentAlignment="Left" Background="#FF0B413F" Margin="1,2" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListBox>
-                <Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />
+                </ListBox>-->
+                <!--<Button x:Name="button" Content="Apply" Grid.Column="2" HorizontalAlignment="Left" Margin="123,340,0,0" VerticalAlignment="Top" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />-->
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
+
+                    <fth:FilterCameras Grid.Row="0" />
+
+                    <Button x:Name="button" Content="Apply" Grid.Row="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />
+                </Grid>
+                
             </Grid>
 
         </ResourceDictionary>

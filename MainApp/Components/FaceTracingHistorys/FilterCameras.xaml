@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Tencent.Components.FaceTracingHistorys.FilterCameras"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tencent.Components.FaceTracingHistorys"
+             xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
+             xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TencentLibrary;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="DefaultLabel" TargetType="Label" BasedOn="{StaticResource DefaultFont}">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" />
+
+        <Button Grid.Row="1" x:Name="btn_FilterSelectAll" Content="Select All" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
+
+        <scv:CustomListView
+            Grid.Row="2"
+            Background="Transparent"
+            ScrollContentMargin="30,0,10,0"
+            ScrollBarMargin="0,5,5,5"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=Cameras.Values}"
+        >
+            <scv:CustomListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </scv:CustomListView.ItemsPanel>
+
+            <scv:CustomListView.ItemTemplate>
+                <DataTemplate>
+                    <!--<CheckBox Content="{Binding name}" FontSize="16" Foreground="White" Margin="0" Padding="15,0" />-->
+                    <CheckBox Margin="0,2" Tag="{Binding}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked">
+                        <CheckBox.Content>
+                            <TextBlock FontSize="16" Foreground="White" Padding="8,0" Text="{Binding name}" TextTrimming="CharacterEllipsis">
+                                <TextBlock.ToolTip>
+                                    <TextBlock Text="{Binding name}" />
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                        </CheckBox.Content>
+                    </CheckBox>
+                    <!--<Label Style="{StaticResource DefaultLabel}" Content="{Binding name}" />-->
+                </DataTemplate>
+            </scv:CustomListView.ItemTemplate>
+        </scv:CustomListView>
+
+        <!--<scv:CustomListView x:Name="EntryList"
+                                            Margin="0,0,5,0"
+                                            ScrollContentMargin="0,0,0,10"
+                                            ScrollBarMargin="0,-20,0,5"
+                                            ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}"
+                                            >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Margin="0,0,0,35" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ftd:EntryUnit x:Name="EntryUnit"
+                                            Title="{Binding Camera.name}"
+                                            Tag="{Binding}"
+                                            >
+                        <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ftd:EntryUnitBorder
+                                                            Image="{Binding image}"
+                                                            />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ftd:EntryUnit>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </scv:CustomListView>-->
+
+    </Grid>
+    
+</UserControl>
