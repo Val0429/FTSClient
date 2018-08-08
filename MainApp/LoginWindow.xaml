@@ -182,6 +182,7 @@
                     SelectionChanged="ComboBox_SelectionChanged">
                     <ComboBoxItem Tag="en" IsSelected="True">English</ComboBoxItem>
                     <ComboBoxItem Tag="zh-CN">简体中文</ComboBoxItem>
+                    <ComboBoxItem Tag="zh-TW">繁體中文</ComboBoxItem>
                 </ComboBox>
                 
                 <Button Grid.Row="5" FontSize="16" x:Name="btn_Login" Content="{Resx w_Login}" Click="Button_Click" />

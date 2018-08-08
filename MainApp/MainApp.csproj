@@ -330,6 +330,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\i18n\lang.zh-TW.Designer.cs">
+      <DependentUpon>lang.zh-TW.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\i18n\lang.zh-CN.Designer.cs">
       <DependentUpon>lang.zh-CN.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -475,6 +480,11 @@
     <EmbeddedResource Include="Resources\i18n\lang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>lang.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\i18n\lang.zh-TW.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>lang.zh-TW.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\i18n\lang.zh-CN.resx">
