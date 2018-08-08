@@ -7,7 +7,8 @@
              xmlns:scv="clr-namespace:TencentLibrary.ScrollViewers;assembly=TencentLibrary"
              xmlns:ftd="clr-namespace:Tencent.Components.FaceTracingDetails"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -28,9 +29,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <Label Grid.Row="0" Style="{StaticResource DefaultLabel}" Content="Cameras" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" />
+        <Label Grid.Row="0" Style="{StaticResource DefaultLabel}" Content="{Resx w_Cameras}" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" />
 
-        <Button Grid.Row="1" x:Name="btn_FilterSelectAll" Content="Select All" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
+        <Button Grid.Row="1" x:Name="btn_FilterSelectAll" Content="{Resx w_SelectAll}" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
 
         <scv:CustomListView
             Grid.Row="2"

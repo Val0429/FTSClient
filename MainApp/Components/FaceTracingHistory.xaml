@@ -17,7 +17,6 @@
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640"
-             ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"             
              >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -177,7 +176,7 @@
 
                     <fth:FilterCameras Grid.Row="0" />
 
-                    <Button x:Name="button" Content="Apply" Grid.Row="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />
+                    <Button x:Name="button" Content="{Resx w_Apply}" Grid.Row="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="133" Height="39" FontSize="18" Click="apply_button_Click" />
                 </Grid>
                 
             </Grid>

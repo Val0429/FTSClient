@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="w_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
   <data name="w_AssociatedFaces" xml:space="preserve">
     <value>可能接触人群</value>
+  </data>
+  <data name="w_Cameras" xml:space="preserve">
+    <value>摄像头</value>
   </data>
   <data name="w_CheckInTime" xml:space="preserve">
     <value>今日入场时间</value>
   </data>
+  <data name="w_CustomRange" xml:space="preserve">
+    <value>自订区间</value>
+  </data>
   <data name="w_Downloading" xml:space="preserve">
     <value>正在下载...</value>
+  </data>
+  <data name="w_Duration" xml:space="preserve">
+    <value>持续</value>
+  </data>
+  <data name="w_FilterName" xml:space="preserve">
+    <value>筛选姓名</value>
   </data>
   <data name="w_Groups" xml:space="preserve">
     <value>群组</value>
@@ -132,8 +147,20 @@
   <data name="w_Login" xml:space="preserve">
     <value>登入</value>
   </data>
+  <data name="w_RealTime" xml:space="preserve">
+    <value>即時</value>
+  </data>
+  <data name="w_SelectAll" xml:space="preserve">
+    <value>選擇全部</value>
+  </data>
   <data name="w_Target" xml:space="preserve">
     <value>目标</value>
+  </data>
+  <data name="w_Time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="w_TimeRange" xml:space="preserve">
+    <value>时间区间</value>
   </data>
   <data name="w_TrackingDetail" xml:space="preserve">
     <value>人脸追踪详情</value>

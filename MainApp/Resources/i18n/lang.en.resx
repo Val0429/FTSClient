@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="w_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="w_AssociatedFaces" xml:space="preserve">
     <value>Associated Faces</value>
+  </data>
+  <data name="w_Cameras" xml:space="preserve">
+    <value>Cameras</value>
   </data>
   <data name="w_CheckInTime" xml:space="preserve">
     <value>Check-In Time</value>
   </data>
+  <data name="w_CustomRange" xml:space="preserve">
+    <value>Custom Range</value>
+  </data>
   <data name="w_Downloading" xml:space="preserve">
     <value>Downloading...</value>
+  </data>
+  <data name="w_Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="w_FilterName" xml:space="preserve">
+    <value>Filter Name</value>
   </data>
   <data name="w_Groups" xml:space="preserve">
     <value>Groups</value>
@@ -132,8 +147,20 @@
   <data name="w_Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="w_RealTime" xml:space="preserve">
+    <value>Real-Time</value>
+  </data>
+  <data name="w_SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
   <data name="w_Target" xml:space="preserve">
     <value>Target</value>
+  </data>
+  <data name="w_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="w_TimeRange" xml:space="preserve">
+    <value>Time Range</value>
   </data>
   <data name="w_TrackingDetail" xml:space="preserve">
     <value>Tracking Detail</value>

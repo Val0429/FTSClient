@@ -174,6 +174,10 @@ namespace Infralution.Localization.Wpf
                             if (targetRef.Target is DependencyObject)
                             {
                                _defaultResxName = (targetRef.Target as DependencyObject).GetValue(DefaultResxNameProperty) as string;
+                                if (_defaultResxName == null) {
+                                    Window window = Application.Current.MainWindow;
+                                    _defaultResxName = window.GetValue(DefaultResxNameProperty) as string;
+                                }
                             }
                         }
                     }

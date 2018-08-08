@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Tencent.Components.FaceTracingHistorys"
              mc:Ignorable="d" 
              xmlns:localcvt="clr-namespace:Tencent.Converters"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -25,9 +26,9 @@
     </UserControl.Resources>
     
     <StackPanel>
-        <Label Style="{StaticResource DefaultLabel}" Content="Groups" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" />
+        <Label Style="{StaticResource DefaultLabel}" Content="{Resx w_Groups}" HorizontalAlignment="Left" Margin="33,10,0,0" VerticalAlignment="Top" />
 
-        <Button x:Name="btn_FilterSelectAll" Content="Select All" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
+        <Button x:Name="btn_FilterSelectAll" Content="{Resx w_SelectAll}" Margin="50,16,50,10" Padding="50,6" FontSize="18" Click="btn_FilterSelectAll_Click" />
 
         <ItemsControl Grid.Column="1" Margin="50,6" ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=PeopleGroups.Keys}">
             <ItemsControl.ItemsPanel>

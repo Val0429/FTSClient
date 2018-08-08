@@ -193,8 +193,16 @@ namespace Tencent.DataSources {
                 ((Camera)value).Face = null;
             }
 
-            if (ws != null) ws.Close();
+            var closeHandler = new EventHandler<CloseEventArgs>((sender, e) => {
+                this.FaceDetail.Dispatcher.BeginInvoke(
+                    new Action(() => this.FaceDetail.Progress = 100)
+                );
+            });
+
+            if (ws != null) { ws.OnClose -= closeHandler; ws.Close(); }
             var jsonSerializerx = new JavaScriptSerializer();
+            this.FaceDetail.Progress = 0;
+
             ws = new WebSocket( string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
                 WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)) );
 
@@ -204,20 +212,17 @@ namespace Tencent.DataSources {
             SearchItem lastMatch = null;
             List<SearchItem> notmatches = new List<SearchItem>();
             /// ordered algorithm ///////////////////////////////////
+            ws.OnClose += closeHandler;
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
                 var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
-                ///* workaround, to be fixed */
-                //Random random = new Random();
-                //var seed = new string[] { "Camera_02_01", "Camera_02_02", "Camera_02_03", "Camera_02_04" };
-                //obj_item.sourceid = seed[random.Next(0, seed.Length)];
                 obj_item.sourceid = obj_item.channel;
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
                 obj_item.createtime = obj_item.timestamp;
                 if (obj_item.groups != null && obj_item.groups?.Length > 0) obj_item.groupname = obj_item.groups[0].name;
 
-                const double rate = 0.8;
+                const double rate = 0.6;
                 /// calculate progress
                 double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
                 this.FaceDetail.Dispatcher.BeginInvoke(

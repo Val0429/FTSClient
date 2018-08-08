@@ -50,7 +50,6 @@ namespace Tencent {
             FaceListener.StartServer();
 
             var main = new MainWindow();
-            ResxExtension.SetDefaultResxName(main, "Tencent.Resources.i18n.lang");
             main.Show();
             this.Close();
         }

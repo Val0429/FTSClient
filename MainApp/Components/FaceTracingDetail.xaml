@@ -15,7 +15,6 @@
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="480" d:DesignWidth="640"
-             ResxExtension.DefaultResxName="Tencent.Resources.i18n.lang"             
              >
 
     <UserControl.Resources>

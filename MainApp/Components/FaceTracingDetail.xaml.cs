@@ -31,11 +31,6 @@ namespace Tencent.Components {
             UIElement fr_camera_template = (UIElement)this.FindResource("FRCameraTemplate");
             UIElement nm_camera_template = (UIElement)this.FindResource("NormalCameraTemplate");
 
-            //const double startpaddingseconds = 5;
-            //const double endpaddingseconds = 10;
-            const double startpaddingseconds = 0;
-            const double endpaddingseconds = 0;
-
             // hook playing camera event
             source.OnPlayingTimeChanged += (long timestamp) => {
                 var caltracks = FaceTracingVideoMonitor.calculateTracks();
@@ -46,7 +41,6 @@ namespace Tencent.Components {
                     var tpl = cp.ContentTemplate as DataTemplate;
                     EntryUnit result = (EntryUnit)tpl.FindName("EntryUnit", cp);
                     TraceItem obj = (TraceItem)result.Tag;
-                    //if ((obj.starttime - startpaddingseconds*1000) <= timestamp && (obj.endtime + endpaddingseconds * 1000) >= timestamp)
                     var caltrack = caltracks[i];
                     if (caltrack.Item1 <= timestamp && caltrack.Item2 >= timestamp)
                         result.Icon = (UIElement)this.FindResource("FRCameraTemplate");

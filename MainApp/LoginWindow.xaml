@@ -185,8 +185,6 @@
                 </ComboBox>
                 
                 <Button Grid.Row="5" FontSize="16" x:Name="btn_Login" Content="{Resx w_Login}" Click="Button_Click" />
-
-                <!--<Button Grid.Row="4" x:Name="btn_Login" Content="{Resx ResxName=Tencent.Resources.i18n.lang, Key=w_AssociatedFaces}" Click="Button_Click" />-->
             </Grid>
             
             <!--<StackPanel VerticalAlignment="Center">
