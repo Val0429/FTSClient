@@ -128,15 +128,25 @@ namespace Tencent.DataSources {
                 face.createtime = face.timestamp;
                 if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
 
-                if (face.type == "nonrecognized") face.groupname = "No Match";
+                if (face.type == FaceType.UnRecognized) face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
-                    /// ignore duplicate face with same name
-                    FaceItem prevFace = null;
-                    if (Faces.Count > 0) prevFace = Faces[Faces.Count - 1];
-                    if (prevFace != null && prevFace.name != null &&
-                        prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
-                        (face.timestamp - prevFace.timestamp) <= 3000) {
-                        Faces.RemoveAt(Faces.Count - 1);
+                    /// duplicate face logic
+                    var uid = face.valFaceId;
+                    long pprevid = long.MaxValue;
+                    if (uid != 0)
+                    for (var i=Faces.Count-1; i>=0; --i) {
+                        FaceItem prevFace = Faces[i];
+                        var previd = prevFace.valFaceId;
+                        /// should larger
+                        if (pprevid <= previd) break;
+                        /// no match
+                        if (uid > previd) break;
+                        if (uid == previd) {
+                            /// replace
+                            Faces[i] = face;
+                            return;
+                        }
+                        pprevid = previd;
                     }
                     Faces.Add(face);
                 }));
@@ -235,9 +245,9 @@ namespace Tencent.DataSources {
                 this.FaceDetail.Dispatcher.BeginInvoke(
                         new Action(() => {
                             if (
-                                (face.type == "recognized" && obj_item.name != face.name) ||
-                                (face.type == "nonrecognized" && obj_item.type == "recognized") ||
-                                (face.type == "nonrecognized" && obj_item.score < rate)
+                                (face.type == FaceType.Recognized && obj_item.name != face.name) ||
+                                (face.type == FaceType.UnRecognized && obj_item.type == FaceType.Recognized) ||
+                                (face.type == FaceType.UnRecognized && obj_item.score < rate)
                                 ) {
                                 /// not match
                                 //this.FaceDetail.PossibleContacts.Add(obj_item);
@@ -349,7 +359,7 @@ namespace Tencent.DataSources {
                 face.createtime = face.timestamp;
                 if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
 
-                if (face.type == "nonrecognized") face.groupname = "No Match";
+                if (face.type == FaceType.UnRecognized) face.groupname = "No Match";
                 this.Dispatcher.BeginInvoke(new Action(() => {
                     /// ignore duplicate face with same name
                     FaceItem prevFace = null;

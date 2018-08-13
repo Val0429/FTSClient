@@ -33,9 +33,14 @@ namespace Tencent.DataSources {
         public string group_id { get; set; }
     }
 
+    public enum FaceType {
+        UnRecognized = 0,
+        Recognized = 1
+    }
+
     public class FaceItem {
         // recognized | nonrecognized
-        public string type { get; set; }
+        public FaceType type { get; set; }
         // *keep* should be parsed from channel or else
         public string sourceid { get; set; }
         // new name get here ==> name
@@ -48,6 +53,8 @@ namespace Tencent.DataSources {
         public FaceItemGroupInfo[] groups { get; set; }
         // new. channel ==> sourceid
         public string channel { get; set; }
+        // new
+        public long valFaceId { get; set; }
 
         // *keep* reference
         public string name { get; set; }
@@ -87,7 +94,7 @@ namespace Tencent.DataSources {
         // *keep* but no use
         public string searchid { get; set; }
         // new
-        public string type { get; set; }
+        public FaceType type { get; set; }
         // new name get here ==> name
         public FaceItemPersonInfo person_info { get; set; }
         // new. snapshot ==> image
