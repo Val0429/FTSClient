@@ -25,7 +25,6 @@ namespace Tencent.DataSources {
 
         public FaceListenerSource() {
             Faces = new ObservableCollection<FaceItem>();
-            TimeRangeFaces = new ObservableCollection<FaceItem>();
             FaceDetail = new FaceDetail();
             Floors = new Dictionary<int, Floor>();
             Cameras = new Dictionary<string, Camera>();
@@ -69,8 +68,6 @@ namespace Tencent.DataSources {
 
         public ObservableCollection<FaceItem> Faces { get; private set; }
 
-        public ObservableCollection<FaceItem> TimeRangeFaces { get; private set; }
-
         public FaceDetail FaceDetail { get; private set; }
 
         public Dictionary<int, Floor> Floors { get; private set; }
@@ -109,6 +106,15 @@ namespace Tencent.DataSources {
 
         public string sessionId { get; set; }
         public void StartServer() {
+            InitialNewListen();
+        }
+
+        WebSocket mainWs = null;
+        private EventHandler<MessageEventArgs> messageCallback = null;
+        private EventHandler<CloseEventArgs> closeCallback = null;
+        private EventHandler<ErrorEventArgs> errorCallback = null;
+        private EventHandler openCallback = null;
+        public void InitialNewListen(long? startms = null, long? endms = null, bool alive = true) {
             FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
 
             /// bridge back to FaceListener
@@ -118,64 +124,101 @@ namespace Tencent.DataSources {
             WsHost = string.Format("ws://{0}:{1}", ip, port);
             HttpHost = string.Format("http://{0}:{1}", ip, port);
 
-            /// handle lastImages & search
-            var callback = new EventHandler<MessageEventArgs>((sender, e) => {
-                var jsonSerializer = new JavaScriptSerializer();
-                var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
-                face.sourceid = face.channel;
-                face.name = face.person_info?.fullname;
-                face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
-                face.createtime = face.timestamp;
-                if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
+            /// generalize new face
+            Action<bool> doReconnect = null;
+            if (messageCallback == null) {
+                messageCallback = new EventHandler<MessageEventArgs>((sender, e) => {
+                    var jsonSerializer = new JavaScriptSerializer();
+                    var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
+                    face.sourceid = face.channel;
+                    face.name = face.person_info?.fullname;
+                    face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
+                    face.createtime = face.timestamp;
+                    if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
 
-                if (face.type == FaceType.UnRecognized) face.groupname = "No Match";
-                this.Dispatcher.BeginInvoke(new Action(() => {
-                    /// duplicate face logic
-                    var uid = face.valFaceId;
-                    long pprevid = long.MaxValue;
-                    if (uid != 0)
-                    for (var i=Faces.Count-1; i>=0; --i) {
-                        FaceItem prevFace = Faces[i];
-                        var previd = prevFace.valFaceId;
-                        /// should larger
-                        if (pprevid <= previd) break;
-                        /// no match
-                        if (uid > previd) break;
-                        if (uid == previd) {
-                            /// replace
-                            Faces[i] = face;
-                            return;
-                        }
-                        pprevid = previd;
-                    }
-                    Faces.Add(face);
-                }));
+                    if (face.type == FaceType.UnRecognized) face.groupname = "No Match";
+                    this.Dispatcher.BeginInvoke(new Action(() => {
+                        /// duplicate face logic
+                        var uid = face.valFaceId;
+                        long pprevid = long.MaxValue;
+                        if (uid != 0)
+                            for (var i = Faces.Count - 1; i >= 0; --i) {
+                                FaceItem prevFace = Faces[i];
+                                var previd = prevFace.valFaceId;
+                                /// should larger
+                                if (pprevid <= previd) break;
+                                /// no match
+                                if (uid > previd) break;
+                                if (uid == previd) {
+                                    /// replace
+                                    Faces[i] = face;
+                                    Console.WriteLine("{0}, {1}", uid, previd);
+                                    return;
+                                }
+                                pprevid = previd;
+                            }
+                        Faces.Add(face);
+                    }));
+                });
+            }
+
+            if (closeCallback == null) {
+                closeCallback = new EventHandler<CloseEventArgs>((sender, e) => {
+                    if (e.Code == 1000) return;
+                    Console.WriteLine("Close reason {0} {1}", e.Code, e.Reason);
+                    Console.WriteLine("Do reconnect");
+                    doReconnect(false);
+                });
+            }
+
+            if (errorCallback == null) {
+                errorCallback = new EventHandler<ErrorEventArgs>((sender, e) => {
+                    Console.WriteLine("Error reason {0}", e.Message);
+                    Console.WriteLine("Do reconnect");
+                    doReconnect(false);
+                });
+            }
+
+            if (openCallback == null) {
+                openCallback = new EventHandler((sender, e) => {
+                    Console.WriteLine("connected. face listening@{0}", string.Format("{0}/lastImages", WsHost));
+                });
+            }
+
+            var disposeWs = new Action(() => {
+                if (mainWs != null) {
+                    mainWs.OnMessage -= messageCallback;
+                    mainWs.OnClose -= closeCallback;
+                    mainWs.OnError -= errorCallback;
+                    mainWs.OnOpen -= openCallback;
+                    mainWs.Close();
+                }
             });
 
-            /// last images
-            var lws = new WebSocket(string.Format("{0}/lastImages?sessionId={1}", WsHost, sessionId));
-            lws.OnMessage += callback;
-            lws.Connect();
+            doReconnect = new Action<bool>((bool first) => {
+                disposeWs();
+                /// merge start & end
+                string strSted = "";
+                if (startms != null && endms != null) strSted = string.Format("&start={0}&end={1}", startms, endms);
+                string strAlive = "";
+                if (alive) strAlive = "&alive=true";
+                if (first)
+                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}&pureListen=false{3}", WsHost, sessionId, strAlive, strSted));
+                else
+                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}&pureListen=true{3}", WsHost, sessionId, strAlive, strSted));
+                mainWs.OnMessage += messageCallback;
+                mainWs.OnClose += closeCallback;
+                mainWs.OnError += errorCallback;
+                mainWs.OnOpen += openCallback;
+                mainWs.ConnectAsync();
+            });
 
-            /// Start Server
-            var ws = new WebSocket(string.Format("{0}/listen?sessionId={1}", WsHost, sessionId));
-            ws.OnMessage += callback;
-
-            ws.OnClose += (sender, e) => {
-                Console.WriteLine("Close reason {0} {1}", e.Code, e.Reason);
-                ws.ConnectAsync();
-                Console.WriteLine("Do reconnect");
-            };
-            ws.OnError += (sender, e) => {
-                Console.WriteLine("Error reason {0}", e.Message);
-                ws.ConnectAsync();
-                Console.WriteLine("Do reconnect");
-            };
-            ws.OnOpen += (sender, e) => {
-                Console.WriteLine("connected. face listening@{0}", string.Format("{0}/listen", WsHost));
-            };
-            ws.ConnectAsync();
+            /// stop old ws
+            disposeWs();
+            Faces.Clear();
+            doReconnect(true);
         }
+
 
         WebSocket ws = null;
         public void StartSearch(dynamic face) {
@@ -342,53 +385,13 @@ namespace Tencent.DataSources {
             ws.ConnectAsync();
         }
 
-        WebSocket lastWs = null;
-        DateTime lastStart;
-        long lastDurationSeconds = 0;
         public void HistoryWithDuration(DateTime start, long durationSeconds) {
-            if (lastStart == start && lastDurationSeconds == durationSeconds) return;
-            lastStart = start;
-            lastDurationSeconds = durationSeconds;
-
-            var callback = new EventHandler<MessageEventArgs>((sender, e) => {
-                var jsonSerializer = new JavaScriptSerializer();
-                var face = jsonSerializer.Deserialize<FaceItem>(e.Data);
-                face.sourceid = face.channel;
-                face.name = face.person_info?.fullname;
-                face.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, face.snapshot);
-                face.createtime = face.timestamp;
-                if (face.groups != null && face.groups?.Length > 0) face.groupname = face.groups[0].name;
-
-                if (face.type == FaceType.UnRecognized) face.groupname = "No Match";
-                this.Dispatcher.BeginInvoke(new Action(() => {
-                    /// ignore duplicate face with same name
-                    FaceItem prevFace = null;
-                    if (TimeRangeFaces.Count > 0) prevFace = TimeRangeFaces[TimeRangeFaces.Count - 1];
-                    if (prevFace != null && prevFace.name != null &&
-                        prevFace.name == face.name && prevFace.sourceid == face.sourceid &&
-                        (face.timestamp - prevFace.timestamp) <= 3000) {
-                        TimeRangeFaces.RemoveAt(TimeRangeFaces.Count - 1);
-                    }
-                    TimeRangeFaces.Add(face);
-                }));
-            });
-
-            if (lastWs != null) {
-                lastWs.OnMessage -= callback;
-                lastWs.Close();
-            }
-            TimeRangeFaces.Clear();
-
             var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
             long startms = (long)start.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
             startms -= (long)offset.TotalMilliseconds;
             long endms = startms + durationSeconds * 1000;
-            /// last images
-            var lws = new WebSocket(string.Format("{0}/lastImages?sessionId={1}&start={2}&end={3}", WsHost, sessionId, startms, endms));
-            lastWs = lws;
-            lws.OnMessage += callback;
-            lws.Connect();
 
+            InitialNewListen(startms, endms, false);
         }
     }
 }

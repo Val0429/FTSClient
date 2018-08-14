@@ -151,12 +151,13 @@ namespace Tencent.Components {
 
             /// determine ItemsSource
             if (filterNameTime.rb_realtime.IsChecked == true) {
-                MainContent.ItemsSource = FaceListener.Faces;
-                applyFilterToView();
+                //MainContent.ItemsSource = FaceListener.Faces;
+                //applyFilterToView();
+                FaceListener.InitialNewListen();
 
             } else {
-                MainContent.ItemsSource = FaceListener.TimeRangeFaces;
-                applyFilterToView();
+                //MainContent.ItemsSource = FaceListener.TimeRangeFaces;
+                //applyFilterToView();
                 FaceListener.HistoryWithDuration(
                     DateTime.Parse((string)filterNameTime.calendar.Text),
                     long.Parse(filterNameTime.txt_duration.Tag.ToString()) * 60
