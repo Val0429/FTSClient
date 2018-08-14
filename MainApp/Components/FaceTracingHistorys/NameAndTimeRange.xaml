@@ -76,7 +76,8 @@
                      Tag="{Binding Source={x:Reference sld_duration}, Path=Value}" HorizontalContentAlignment="Center" />
         </StackPanel>
 
-        <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="4320" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
+        <!-- 3days Maximum="4320"-->
+        <Slider x:Name="sld_duration" Margin="30,0" Minimum="10" Maximum="43200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" />
 
     </StackPanel>
 </UserControl>

@@ -41,6 +41,16 @@ namespace Tencent.Components.FaceTracingHistorys {
             return dict;
         }
 
+        public string[] Cameras() {
+            if (permission["__all__"] == true) return null;
+            List<string> result = new List<string>();
+            foreach (var str in permission.Keys) {
+                if (str == "__all__") continue;
+                if (permission[str] == true) result.Add(str);
+            }
+            return result.ToArray();
+        }
+
         public bool CheckCameraValid(string sourceid) {
             if (permission["__all__"] == true) return true;
             bool result;

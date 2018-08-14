@@ -114,7 +114,7 @@ namespace Tencent.DataSources {
         private EventHandler<CloseEventArgs> closeCallback = null;
         private EventHandler<ErrorEventArgs> errorCallback = null;
         private EventHandler openCallback = null;
-        public void InitialNewListen(long? startms = null, long? endms = null, bool alive = true) {
+        public void InitialNewListen(long? startms = null, long? endms = null, bool alive = true, string name = null, string groups = null, string cameras = null) {
             FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
 
             /// bridge back to FaceListener
@@ -152,13 +152,12 @@ namespace Tencent.DataSources {
                                 if (uid == previd) {
                                     /// replace
                                     Faces[i] = face;
-                                    Console.WriteLine("{0}, {1}", uid, previd);
                                     return;
                                 }
                                 pprevid = previd;
                             }
                         Faces.Add(face);
-                    }));
+                    }), DispatcherPriority.Normal);
                 });
             }
 
@@ -200,12 +199,20 @@ namespace Tencent.DataSources {
                 /// merge start & end
                 string strSted = "";
                 if (startms != null && endms != null) strSted = string.Format("&start={0}&end={1}", startms, endms);
+                /// merge alive
                 string strAlive = "";
                 if (alive) strAlive = "&alive=true";
+                /// merge name / groups / cameras
+                string strElse = "";
+                if (name != null) strElse += "&name=" + name;
+                if (groups != null) strElse += "&groups=" + groups;
+                if (cameras != null) strElse += "&cameras=" + cameras;
+
+                /// call
                 if (first)
-                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}&pureListen=false{3}", WsHost, sessionId, strAlive, strSted));
+                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}{3}{4}&pureListen=false", WsHost, sessionId, strAlive, strSted, strElse));
                 else
-                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}&pureListen=true{3}", WsHost, sessionId, strAlive, strSted));
+                    mainWs = new WebSocket(string.Format("{0}/lastImages?sessionId={1}{2}{3}{4}&pureListen=true", WsHost, sessionId, strAlive, strSted, strElse));
                 mainWs.OnMessage += messageCallback;
                 mainWs.OnClose += closeCallback;
                 mainWs.OnError += errorCallback;
@@ -385,13 +392,13 @@ namespace Tencent.DataSources {
             ws.ConnectAsync();
         }
 
-        public void HistoryWithDuration(DateTime start, long durationSeconds) {
+        public void HistoryWithDuration(DateTime start, long durationSeconds, string name = null, string groups = null, string cameras = null) {
             var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
             long startms = (long)start.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
             startms -= (long)offset.TotalMilliseconds;
             long endms = startms + durationSeconds * 1000;
 
-            InitialNewListen(startms, endms, false);
+            InitialNewListen(startms, endms, false, name, groups, cameras);
         }
     }
 }

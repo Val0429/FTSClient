@@ -49,6 +49,16 @@ namespace Tencent.Components.FaceTracingHistorys {
             return result;
         }
 
+        public string[] Groups() {
+            if (permission["__all__"] == true) return null;
+            List<string> result = new List<string>();
+            foreach (var str in permission.Keys) {
+                if (str == "__all__") continue;
+                if (permission[str] == true) result.Add(str);
+            }
+            return result.ToArray();
+        }
+
         private void btn_FilterSelectAll_Click(object sender, RoutedEventArgs e) {
             var checkboxes = this.FindVisualChildren<CheckBox>();
             var selected = 0;

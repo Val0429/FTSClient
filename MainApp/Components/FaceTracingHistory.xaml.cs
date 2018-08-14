@@ -44,23 +44,23 @@ namespace Tencent.Components {
         }
 
         private void applyFilterToView() {
-            CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
+            //CollectionView view = CollectionViewSource.GetDefaultView((this.FindResource("MainContent") as ListView).ItemsSource) as CollectionView;
 
-            if (view.Filter == null) view.Filter = (object item) => {
-                FaceItem face = (FaceItem)item;
+            //if (view.Filter == null) view.Filter = (object item) => {
+            //    FaceItem face = (FaceItem)item;
 
-                /// validate name
-                if ((filterName != null && filterName.Text != "") &&
-                    (face.name == null || (face.name != null) && face.name.IndexOf(filterName.Text) < 0)
-                    ) return false;
+            //    /// validate name
+            //    if ((filterName != null && filterName.Text != "") &&
+            //        (face.name == null || (face.name != null) && face.name.IndexOf(filterName.Text) < 0)
+            //        ) return false;
 
-                /// validate groups
-                //return filterGroup.CheckGroupValid(face.groupname);
-                if (filterGroup.CheckGroupValid(face.groupname) == false) return false;
+            //    /// validate groups
+            //    //return filterGroup.CheckGroupValid(face.groupname);
+            //    if (filterGroup.CheckGroupValid(face.groupname) == false) return false;
 
-                /// validate cameras
-                return filterCamera.CheckCameraValid(face.sourceid);
-            };
+            //    /// validate cameras
+            //    return filterCamera.CheckCameraValid(face.sourceid);
+            //};
         }
 
         #region "Dependency Properties"
@@ -149,18 +149,34 @@ namespace Tencent.Components {
             var txtFilterName = FilterContent.FindVisualChildren<TextBox>("txt_FilterName").First();
             FilterName = txtFilterName.Text;
 
+            string[] groups = filterGroup.Groups();
+            string[] cameras = filterCamera.Cameras();
+            string paramName = FilterName.Length > 0 ? FilterName : null;
+            string paramGroups = groups == null ? null : String.Join(",", groups);
+            string paramCameras = cameras == null ? null : String.Join(",", cameras);
+
             /// determine ItemsSource
             if (filterNameTime.rb_realtime.IsChecked == true) {
                 //MainContent.ItemsSource = FaceListener.Faces;
                 //applyFilterToView();
-                FaceListener.InitialNewListen();
+                FaceListener.InitialNewListen(
+                    null,
+                    null,
+                    true,
+                    paramName,
+                    paramGroups,
+                    paramCameras
+                    );
 
             } else {
                 //MainContent.ItemsSource = FaceListener.TimeRangeFaces;
                 //applyFilterToView();
                 FaceListener.HistoryWithDuration(
                     DateTime.Parse((string)filterNameTime.calendar.Text),
-                    long.Parse(filterNameTime.txt_duration.Tag.ToString()) * 60
+                    long.Parse(filterNameTime.txt_duration.Tag.ToString()) * 60,    
+                    paramName,
+                    paramGroups,
+                    paramCameras
                     );
             }
 
