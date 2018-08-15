@@ -55,6 +55,8 @@ namespace Tencent.DataSources {
         public string channel { get; set; }
         // new
         public long valFaceId { get; set; }
+        // new
+        public string person_id { get; set; }
 
         // *keep* reference
         public string name { get; set; }
@@ -66,19 +68,19 @@ namespace Tencent.DataSources {
         public string groupname { get; set; }
     }
 
-    public class SearchParam {
-        public string searchid { get; set; }
-        public string name { get; set; }
-        public long starttime { get; set; }
-        public long endtime { get; set; }
-        public string image { get; set; }
-        public double score { get; set; }
-    }
+    //public class SearchParam {
+    //    public string searchid { get; set; }
+    //    public string name { get; set; }
+    //    public long starttime { get; set; }
+    //    public long endtime { get; set; }
+    //    public string image { get; set; }
+    //    public double score { get; set; }
+    //}
 
-    public class SearchInfo {
-        public string searchid { get; set; }
-        public string status { get; set; }
-    }
+    //public class SearchInfo {
+    //    public string searchid { get; set; }
+    //    public string status { get; set; }
+    //}
 
     //public class SearchItem {
     //    public string searchid { get; set; }
@@ -104,6 +106,10 @@ namespace Tencent.DataSources {
         // new. channel ==> sourceid
         public string channel { get; set; }
         public FaceItemGroupInfo[] groups { get; set; }
+        // new
+        public string person_id { get; set; }
+        // new
+        public bool search_ok { get; set; }
 
         // *keep* reference
         public string name { get; set; }

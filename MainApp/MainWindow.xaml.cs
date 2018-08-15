@@ -77,6 +77,7 @@ namespace Tencent {
                     image = searchitem.image,
                     name = searchitem.name,
                     person_info = searchitem.person_info,
+                    person_id = searchitem.person_id,
                     snapshot = searchitem.snapshot,
                     sourceid = searchitem.sourceid,
                     timestamp = searchitem.timestamp,
