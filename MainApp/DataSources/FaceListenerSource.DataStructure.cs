@@ -57,70 +57,16 @@ namespace Tencent.DataSources {
         public long valFaceId { get; set; }
         // new
         public string person_id { get; set; }
-
-        // *keep* reference
-        public string name { get; set; }
-        // *keep* reference
-        public string image { get; set; }
-        // *keep* reference
-        public long createtime { get; set; }
-        // *keep* reference
-        public string groupname { get; set; }
-    }
-
-    //public class SearchParam {
-    //    public string searchid { get; set; }
-    //    public string name { get; set; }
-    //    public long starttime { get; set; }
-    //    public long endtime { get; set; }
-    //    public string image { get; set; }
-    //    public double score { get; set; }
-    //}
-
-    //public class SearchInfo {
-    //    public string searchid { get; set; }
-    //    public string status { get; set; }
-    //}
-
-    //public class SearchItem {
-    //    public string searchid { get; set; }
-    //    public string name { get; set; }
-    //    public string status { get; set; }
-    //    public string sourceid { get; set; }
-    //    public string image { get; set; }
-    //    public long createtime { get; set; }
-    //    public double score { get; set; }
-    //}
-
-    public class SearchItem {
-        // *keep* but no use
-        public string searchid { get; set; }
-        // new
-        public FaceType type { get; set; }
-        // new name get here ==> name
-        public FaceItemPersonInfo person_info { get; set; }
-        // new. snapshot ==> image
-        public string snapshot { get; set; }
-        // new. timestamp ==> createtime
-        public long timestamp { get; set; }
-        // new. channel ==> sourceid
-        public string channel { get; set; }
-        public FaceItemGroupInfo[] groups { get; set; }
-        // new
-        public string person_id { get; set; }
         // new
         public bool search_ok { get; set; }
 
         // *keep* reference
         public string name { get; set; }
         // *keep* reference
-        public string sourceid { get; set; }
-        // *keep* reference
         public string image { get; set; }
         // *keep* reference
         public long createtime { get; set; }
         // *keep* reference
-        public double score { get; set; }
         public string groupname { get; set; }
     }
 
@@ -158,18 +104,18 @@ namespace Tencent.DataSources {
         [XmlAttribute("Angle")]
         public double Angle { get; set; }
 
-        public SearchItem Face {
-            get { return (SearchItem)GetValue(FaceProperty); }
+        public FaceItem Face {
+            get { return (FaceItem)GetValue(FaceProperty); }
             set { SetValue(FaceProperty, value); }
         }
         // Using a DependencyProperty as the backing store for Face.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FaceProperty =
-            DependencyProperty.Register("Face", typeof(SearchItem), typeof(Camera), new PropertyMetadata(null));
+            DependencyProperty.Register("Face", typeof(FaceItem), typeof(Camera), new PropertyMetadata(null));
     }
 
     public class TraceItem : DependencyObject {
         public TraceItem() {
-            Faces = new ObservableCollection<SearchItem>();
+            Faces = new ObservableCollection<FaceItem>();
         }
 
 
@@ -177,12 +123,12 @@ namespace Tencent.DataSources {
 
         public long starttime { get; set; }
         public long endtime { get; set; }
-        public ObservableCollection<SearchItem> Faces { get; private set; }
+        public ObservableCollection<FaceItem> Faces { get; private set; }
     }
 
     public class FaceDetail : DependencyObject {
         public FaceDetail() {
-            PossibleContacts = new ObservableCollection<SearchItem>();
+            PossibleContacts = new ObservableCollection<FaceItem>();
             Traces = new ObservableCollection<TraceItem>();
         }
         #region "Dependency Properties"
@@ -228,6 +174,6 @@ namespace Tencent.DataSources {
 
         public ObservableCollection<TraceItem> Traces { get; private set; }
 
-        public ObservableCollection<SearchItem> PossibleContacts { get; private set; }
+        public ObservableCollection<FaceItem> PossibleContacts { get; private set; }
     }
 }

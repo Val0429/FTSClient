@@ -66,26 +66,7 @@ namespace Tencent {
         }
 
         private void FaceTracingHistory_FaceItemSelected(object sender, RoutedEventArgs e) {
-            FaceItem faceitem = null;
-            if (e.OriginalSource.GetType() == typeof(SearchItem)) {
-                var searchitem = (SearchItem)e.OriginalSource;
-                faceitem = new FaceItem() {
-                    channel = searchitem.channel,
-                    createtime = searchitem.createtime,
-                    groups = searchitem.groups,
-                    groupname = searchitem.groupname,
-                    image = searchitem.image,
-                    name = searchitem.name,
-                    person_info = searchitem.person_info,
-                    person_id = searchitem.person_id,
-                    snapshot = searchitem.snapshot,
-                    sourceid = searchitem.sourceid,
-                    timestamp = searchitem.timestamp,
-                    type = searchitem.type
-                };
-            } else {
-                faceitem = (FaceItem)e.OriginalSource;
-            }
+            FaceItem faceitem = (FaceItem)e.OriginalSource;
             ((FaceListenerSource)this.FindResource("FaceListenerSource")).StartSearch(faceitem);
         }
 

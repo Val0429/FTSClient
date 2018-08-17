@@ -108,14 +108,14 @@ namespace Tencent.Components {
     public class SideContentCameraDevice : CameraDevice {
         public string sourceid { get; set; }
 
-        public SearchItem Face {
-            get { return (SearchItem)GetValue(FaceProperty); }
+        public FaceItem Face {
+            get { return (FaceItem)GetValue(FaceProperty); }
             set { SetValue(FaceProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Face.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FaceProperty =
-            DependencyProperty.Register("Face", typeof(SearchItem), typeof(SideContentCameraDevice), new PropertyMetadata(null));
+            DependencyProperty.Register("Face", typeof(FaceItem), typeof(SideContentCameraDevice), new PropertyMetadata(null));
 
     }
 }

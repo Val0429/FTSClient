@@ -267,12 +267,12 @@ namespace Tencent.DataSources {
             Console.Write(string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
                 WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)));
 
-            List<SearchItem> notmatches = new List<SearchItem>();
+            List<FaceItem> notmatches = new List<FaceItem>();
             /// ordered algorithm ///////////////////////////////////
             ws.OnClose += closeHandler;
             ws.OnMessage += (sender, e) => {
                 var jsonSerializer = new JavaScriptSerializer();
-                var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
+                var obj_item = jsonSerializer.Deserialize<FaceItem>(e.Data);
                 obj_item.sourceid = obj_item.channel;
                 obj_item.name = obj_item.person_info?.fullname;
                 obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
@@ -352,170 +352,6 @@ namespace Tencent.DataSources {
             };
             ws.ConnectAsync();
         }
-
-        //public void StartSearch(dynamic face) {
-        //    FTSServerSource FTSServer = Application.Current.FindResource("FTSServerSource") as FTSServerSource;
-        //    long searchDurationSeconds = FTSServer.config.fts.searchDurationSeconds;
-        //    long possibleCompanionDurationSeconds = FTSServer.config.fts.possibleCompanionDurationSeconds;
-
-        //    this.FaceDetail.CurrentFace = face;
-        //    this.FaceDetail.DoCurrentFaceChange(face);
-        //    this.FaceDetail.EntryTime = 0;
-        //    this.FaceDetail.LastTime = 0;
-        //    this.FaceDetail.Traces.Clear();
-        //    TrackChanged.OnNext(true);
-        //    this.FaceDetail.PossibleContacts.Clear();
-        //    this.DoPlayingCameraChange(null);
-        //    PlayingCamera = null;
-
-        //    long duration = searchDurationSeconds * 1000;
-        //    var starttime = face.createtime - duration;
-        //    var endtime = face.createtime + duration;
-
-        //    long comp_duration = possibleCompanionDurationSeconds * 1000;
-
-        //    foreach (var value in Cameras.Values) {
-        //        ((Camera)value).Face = null;
-        //    }
-
-        //    var closeHandler = new EventHandler<CloseEventArgs>((sender, e) => {
-        //        this.FaceDetail.Dispatcher.BeginInvoke(
-        //            new Action(() => this.FaceDetail.Progress = 100)
-        //        );
-        //    });
-
-        //    if (ws != null) { ws.OnClose -= closeHandler; ws.Close(); }
-        //    var jsonSerializerx = new JavaScriptSerializer();
-        //    this.FaceDetail.Progress = 0;
-
-        //    ws = new WebSocket( string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
-        //        WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)) );
-
-        //    Console.Write(string.Format("{0}/search?sessionId={1}&starttime={2}&endtime={3}&face={4}",
-        //        WsHost, this.sessionId, starttime, endtime, jsonSerializerx.Serialize(face)));
-
-        //    SearchItem lastMatch = null;
-        //    List<SearchItem> notmatches = new List<SearchItem>();
-        //    /// ordered algorithm ///////////////////////////////////
-        //    ws.OnClose += closeHandler;
-        //    ws.OnMessage += (sender, e) => {
-        //        var jsonSerializer = new JavaScriptSerializer();
-        //        var obj_item = jsonSerializer.Deserialize<SearchItem>(e.Data);
-        //        obj_item.sourceid = obj_item.channel;
-        //        obj_item.name = obj_item.person_info?.fullname;
-        //        obj_item.image = string.Format("{0}/snapshot?sessionId={1}&image={2}", HttpHost, sessionId, obj_item.snapshot);
-        //        obj_item.createtime = obj_item.timestamp;
-        //        if (obj_item.groups != null && obj_item.groups?.Length > 0) obj_item.groupname = obj_item.groups[0].name;
-
-        //        const double rate = 0.6;
-        //        /// calculate progress
-        //        double percent = (double)(obj_item.createtime - starttime) / (endtime - starttime) * 100;
-        //        this.FaceDetail.Dispatcher.BeginInvoke(
-        //                new Action(() => {
-        //                    this.FaceDetail.Progress = Math.Max(Math.Min(100.0, percent), this.FaceDetail.Progress);
-        //                })
-        //            );
-
-        //        /// calculate match
-        //        this.FaceDetail.Dispatcher.BeginInvoke(
-        //                new Action(() => {
-        //                    if (
-        //                        (face.type == FaceType.Recognized && obj_item.name != face.name) ||
-        //                        (face.type == FaceType.UnRecognized && obj_item.type == FaceType.Recognized) ||
-        //                        (face.type == FaceType.UnRecognized && obj_item.score < rate)
-        //                        ) {
-        //                        /// not match
-        //                        //this.FaceDetail.PossibleContacts.Add(obj_item);
-
-        //                        //if (lastMatch != null && (lastMatch.createtime - obj_item.createtime) > comp_duration) {
-        //                        //    this.FaceDetail.PossibleContacts.Add(obj_item);
-        //                        //}
-
-        //                        /// not match
-        //                        if (lastMatch == null || Math.Abs(lastMatch.createtime - obj_item.createtime) > comp_duration)
-        //                            notmatches.Add(obj_item);
-        //                        else if (lastMatch.sourceid == obj_item.sourceid)
-        //                            this.FaceDetail.PossibleContacts.Add(obj_item);
-        //                        /// else ignore
-
-        //                    } else {
-        //                        /// matches
-        //                        /// detect possible comps
-        //                        foreach (var notmatch in notmatches) {
-        //                            if (Math.Abs(obj_item.createtime - notmatch.createtime) <= comp_duration)
-        //                                if (notmatch.sourceid == obj_item.sourceid)
-        //                                    this.FaceDetail.PossibleContacts.Add(notmatch);
-        //                        }
-        //                        notmatches.Clear();
-
-        //                        /// 1) get last traces, if camera match, add into it.
-        //                        /// 2) if not match, add new trace, then add into it.
-        //                        do {
-        //                            lastMatch = obj_item;
-        //                            // 1)
-        //                            if (this.FaceDetail.Traces.Count > 0) {
-        //                                var lasttrace = this.FaceDetail.Traces[this.FaceDetail.Traces.Count - 1];
-        //                                if (lasttrace.Camera.sourceid == obj_item.sourceid) {
-        //                                    /// remove duplicate face
-        //                                    var lastface = lasttrace.Faces[lasttrace.Faces.Count - 1];
-        //                                    if (lastface.name != null && lastface.name == obj_item.name &&
-        //                                        (obj_item.timestamp - lastface.timestamp) <= 3000) {
-        //                                        //MessageBox.Show(string.Format("RemoveAt {0} {1}", lastface.timestamp, obj_item.timestamp));
-        //                                        lasttrace.Faces.RemoveAt(lasttrace.Faces.Count - 1);
-        //                                    }
-        //                                    lasttrace.Faces.Add(obj_item);
-        //                                    lasttrace.starttime = Math.Min(obj_item.createtime, lasttrace.starttime);
-        //                                    lasttrace.endtime = Math.Max(obj_item.createtime, lasttrace.endtime);
-        //                                    this.FaceDetail.EntryTime = Math.Min(this.FaceDetail.EntryTime, obj_item.createtime);
-        //                                    this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
-        //                                    break;
-        //                                }
-        //                            }
-
-        //                            // 2)
-        //                            // find camera
-        //                            Camera camera = null;
-        //                            if (obj_item.sourceid == null) break;
-        //                            Cameras.TryGetValue(obj_item.sourceid, out camera);
-        //                            if (camera == null) break;
-        //                            /// create trace
-        //                            var traceitem = new TraceItem();
-        //                            traceitem.Camera = camera;
-        //                            traceitem.starttime = traceitem.endtime = obj_item.createtime;
-        //                            traceitem.Faces.Add(obj_item);
-        //                            this.FaceDetail.Traces.Add(traceitem);
-        //                            this.FaceDetail.EntryTime = Math.Min(
-        //                                this.FaceDetail.EntryTime == 0 ? long.MaxValue : this.FaceDetail.EntryTime,
-        //                                    obj_item.createtime);
-        //                            this.FaceDetail.LastTime = Math.Max(this.FaceDetail.LastTime, obj_item.createtime);
-        //                            camera.Face = obj_item;
-
-        //                        } while (false);
-        //                    }
-        //                    TrackChanged.OnNext(true);
-        //                })
-        //            );
-        //    /////////////////////////////////////////////////////////////
-
-        //    return;
-        //    };
-        //    ws.OnOpen += (sender, e) => {
-        //        //var jsonSerializer = new JavaScriptSerializer();
-        //        //var param = new SearchParam() {
-        //        //    //starttime = face.createtime - 1000 * 60 * 5,
-        //        //    //endtime = face.createtime + 1000 * 60 * 5,
-        //        //    name = face.name,
-        //        //    starttime = starttime,
-        //        //    endtime = endtime,
-        //        //    image = face.image,
-        //        //    score = 0,
-        //        //    searchid = "",
-        //        //};
-        //        //Console.WriteLine(jsonSerializer.Serialize(param));
-        //        ////ws.SendAsync(jsonSerializer.Serialize(param), null);
-        //    };
-        //    ws.ConnectAsync();
-        //}
 
         public void HistoryWithDuration(DateTime start, long durationSeconds, string name = null, string groups = null, string cameras = null) {
             var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
