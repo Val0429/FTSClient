@@ -330,7 +330,7 @@ namespace Tencent.DataSources {
 
                             TrackChanged.OnNext(true);
                         })
-                    );
+                    , DispatcherPriority.Normal);
                 /////////////////////////////////////////////////////////////
 
                 return;

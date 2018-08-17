@@ -39,7 +39,7 @@ namespace Tencent.Components.FaceTracingDetails {
         }
         // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(EntryUnitFace), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
+            DependencyProperty.Register("Color", typeof(Color), typeof(EntryUnitFace), new PropertyMetadata(ColorConverter.ConvertFromString("Transparent")));
 
         public Color GlowColor {
             get { return (Color)GetValue(GlowColorProperty); }
@@ -47,7 +47,7 @@ namespace Tencent.Components.FaceTracingDetails {
         }
         // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty GlowColorProperty =
-            DependencyProperty.Register("GlowColor", typeof(Color), typeof(EntryUnitFace), new PropertyMetadata(ColorConverter.ConvertFromString("#4D746C")));
+            DependencyProperty.Register("GlowColor", typeof(Color), typeof(EntryUnitFace), new PropertyMetadata(ColorConverter.ConvertFromString("Transparent")));
 
         #endregion "Dependency Properties"
 

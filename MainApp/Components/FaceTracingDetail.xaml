@@ -11,6 +11,7 @@
              xmlns:ext="clr-namespace:Library.Extensions;assembly=Library"
              xmlns:cvt="clr-namespace:Library.Converters;assembly=Library"
              xmlns:localcvt="clr-namespace:Tencent.Converters"
+             xmlns:pnl="clr-namespace:Library.Panels;assembly=Library"
              xmlns:ds="clr-namespace:Tencent.DataSources"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -203,22 +204,25 @@
 
                         <scv:CustomListView Grid.Row="1"
                                             IsTabStop="False"
-                                            Margin="10,0,0,0"
+                                            Margin="10,5,0,0"
                                             ScrollContentMargin="0,0,0,10"
                                             ScrollBarMargin="0,-20,0,5"
                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                            ScrollViewer.CanContentScroll="True"
                                             ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.PossibleContacts}"
                                             >
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal">
-                                        <WrapPanel.Resources>
-                                            <Style TargetType="{x:Type Control}">
-                                                <Setter Property="Margin" Value="4,8" />
-                                            </Style>
-                                            <Style TargetType="{x:Type ftd:EntryUnitFace}" BasedOn="{StaticResource {x:Type Control}}" />
-                                        </WrapPanel.Resources>
-                                    </WrapPanel>
+                                    <pnl:VirtualizingWrapPanel>
+                                        <pnl:VirtualizingWrapPanel.Resources>
+                                            <!--<Style TargetType="{x:Type Control}">
+                                                <Setter Property="Margin" Value="1,12" />
+                                            </Style>-->
+                                            <!--<Style TargetType="{x:Type ftd:EntryUnitFace}">
+                                                <Setter Property="Padding" Value="1,12" />
+                                            </Style>-->
+                                    </pnl:VirtualizingWrapPanel.Resources>
+                                    </pnl:VirtualizingWrapPanel>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>

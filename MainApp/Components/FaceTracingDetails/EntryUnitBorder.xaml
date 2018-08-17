@@ -18,7 +18,7 @@
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntryUnitBorder}}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="15" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
         <local:EntryUnitFace Image="{Binding Path=Image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntryUnitBorder}}}"
@@ -26,6 +26,6 @@
                 GlowColor="{Binding GlowColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:EntryUnitBorder}}}"
             />
 
-        <Label Style="{StaticResource DefaultFont}" Grid.Row="1" Padding="0" HorizontalContentAlignment="Center" Content="{Binding Title}" FontSize="10" Margin="0,2,0,0" />
+        <Label Style="{StaticResource DefaultFont}" Grid.Row="1" Padding="0" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Content="{Binding Title}" FontSize="10" Margin="0,2,0,0" />
     </Grid>
 </UserControl>
