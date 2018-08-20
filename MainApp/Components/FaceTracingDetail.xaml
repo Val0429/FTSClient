@@ -25,6 +25,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <cvt:UnixTimestampToDateStringConverter x:Key="UnixTimestampToDateString" />
+            <cvt:NullVisibilityConverter x:Key="NullVisibility" />
             <localcvt:GroupnameToColorConverter x:Key="GroupnameToColor" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -47,8 +48,40 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- 1st column -->
-                    <!--<tlibborder:FaceTracingBorder Image="D:\girl.png" Title="目标人物" TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" />-->
-                    <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
+                    <StackPanel>
+                        <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
+                            <ContentPresenter.ContentTemplate>
+                                <DataTemplate>
+                                    <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Resx w_Target}"
+                                                                  RealName="{Binding name}" GroupName="{Binding groupname}"
+                                                                  Color="{Binding groupname, Converter={StaticResource GroupnameToColor}}"
+                                                                  GlowColor="{Binding groupname, Converter={StaticResource GroupnameToColor}, ConverterParameter=glow}"
+                                                                  TitleAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                                                  />
+                                </DataTemplate>
+                            </ContentPresenter.ContentTemplate>
+                        </ContentPresenter>
+
+                        <ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
+                            <ContentPresenter.ContentTemplate>
+                                <DataTemplate>
+                                    <StackPanel Visibility="{Binding highest_score, Converter={StaticResource NullVisibility}}"
+                                        Margin="5,10"
+                                        >
+                                        <Label Foreground="White" FontSize="16">
+                                            <Label.Content>
+                                                <TextBlock Text="{Binding highest_score.fullname, StringFormat='\{0\} ?'}" />
+                                            </Label.Content>
+                                        </Label>
+                                        <Label Foreground="White" FontSize="16" Content="{Binding highest_score.score}" />
+                                </StackPanel>
+                                </DataTemplate>
+                            </ContentPresenter.ContentTemplate>
+                        </ContentPresenter>
+                        
+                    </StackPanel>
+
+                    <!--<ContentPresenter Content="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.CurrentFace}">
                         <ContentPresenter.ContentTemplate>
                             <DataTemplate>
                                 <tlibborder:FaceTracingBorder Image="{Binding image}" Title="{Resx w_Target}"
@@ -59,7 +92,7 @@
                                                               />
                             </DataTemplate>
                         </ContentPresenter.ContentTemplate>
-                    </ContentPresenter>
+                    </ContentPresenter>-->
                     <!-- 1st column -->
 
                     <!-- 2nd column -->
@@ -138,55 +171,6 @@
                             </ListView.ItemTemplate>
                         </scv:CustomListView>
                         
-                        <!--<scv:CustomScrollViewer Grid.Row="1"
-                            Margin="0,0,5,0"
-                            ScrollContentMargin="0,0,0,10"
-                            ScrollBarMargin="0,-20,0,5">
-
-                            <ItemsControl ItemsSource="{Binding Source={StaticResource FaceListenerSource}, Path=FaceDetail.Traces}" Margin="0,0,0,35">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        --><!--<ftd:EntryUnit Title="1号摄像头大堂">
-                                            <ftd:EntryUnitBorder Image="D:\girl.png" Title="10:51:00" />
-                                            <ftd:EntryUnitBorder Image="D:\girl2.png" Title="10:52:36" />
-                                            <ftd:EntryUnitBorder Image="D:\girl3.png" Title="10:52:36" />
-                                        </ftd:EntryUnit>--><!--
-                                        <ftd:EntryUnit x:Name="EntryUnit"
-                                            Title="{Binding Path=DataContext.Camera.name, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                            >
-                                            <ItemsControl ItemsSource="{Binding Path=DataContext.Faces, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType=ContentPresenter}}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <WrapPanel />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ftd:EntryUnitBorder
-                                                            Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                            Image="{Binding Path=DataContext.image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}}"
-                                                            Title="{Binding Path=DataContext.createtime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Converter={StaticResource UnixTimestampToDateString}}"
-                                                            MouseDown="EntryUnitFace_MouseDown"
-                                                            />
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ftd:EntryUnit>
-                                        
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Camera.type}" Value="1">
-                                                <Setter TargetName="EntryUnit" Property="Icon" Value="{StaticResource NormalCameraTemplate}" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </scv:CustomScrollViewer>-->
                     </Grid>
                     <!-- 2nd column -->
 

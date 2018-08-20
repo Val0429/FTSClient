@@ -53,7 +53,11 @@
             </StackPanel>
             
             <!-- Version -->
-            <Label Grid.Row="1" Margin="40,0,0,0" FontSize="16" FontFamily="Arial" VerticalContentAlignment="Center" Foreground="White">Version: v1.00.00</Label>
+            <Label Grid.Row="1" Margin="40,0,0,0" FontSize="16" FontFamily="Arial" VerticalContentAlignment="Center" Foreground="White">
+                <Label.Content>
+                    <TextBlock Text="{Binding Version, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, StringFormat='Version: \{0\}'}" />
+                </Label.Content>
+            </Label>
         </Grid>
         
         <!-- Right Block -->

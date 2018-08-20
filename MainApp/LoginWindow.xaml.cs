@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,8 @@ namespace Tencent {
     public partial class LoginWindow : Window {
         public LoginWindow() {
             InitializeComponent();
+
+            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             /// make default
             CultureManager.UICulture = new System.Globalization.CultureInfo("en");
@@ -53,6 +56,21 @@ namespace Tencent {
             main.Show();
             this.Close();
         }
+
+        #region "Dependency Properties"
+
+
+        public string Version {
+            get { return (string)GetValue(VersionProperty); }
+            set { SetValue(VersionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Version.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VersionProperty =
+            DependencyProperty.Register("Version", typeof(string), typeof(LoginWindow), new PropertyMetadata("v11"));
+
+
+        #endregion "Dependency Properties"
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             CultureManager.UICulture = new System.Globalization.CultureInfo((this.LanguageBox.SelectedItem as FrameworkElement).Tag as string);

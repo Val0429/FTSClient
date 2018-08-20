@@ -33,6 +33,11 @@ namespace Tencent.DataSources {
         public string group_id { get; set; }
     }
 
+    public class FaceItemHighestScore {
+        public string fullname { get; set; }
+        public double score { get; set; }
+    }
+
     public enum FaceType {
         UnRecognized = 0,
         Recognized = 1
@@ -58,6 +63,8 @@ namespace Tencent.DataSources {
         // new
         public string person_id { get; set; }
         // new
+        public FaceItemHighestScore highest_score { get; set; }
+        // new. only available for search
         public bool search_ok { get; set; }
 
         // *keep* reference
