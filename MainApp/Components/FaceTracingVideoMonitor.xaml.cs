@@ -171,7 +171,7 @@ namespace Tencent.Components {
                 //    }
                 //}
                 mre_cancelcurrent.Set();
-                File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(1): {0}\n", timestamp));
+                //File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(1): {0}\n", timestamp));
                 videoctrl.Goto((ulong)timestamp, 1);
                 mre_cancelcurrent.Reset();
 
@@ -181,7 +181,7 @@ namespace Tencent.Components {
                     }
                     //System.Threading.Thread.Sleep(1000);
                     this.Dispatcher.BeginInvoke(new Action(() => {
-                        File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(2): {0}\n", timestamp));
+                        //File.AppendAllText(@"C:\log.txt", string.Format("GotoTime(2): {0}\n", timestamp));
                         videoctrl.Goto((ulong)timestamp, 2);
                         videoctrl.PlayEx((ulong)timestamp, 1, "1x", 0, 0);
 
@@ -192,7 +192,7 @@ namespace Tencent.Components {
 
             videoctrl.OnTimeCode += (object sender, _IiCMSViewerEvents_OnTimeCodeEvent e) => {
                 var time = long.Parse(e.t);
-                File.AppendAllText(@"C:\log.txt", string.Format("OnTimeCode: {0}", time));
+                //File.AppendAllText(@"C:\log.txt", string.Format("OnTimeCode: {0}", time));
                 if (!this.TimeTrack.IsDragging) {
                     this.TimeTrack.CurrentTime = time;
                 }
@@ -447,7 +447,7 @@ namespace Tencent.Components {
                             _currentCross = string.Join(";", tmp.ToArray());
                             uri = string.Format("{0}&cross={1}", uri, _currentCross);
                             //MessageBox.Show(_currentCross);
-                            File.AppendAllText(@"C:\log.txt", _currentCross);
+                            //File.AppendAllText(@"C:\log.txt", _currentCross);
                             //MessageBox.Show(string.Format("debug playback uri: {0}", uri));
 
                             //File.AppendAllText(@"C:\log.txt", string.Format("final uri: {0}, start: {1}, end: {2}", uri, this.Slider.Minimum / 1000, this.Slider.Maximum / 1000));
@@ -587,7 +587,7 @@ namespace Tencent.Components {
                         /// get Cross
                         node = rootNode.SelectSingleNode("Cross");
                         var cross = node.InnerText;
-                        File.AppendAllText(@"C:\log.txt", cross);
+                        //File.AppendAllText(@"C:\log.txt", cross);
                         this.Crosses.Clear();
                         foreach (var unit in cross.Split(';')) {
                             var data = unit.Split(',');

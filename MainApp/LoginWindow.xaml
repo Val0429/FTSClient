@@ -123,12 +123,12 @@
                 </Grid.RowDefinitions>
 
                 <DockPanel Grid.Row="0">
-                    <Rectangle Width="50" Fill="Red" />
+                    <Rectangle Width="50" Fill="Cyan" />
                     <TextBox x:Name="txt_IP" Tag="IP..." Style="{StaticResource TextBoxStyle}" Text="localhost" />
                 </DockPanel>
 
                 <DockPanel Grid.Row="1">
-                    <Rectangle Width="50" Fill="Red" />
+                    <Rectangle Width="50" Fill="Cyan" />
                     <TextBox x:Name="txt_Port" Tag="Port..." Style="{StaticResource TextBoxStyle}" Text="6060" />
                 </DockPanel>
 
@@ -178,7 +178,7 @@
                 </DockPanel>
 
                 <DockPanel Grid.Row="3">
-                    <Rectangle Width="50" Fill="Red" />
+                    <Rectangle Width="50" Fill="Cyan" />
                     <TextBox x:Name="txt_Password" Tag="Password..." Style="{StaticResource PasswordBoxStyle}" Text="123456" />
                 </DockPanel>
 

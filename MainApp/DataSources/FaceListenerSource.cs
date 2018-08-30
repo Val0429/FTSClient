@@ -17,6 +17,7 @@ using Tencent.Configurations;
 using WebSocketSharp;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Tencent.DataSources {
     public class FaceListenerSource : DependencyObject {
@@ -36,10 +37,12 @@ namespace Tencent.DataSources {
         public void InitConfig(FTSServerSource FTSServer) {
             /// init floors
             foreach (var floor in FTSServer.floors) {
+                Regex regex = new Regex("^http://([^\\:/]+)");
+                var image = regex.Replace(floor.image, "http://"+FTSServer.ip);
                 Floors[floor.floor] = new Floor {
                     name = floor.name,
                     number = floor.floor,
-                    image = floor.image
+                    image = image
                 };
             }
             /// init cameras
@@ -242,9 +245,16 @@ namespace Tencent.DataSources {
             this.DoPlayingCameraChange(null);
             PlayingCamera = null;
 
+            /// parse snapshot for real timestamp for now
+            //string pattern = @"^[a-z]*(?<found>[0-9]+)";
+            //Match m = Regex.Match(face.snapshot, pattern);
+            //var timestamp = long.Parse(m.Groups["found"].Value);
+            var timestamp = face.createtime;
+
+            /// get time from snapshot name
             long duration = searchDurationSeconds * 1000;
-            var starttime = face.createtime - duration;
-            var endtime = face.createtime + duration;
+            var starttime = timestamp - duration;
+            var endtime = timestamp + duration;
 
             /// clean camera faces used by Map
             foreach (var value in Cameras.Values) {
