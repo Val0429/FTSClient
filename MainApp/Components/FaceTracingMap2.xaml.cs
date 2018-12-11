@@ -75,6 +75,11 @@ namespace Tencent.Components {
                 Cameras[value.sourceid] = camera;
                 map.Objects.Add(camera);
             }
+            if (initFloor == int.MaxValue) {
+                MessageBox.Show("You have to config <Floor> on server first.");
+                Environment.Exit(0);
+            }
+
             /// load init floor
             SwitchMap(initFloor);
 

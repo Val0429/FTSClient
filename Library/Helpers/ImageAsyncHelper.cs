@@ -16,7 +16,6 @@ namespace Library.Helpers {
         }
         public static readonly DependencyProperty SourceUriProperty = DependencyProperty.RegisterAttached("SourceUri", typeof(Uri), typeof(ImageAsyncHelper), new FrameworkPropertyMetadata(
             (obj, e) => {
-                Console.WriteLine("???");
                 if (obj.GetType() == typeof(Image)) {
                     ((Image)obj).SetBinding(Image.SourceProperty,
                       new Binding("VerifiedUri") {
